@@ -1,0 +1,89 @@
+#!/bin/sh
+#
+# run some ALIAS repo tools on the StudioPaint src area
+# - currently uses fond to search through the source area; once
+#   source area gets big we should create some sort of database of
+#   filenames in source tree
+#
+
+file=$*
+
+#
+# pass all options on to the cmd
+# - this is pretty primitive since it requires that
+#   any option arguments can't have any white space
+#
+cmd_opts=
+
+#file we will edit the RCS message in for all the putdown files.
+MSG=/tmp/spput.$$
+cat > $MSG < /dev/null
+
+cmd_file()
+{
+	the_file=$1
+
+	if co -p -l $the_file > $the_file-L
+	then
+		echo okay, you have locked $the_file -- it is in $the_file-L
+	else
+		echo '*** co has failed so cannot continue ***'
+		return
+	fi
+	echo comment on work done to $the_file >> $MSG
+
+	#if test "$TERM" = "xterm" -and ! -z "$DISPLAY"
+	#then
+		#gdiff -s 1000,500 $1 $the_file &
+		#pgdiff=$!  #process id of the gdiff so we can kill it later
+		#xterm -geometry 100x20+50+50 \#-0+600 -name RCScomment -e umacs $MSG
+    	#kill $pgdiff
+	#else
+		rcsdiff -w $the_file | more
+		echo ----------- hit enter to continue -----\\c
+		read junk
+		vi $MSG
+	#fi
+	echo '******* message *******'
+	cat $MSG
+	echo '******* end message *******'
+
+	cmd=ci
+	cmd_opts=''
+	echo $cmd $cmd_opts $the_file
+ 	$cmd -m"`cat $MSG`"  $cmd_opts $the_file
+
+	co $the_file
+	chmod +w $the_file
+	chmod o+w $the_file
+	rm $the_file-L
+
+}
+
+for file in $*
+do
+	if test ! -f $file
+	then
+		echo cannot find file $file
+		exit 2
+	fi
+done
+
+for file in $*
+do
+	repofile=/tmp/repofile.$$
+	co -p $file > $repofile
+	if cmp $file $repofile
+	then
+		echo $0: skip $file because it is the same as $repofile 1>&2
+		echo ''
+	else
+		cmd_file $file
+	fi
+	rm $repofile
+done
+
+rm -i $MSG
+
+exit 0
+

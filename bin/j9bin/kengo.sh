@@ -1,0 +1,13 @@
+
+
+#rem need bin and bldtools (in j9/tr for matz)
+#rem pwd tr/bldtools
+
+#PATH "c:\Program Files\IBM\CMVC50";%PATH%
+
+File -extract textract.pl
+File -extract scriptUtils.pl
+
+./textract.pl -extract: tools
+#./makeConfig.pl
+#./trbuild.pl -ed --vm --jcl

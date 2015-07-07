@@ -1,0 +1,26 @@
+#!/usr/bin/perl
+
+if ($#ARGV < 0 ) {		# Check arg count
+    print(STDERR "Usage: $0 file\n");
+    exit 2 ;
+}
+
+open(ARGV,"<$ARGV");
+
+#causes files to be edited in place. INPLACE_EDIT
+#this will cause the old version of the file to be saved to .bak
+$^I = ".bak";
+
+#run through and blow away and crlf's. Then print with a newline
+#this takes care of last lines with no crlf at all as a side effect.
+
+while(<>)
+{
+	s/\r//;
+	s/\n//;
+	s/}[ ]+$/}/;
+	print $_,"\n";
+}
+
+
+

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+TEMP=/tmp/cvsdiff$$
+
+for i in $*
+do
+	if cvs update -p $i > $TEMP 2>/dev/null
+	then
+		if diff -w -b -B $i $TEMP > /dev/null
+		then
+			echo $i same as CVS except from white space
+	    else
+		    xdiff -w $i $TEMP
+		fi
+	else
+		echo cvs update -p failed.
+		exit 2
+	fi
+done

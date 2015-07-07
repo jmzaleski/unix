@@ -1,0 +1,3 @@
+#!/bin/sh
+
+emacs $1 -f my-nuke-cr -f my-nuke-cr $2 -f my-nuke-cr -f my-nuke-cr

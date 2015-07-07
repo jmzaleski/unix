@@ -1,0 +1,4 @@
+30   1  * * * ./bin/new_emacs_TAGS.sh
+00   2  * * * ./bin/newSPFILE.sh
+30   2  * * * ./bin/StudioPaintAudit.sh
+00   3  * * *  /usr/StudioPaint/bin/SGI5/make_StudioPaint.sh SGI

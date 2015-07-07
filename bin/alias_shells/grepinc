@@ -1,0 +1,24 @@
+#!/bin/sh
+
+INCLDIR="/usr/include /usr/X11R6/include/X11"
+
+SUBINC='machine arpa g++ protocols readline rpc rpcsvc ss'
+
+incldir=$INCLDIR
+for i in $SUBINC
+do
+	incldir="$incldir /usr/include/$i"
+done
+
+if test -z "$1"
+then
+	echo $0 will search for a string in include dirs
+	echo "$incldir"
+	exit 1
+fi
+
+for i in $incldir
+do
+	grep -n $* $i/*.h
+done
+

@@ -1,0 +1,64 @@
+alias "Ken Rother" ksr@mtnlake.com
+note "Ken Rother" <name: Ken Rother>
+alias "Mathew Zaleski" matz@mtnlake.com
+note "Mathew Zaleski" <name: Mathew Zaleski>
+alias "Scott McIntosh,mtnlake,(416) 863-8858 ,(416) 361-6265 " scott@mtnlake.com
+note "Scott McIntosh,mtnlake,(416) 863-8858 ,(416) 361-6265 " <name: Scott McIntosh,mtnlake,(416) 863-8858 ,(416) 361-6265 >
+alias "Marcel Mayrand" mmayrand@mtnlake.com
+note "Marcel Mayrand" <name: Marcel Mayrand>
+alias "Glenn Archer" glenn@mtnlake.com
+note "Glenn Archer" <name: Glenn Archer>
+alias "Drew Atkin" drew@mtnlake.com
+note "Drew Atkin" <name: Drew Atkin>
+alias "Mountain Lake Backup Creation" backup@mtnlake.com
+note "Mountain Lake Backup Creation" <name: Mountain Lake Backup Creation>
+alias "Aaron Kumove" aaron@mtnlake.com
+note "Aaron Kumove" <name: Aaron Kumove>
+alias "Phone Admin" phoneadm@mtnlake.com
+note "Phone Admin" <name: Phone Admin>
+alias "Mountain Lake Bureaucracy area" mtnlake@mtnlake.com
+note "Mountain Lake Bureaucracy area" <name: Mountain Lake Bureaucracy area>
+alias "Chris Frostad" chris@mtnlake.com
+note "Chris Frostad" <name: Chris Frostad>
+alias "Derek Xu,,," derek@mtnlake.com
+note "Derek Xu,,," <name: Derek Xu,,,>
+alias "Alfred Stulginskas" alfred@mtnlake.com
+note "Alfred Stulginskas" <name: Alfred Stulginskas>
+alias "Pete Bevin" pete@mtnlake.com
+note "Pete Bevin" <name: Pete Bevin>
+alias "Shawn Bedard" sabedard@mtnlake.com
+note "Shawn Bedard" <name: Shawn Bedard>
+alias "Ken Rother2" ksr2@mtnlake.com
+note "Ken Rother2" <name: Ken Rother2>
+alias "Philippe Locong" ploc@mtnlake.com
+note "Philippe Locong" <name: Philippe Locong>
+alias "Shanmu Theiventhiran" shanmu@mtnlake.com
+note "Shanmu Theiventhiran" <name: Shanmu Theiventhiran>
+alias "Cary Timar" cctimar@mtnlake.com
+note "Cary Timar" <name: Cary Timar>
+alias "Andy Kim" akim@mtnlake.com
+note "Andy Kim" <name: Andy Kim>
+alias "Ross Ethier" rosco@mtnlake.com
+note "Ross Ethier" <name: Ross Ethier>
+alias "Marc Riehm" mriehm@mtnlake.com
+note "Marc Riehm" <name: Marc Riehm>
+alias "Nick Lu" nick@mtnlake.com
+note "Nick Lu" <name: Nick Lu>
+alias "Leslie Partridge" leslie@mtnlake.com
+note "Leslie Partridge" <name: Leslie Partridge>
+alias "Jeremy Chan,,," jer@mtnlake.com
+note "Jeremy Chan,,," <name: Jeremy Chan,,,>
+alias "Sherry Banfield,,," sherry@mtnlake.com
+note "Sherry Banfield,,," <name: Sherry Banfield,,,>
+alias "GuiMing Qin" guiming@mtnlake.com
+note "GuiMing Qin" <name: GuiMing Qin>
+alias "Timur Maltaric" ctim@mtnlake.com
+note "Timur Maltaric" <name: Timur Maltaric>
+alias "Colin Lawrence,,," colinl@mtnlake.com
+note "Colin Lawrence,,," <name: Colin Lawrence,,,>
+alias "Amanda Allan" amanda@mtnlake.com
+note "Amanda Allan" <name: Amanda Allan>
+alias "Donna Goldberg" donna@mtnlake.com
+note "Donna Goldberg" <name: Donna Goldberg>
+alias "Kevin Zhu" kzhu@mtnlake.com
+note "Kevin Zhu" <name: Kevin Zhu>

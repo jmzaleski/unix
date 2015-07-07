@@ -1,0 +1,61 @@
+#!/bin/sh
+
+#when we ship anything it's a good idea to leave marks on the wall
+#in RCS so that we can extract that exact version of the source someday.
+
+#grub through directory of RCS files bumping version number to REV
+#and setting state to $STATE with name $NAME and message $MSG
+
+
+#these revs are distinguished in that they have been released, so set
+#their state to Released
+STATE='NRCAPPLIED'
+
+#probably want to edit these last three to identify why the fuss about this
+#version.
+REV='2.0'
+NAME='appl1'
+MSG='Homebody NRC application 1.0'
+
+###################################################################
+DoupRCS() {
+    ( cd $1/..
+    /bin/ls RCS | (
+        while read name
+        do
+        case $name in
+        *,v)
+            co -l -f $name
+			#check in as $REV || next version number if $REV exists already.
+            ci -f -r$REV -s$STATE -n$NAME -m"$MSG" -u $name \
+			|| \
+            ci -f -s$STATE -N$NAME -m"$MSG" -u $name
+            ;;
+        esac
+        done
+        )
+    )
+}
+
+###################################################################
+if test "$#" -eq 0
+then
+		echo usage: $0 rcs-dir 1>&2
+		exit 42
+fi
+
+###################################################################
+echo bump all the source files in $* to revision $REV, state $STATE
+echo with revision name $NAME and log message:
+echo $MSG
+
+###################################################################
+find $* -type d -name RCS -print | (
+while read RcsDir
+do
+    DoupRCS $RcsDir
+done
+)
+
+
+

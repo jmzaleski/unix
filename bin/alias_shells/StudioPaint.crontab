@@ -1,0 +1,2 @@
+30   2  * * * ./bin/StudioPaintAudit.sh
+30   3  * * *  /usr/StudioPaint/bin/SGI/make_StudioPaint.sh

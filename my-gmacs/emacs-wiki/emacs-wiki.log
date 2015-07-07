@@ -1,0 +1,265 @@
+This is TeX, Version 3.141592 (Web2C 7.5.4) (format=tex 2008.10.15)  15 OCT 2008 13:07
+**emacs-wiki.texi
+(./emacs-wiki.texi (/usr/share/texmf/tex/texinfo/texinfo.tex
+Loading texinfo [version 2005-01-30.17]: Basics,
+\bindingoffset=\dimen16
+\normaloffset=\dimen17
+\pagewidth=\dimen18
+\pageheight=\dimen19
+\outerhsize=\dimen20
+\outervsize=\dimen21
+\cornerlong=\dimen22
+\cornerthick=\dimen23
+\topandbottommargin=\dimen24
+\headlinebox=\box16
+\footlinebox=\box17
+\margin=\insert252
+\EMsimple=\toks12
+\groupbox=\box18
+\groupinvalidhelp=\toks13
+\mil=\dimen25
+\exdentamount=\skip18
+\inmarginspacing=\skip19
+ pdf,
+\tempnum=\count26
+\lnkcount=\count27
+\filename=\toks14
+\filenamelength=\count28
+\pgn=\count29
+\toksA=\toks15
+\toksB=\toks16
+\toksC=\toks17
+\toksD=\toks18
+\boxA=\box19
+\countA=\count30
+ fonts,
+\sffam=\fam8
+\textleading=\dimen26
+\fontdepth=\count31
+ page headings,
+\titlepagetopglue=\skip20
+\titlepagebottomglue=\skip21
+\evenheadline=\toks19
+\oddheadline=\toks20
+\evenfootline=\toks21
+\oddfootline=\toks22
+
+tables,
+\tableindent=\dimen27
+\itemindent=\dimen28
+\itemmargin=\dimen29
+\itemmax=\dimen30
+\itemno=\count32
+\multitableparskip=\skip22
+\multitableparindent=\skip23
+\multitablecolspace=\dimen31
+\multitablelinespace=\skip24
+\colcount=\count33
+\everytab=\toks23
+ conditionals,
+\doignorecount=\count34
+ indexing,
+\secondaryindent=\skip25
+\partialpage=\box20
+\doublecolumnhsize=\dimen32
+ sectioning,
+\unnumberedno=\count35
+\chapno=\count36
+\secno=\count37
+\subsecno=\count38
+\subsubsecno=\count39
+\appendixno=\count40
+\absseclevel=\count41
+\secbase=\count42
+\chapheadingskip=\skip26
+\secheadingskip=\skip27
+\subsecheadingskip=\skip28
+ toc,
+\tocfile=\write0
+\contentsrightmargin=\skip29
+\savepageno=\count43
+\lastnegativepageno=\count44
+\tocindent=\dimen33
+ environments,
+\errorbox=\box21
+\lispnarrowing=\skip30
+\envskipamount=\skip31
+\circthick=\dimen34
+\cartouter=\dimen35
+\cartinner=\dimen36
+\normbskip=\skip32
+\normpskip=\skip33
+\normlskip=\skip34
+\lskip=\skip35
+\rskip=\skip36
+\tabw=\dimen37
+ defuns,
+\defbodyindent=\skip37
+\defargsindent=\skip38
+\deflastargmargin=\skip39
+\parencount=\count45
+\brackcount=\count46
+ macros,
+\macscribble=\write1
+\paramno=\count47
+\macname=\toks24
+
+cross references,
+\auxfile=\write2
+\savesfregister=\count48
+ insertions,
+\footnoteno=\count49
+\SAVEfootins=\box22
+\SAVEmargin=\box23
+ (/usr/share/texmf/tex/generic/epsf/epsf.tex
+\epsffilein=\read0
+\epsfframemargin=\dimen38
+\epsfframethickness=\dimen39
+\epsfrsize=\dimen40
+\epsftmp=\dimen41
+\epsftsize=\dimen42
+\epsfxsize=\dimen43
+\epsfysize=\dimen44
+\pspoints=\dimen45
+\epsfnoopenhelp=\toks25
+)
+\noepsfhelp=\toks26
+
+localization,
+\nolanghelp=\toks27
+\defaultparindent=\dimen46
+ and turning on texinfo input format.) (./emacs-wiki.aux)
+\openout2 = `emacs-wiki.aux'.
+
+@cpindfile=@write3
+@fnindfile=@write4
+@vrindfile=@write5
+@tpindfile=@write6
+@kyindfile=@write7
+@pgindfile=@write8
+ [1
+\openout3 = `emacs-wiki.cp'.
+
+\openout4 = `emacs-wiki.fn'.
+
+\openout5 = `emacs-wiki.vr'.
+
+\openout6 = `emacs-wiki.tp'.
+
+\openout7 = `emacs-wiki.ky'.
+
+\openout8 = `emacs-wiki.pg'.
+
+]
+\openout1 = `emacs-wiki.tmp'.
+
+
+(./emacs-wiki.tmp) [2] (./emacs-wiki.toc [-1] [-2]) [-3] Chapter 1
+\openout0 = `emacs-wiki.toc'.
+
+ Chapter 2
+[1] Chapter 3 [2]
+Overfull \hbox (66.05653pt too wide) in paragraph at lines 167--168
+ []@textrm Download and un-pack the lat-est ver-sion from @texttt http://www.mw
+olson.org/static/dist/emacs-wiki/[]|
+
+@hbox(7.60416+2.43333)x433.62, glue set - 1.0
+.@glue(@leftskip) 21.68121
+.@hbox(7.05666+0.0)x0.0, glue set - 15.74411fil
+..@glue 0.0 plus 1.0fil minus 1.0fil
+..@textrm 1
+..@textrm .
+..@kern 7.22743
+.@textrm D
+.@textrm o
+.@kern-0.30418
+.etc.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 201--202
+ []@textrm Install arch. De-bian: @textttsl apt-get in-stall tla[] @textrm . Ot
+her dis-tros: see
+
+@hbox(7.60416+2.43333)x433.62, glue set 4.46696
+.@glue(@leftskip) 21.68121
+.@hbox(7.05666+0.0)x0.0, glue set - 15.74411fil
+..@glue 0.0 plus 1.0fil minus 1.0fil
+..@textrm 1
+..@textrm .
+..@kern 7.22743
+.@textrm I
+.@textrm n
+.@textrm s
+.etc.
+
+
+Overfull \hbox (111.35591pt too wide) in paragraph at lines 206--206
+ []@texttt tla register-archive mwolson@member.fsf.org--2004 http://www.mwolson
+.org/archives/2004[] |
+
+@hbox(7.60416+2.43333)x433.62
+.@glue(@leftskip) 50.58876
+.@hbox(0.0+0.0)x0.0
+.@texttt t
+.@texttt l
+.@texttt a
+.etc.
+
+
+Overfull \hbox (13.62822pt too wide) in paragraph at lines 209--209
+ []@texttt tla get mwolson@member.fsf.org--2004/emacs-wiki--main--1.0 emacs-wik
+i[] |
+
+@hbox(7.60416+2.43333)x433.62
+.@glue(@leftskip) 50.58876
+.@hbox(0.0+0.0)x0.0
+.@texttt t
+.@texttt l
+.@texttt a
+.etc.
+
+[3]
+Overfull \hbox (71.43939pt too wide) in paragraph at lines 243--244
+ []@textrm Latest de-vel-op-ment snap-shot: @texttt http://www.mwolson.org/stat
+ic/dist/emacs-wiki-latest.tar.gz[] |
+
+@hbox(7.60416+2.43333)x433.62, glue set - 1.0
+.@glue(@leftskip) 21.68121
+.@hbox(4.86667+0.0)x0.0, glue set - 12.70244fil
+..@glue 0.0 plus 1.0fil minus 1.0fil
+..@mathon
+..@textsy ^^O
+..@mathoff
+..@kern 7.22743
+.@textrm L
+.@textrm a
+.@textrm t
+.etc.
+
+Chapter 4 [4] Chapter 5 [5] Chapter 6 [6] Chapter 7 [7] [8] [9] [10] [11]
+[12] Chapter 8 [13] [14] Chapter 9 [15] Chapter 10 [16] Chapter 11 [17]
+Chapter 12 [18] [19] Chapter 13 [20]
+Underfull \hbox (badness 2573) in paragraph at lines 1172--1174
+[]@textrm You can also con-tact the main-tainer of Emac-sWiki-Mode, Michael Ol-
+son, at
+
+@hbox(7.60416+2.12917)x433.62, glue set 2.95372
+.@hbox(0.0+0.0)x15.0
+.@textrm Y
+.@kern-0.91252
+.@textrm o
+.@textrm u
+.etc.
+
+Chapter 14 [21] Appendix A [22] [23] [24] [25] [26] [27] Appendix B [28]
+[29] [30] [31] [32] [33] [34] Appendix C (Index) [35] [36] ) 
+Here is how much of TeX's memory you used:
+ 1527 strings out of 97980
+ 17281 string characters out of 1221040
+ 35808 words of memory out of 1000000
+ 2372 multiletter control sequences out of 10000+50000
+ 32127 words of font info for 112 fonts, out of 500000 for 2000
+ 51 hyphenation exceptions out of 1000
+ 13i,6n,12p,237b,423s stack positions out of 1500i,500n,5000p,200000b,5000s
+
+Output written on emacs-wiki.dvi (41 pages, 121800 bytes).

@@ -1,0 +1,58 @@
+#!/bin/sh
+# 
+#  corny shell script to run the current build of StudioPaint
+#  under dbx.
+
+# probably want to set this to /usr/redback/usr/StudioPaint/src on 
+# machines lacking the symbolic link to redback.
+# and/or /usr/StudioPaint/src on machines that do.
+#
+
+args=$*
+
+if test -z "$SPDIR"
+then
+        sp_dir=/nfs/redback/usr/StudioPaint/src
+        echo $0: get stuff from  $sp_dir
+else
+        sp_dir=$SPDIR
+        echo $0: get stuff from  $sp_dir because you set SPDIR environment variable
+fi
+
+
+if test -z "$CPU"
+then
+	echo $0: you should have the CPU variable set. 1>&2
+	exit 1
+fi
+
+sp_bin=$sp_dir/install/bin/main/$CPU.debug/a.out
+
+if test ! -f $sp_bin
+then
+	echo $0: $sp_bin does not exist right now. Presumably it failed to build 2>&1
+	exit 2
+fi
+
+ARGS="-CursorBitmapDir $sp_dir/install/cursors 	\
+		-BitmapDir $sp_dir/install/bitmaps		\
+		-TiffDir $sp_dir/install/pix			\
+		-Directory $sp_dir/install/text $args"
+
+
+dbxinit=/usr/tmp/dbxinit$$
+
+cat > $dbxinit <<!
+stop in main
+!
+
+#  dbx argument
+#  -f fastpath -- just read function symbols from symbol table. use readsyms cmd
+#  -c file what dbxinit file to use.
+#  -r run right away with the symbols from the command line.
+# 
+
+env XAPPLRESDIR=$sp_dir/install/app-defaults \
+	ALIAS_SP_ALT_EN=/usr/adm/endir/alias3.3LG/en \
+	dbx -f  -c $dbxinit -r $sp_bin $* $ARGS 
+

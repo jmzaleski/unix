@@ -1,0 +1,4 @@
+! Set the left Apple key act as an alt key.
+keycode 115 = Alt_L Meta_L
+add mod1 = Alt_L Meta_L
+

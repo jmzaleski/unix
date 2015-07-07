@@ -1,0 +1,350 @@
+# Local variables:
+# eval: (add-hook 'write-file-hooks 'time-stamp)
+# time-stamp-start: "scriptversion="
+# time-stamp-format: "%:y-%02m-%02d.%02H"
+# time-stamp-end: "$"
+# End:
+
+# eval: (text-mode)
+
+boot off install disk, repartition drive into two partitins one HFS and the second UFS
+-make doc small, turn off mag, max out keyrepeat speed
+-install OSX fresh on HFS partition
+	-DON't let stupid thing put a blank in ufs partition name as this will cause absolute 
+	path of files in ufs partition to contain a blank. This will screw up old fashioned tools.
+	-use diskutil rename to fix if too late.
+	-ufs0, osxhfs
+-install XCode 1.5 (from connect.apple.com. NOT from 1.0 which lacks crt0.o))
+	-fink home page reckons gcc herein is busted, so apply
+	-november2004GCCUpdater from connect
+-scp newunix.sh from an up-to-date ~/dots directory. 
+-execute newunix.sh
+	-ln -s dots/Emacs .
+	-fix up .ssh links (using scp creates .ssh which scares off newunix.sh)
+	-cvsz co my-gmacs
+	-cvsz co bin
+-install X11 from apple website
+-rsync -avuzb m0:Library  -
+	-note: this seems to make Mail, Safari, calendar and addressbook just work.
+-install Fink from sourceforge
+-copy FINKcommander into /apps
+-install xemacs tetex psutils ispell gv ghostscript
+-fiddle tetex to search for local files. (See install advice on home page of ctan.org.)
+-fink install netpbm10
+	-reliable only after xcode 1.5 installed and patched.
+gzip -dc /sw/src/netpbm-10.12.tgz | /sw/bin/tar -xf -  --no-same-owner --no-same-permissions 
+sed 's|@PREFIX@|/sw|g' </sw/fink/dists/stable/main/finkinfo/graphics/netpbm10.patch | patch -p1
+patching file Makefile.config.fink
+cat Makefile.config.in Makefile.config.fink >Makefile.config
+make -j1
+GNUmakefile:60: /Volumes/Macintosh: No such file or directory
+-install msoffice from cdrom
+-install photoshop from cdrom
+-install illustrator from cdrom
+	-update both from adobe site.
+-
+-fake out iTunes by linking ~/Music/iTunes/'iTunes Music' to /Volumes/whatever/mymusic
+	-trick seemed to be to blow away the uplevel file that iTunes 4 created when it was upgraded.
+-download gnupg from gnupg.org. configure, make, sudo make install
+-rsync -avuzb 192.168.0.4:.gnupg .
+-rsync -avuzb a bunch of dirs
+	-doc,p,mymusic,img,gpg
+-fake out iPhoto by making ~/Pictures a symlink to unix img directory.
+
+-cvs co darwinports
+
+-install PalmDesk top. 
+	-can't unstuff installer in a ufs dir. copy to /tmp unpacks there okay.
+	-seems that the cradle must be unplugged
+	-get isync palmos conduit and install it (apple/isync)
+	-instructions in iSync help pages
+
+-keygen for sshd
+	-run ssh-keygen -t rsa -N "" --> /etc/ssh_host_rsa_key
+    -dsa
+     -rsa1 (I guessed that this goes to ssh_host_key because it wanted to write
+            to identity by default, the old place)
+    -this is probably wrong. anyways, can't ssh in
+
+-set up istop modem access. (check access numbers)
+-get binutils from gnu.org, configure, install
+	-this was a pain. I couldn't see how to configure all the pieces at once so I had to
+     configure and make the bfd & opcodes dirs before the binutil dir would make
+    -carefull! installs duplicates of apple programs (ar) in /usr/bin. 
+
+-fonts. Get fondu (Fink) and run it to convert OSX .dfont fonts into TT fonts.
+ - fondu  /System/Library/Fonts/*.dfont # creates a bunch of .ttf files
+ -mkfontdir # to create a fonts.dir file
+ -xset +fp /Users/matz/Library/Fonts # to tell X to look for the new fonts
+
+
+-install gaim-ssl using fink. Need to go from source. recompile takes an hour!
+ a bit flaky. aborts a few times in only a few hours.
+
+-install ucontrol. Finally can use PC keyboard properly.
+
+-install adium. Wow, that's pretty. It even seems to work.
+ (Needs SOCKS4 proxy and ssh -D nnnn to run behind firewalls)
+
+-tweak latex to no longer assume A4 paper.
+ make letter default in /sw/share/texmf/dvips
+ as per advice in http://www.acm.org/sigs/pubs/proceed/sigfaq.htm#a1
+
+-make old pgp IDEA key work in gpg
+	get idea.c from http://www.gnupg.org/why-not-idea.html
+	then compile using: gcc -Wall -O2 -bundle -o idea idea.c
+    then edit gpg.conf to add:
+    load-extension ~/gpg/idea
+
+
+-add "location" for standalone net to connect to tp0. Totally
+disposable if causes trouble
+
+-add latex datetime package in /sw/share/texmf-local
+
+-install audioX as could not find Apple utility to do what it does
+
+-install RsyncX because it includes HFS filesystem support.
+ nevertheless, it appears to be a bit busted when used -a on symbolic links one one osx machine.
+ https://bugzilla.samba.org/show_bug.cgi?id=2871
+
+
+-hackery concerning epocrates install for Harriet.
+-freebie installer EpocratesMac wouldn't work complaining about perms.
+ chown -R matz /Libarary/ApplicationSupport/Palm HotSync
+ chmod -R g+w
+ then it runs and fetches Epocrates as it should. and hotsyncs harriet's pilot
+
+-lgrind (for ben) download from CTAN/http://texcatalogue.sarovar.org/entries/lgrind.html
+ build (comment out #include malloc.h)
+ ln -s /sw/share/texmf-local /usr/share/texmf
+ ln -s /sw/share/man /usr	
+ make install
+ **is this sensible? when I rebuild /sw I will wreck this stuff.
+ **instead, Should I have put /sw/share/texmf-local somewhere in my directories?
+ 
+-Firefox 1.0.3 and hack for emacs key bindings
+ edit /Applications/Firefox.app/res/builtin/platformHTMLBindings.xml as suggested in 
+ http://kb.mozillazine.org/Emacs_Keybindings_(Firefox)
+ 
+-export bookmarks from safari using "safari bookmark exporter" tool that blasted them 
+straight into firefox.
+
+-fiddled with Palm stuff attempting to install adobe pdf reading prc. busted sync
+
+-lacie firewire drive
+ use Disk Utility to create a 27.76 G mac os extended (journaled) partition
+ Note that the partition function does NOT format a filesystem
+ Select the partition (volume) and erase to create a partition.
+ This failed for me a few times with  "could not unmount volume". then worked??
+
+ +MUST clear "ignore ownership on this volume" or files will end up owned by matz
+
+ +can use silverlining to make a bootable copy.
+
+ +install newer rsync 2.6.3 which seems to have chmod problem fixed
+ +MUST bless the destination at least after first rsync, perhaps after each.
+   this seems to copy boot loaders and such. without this open firmware will not
+   display the destination partition as a bootable filesystem.
+
+  bless -verbose -folder /Volumes/m1_osxhfs_back/System/Library/CoreServices  -bootinfo /usr/standalone/ppc/bootx.bootinfo
+
+ +write ~matz/bin/backup_m1_osxhfs.sh to use rsyncx to backup the root fs.
+
+-when powering on now hold alt/option key (NOT command). 
+-open firmware displays an icon for each partition containing a bootable filesys
+-if no icon for m1_ofshfs_back then click refresh curved arrow button.
+-click m1_ofshfs_back icon (it indents) and click button with right arrow.
+
+This is what mount says normally, when booted off the internal:
+
+m1.local $ mount
+/dev/disk0s3 on / (local, journaled) ********* disk0 ************
+devfs on /dev (local)
+fdesc on /dev (union)
+<volfs> on /.vol
+/dev/disk0s5 on /Volumes/ufs0 (asynchronous, local)
+automount -nsl [307] on /Network (automounted)
+automount -fstab [321] on /automount/Servers (automounted)
+automount -static [321] on /automount/static (automounted)
+/dev/disk1s2 on /Volumes/m1_osxhfs_back (local, nodev, nosuid, journaled) ******
+/dev/disk1s3 on /Volumes/LACIE_2 (local, nodev, nosuid)
+
+This is what mount says when booted off the external:
+
+m1.local $ mount
+/dev/disk1s2 on / (local, journaled)  ********* disk1 *******
+devfs on /dev (local)
+fdesc on /dev (union)
+<volfs> on /.vol
+/dev/disk0s3 on /Volumes/osxhfs (local, journaled) ************* internal
+/dev/disk0s5 on /Volumes/ufs0 (asynchronous, local)
+automount -nsl [293] on /Network (automounted)
+automount -fstab [306] on /automount/Servers (automounted)
+automount -static [306] on /automount/static (automounted)
+/dev/disk1s3 on /Volumes/LACIE_2 (local, nodev, nosuid)
+
+
+Let's hope we never need this!
+
+-build darwinports aspell in /opt/local/bin. Then realized that all that was msising was english dictionary. So installed that from fink. now both versions work.
+
+-firefox hack for disabling forward/back on scrollwheel.
+:about:config
+mousewheel.horizscroll.withnokey.action to 0
+mousewheel.horizscroll.withnokey.numlines to 1
+this is probably overkill. seems to stop horizontal scrolling within a wide page too.
+
+-a bunch of fink stuff attempting to build firefox. See http://developer.mozilla.org/en/docs/Mac_OS_X_Build_Prerequisites
+ note firefox -profileManager to set default profile
+
+-chud 4.2.2 upgrade
+  -still busted after all these years
+
+-install python 2.3.3 and documentation
+ -python IDE
+
+-install eclipse 3.1.1 skd
+ -pydev plug in. 
+
+-hack around learning how info works.
+  -basic idea is that each dir in INFOPATH must contain a file dir
+   that lists the modules (mumble) in the dir.
+   for i in *.info ; do /usr/bin/install-info $i dir; done
+
+-ssh-add under osx login
+from http://www.macosxhints.com/article.php?story=20031217081557968&query=passwordless+ssh
+followed part of these instructions to make login hooks, etc.
+
+[ IMPORTANT - this script assumes user home directories are still in the default location of /Users/. If you've moved them, either adjust this script, or figure out how to make it more complicated by looking up the user home directories dynamically via something like getpwnam() ... ]
+# Make sure the file and directory have proper ownership and permissions:
+
+# chmod -R 755 /Library/Hooks
+# chown -R root:wheel /Library/Hooks
+
+# Create a link to this file, called LogoutHook:
+
+# ln /Library/Hooks/LoginHook /Library/Hooks/LogoutHook
+
+# Enable the login hooks via the defaults command:
+
+# defaults write com.apple.loginwindow LoginHook "/Library/Hooks/LoginHook"
+# defaults write com.apple.loginwindow LogoutHook "/Library/Hooks/LogoutHook"
+
+-build x11-ssh-askpass-1.2.4.1
+ it installs in wrong place. make link to /usr/libexec
+
+-ssh technique was in Jonathan's .xinitrc all along. use ssh-agent -a to create a fifo in .ssh.
+-Mac trick is to create a new file ~/.MacOSX/environment.plist
+
+<?xml version="1.0" encodings="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+        <key>SSH_AUTH_SOCK</key>
+        <string>/Users/matz/.ssh/ssh-agent.socket</string>
+</dict>
+</plist>
+
+Now all shells can assume that  SSH_AUTH_SOCK will be set
+
+-disable annoying f9,f10,f11 behaviour in system preferences/expose
+
+-voodoo pad command key to menu item. use system pref->keyboard & mouse->keyboard shortcuts to add keybinding for menu item.
+-this seems to be a gui in front of the defaults mechanism.
+
+-I cannot figure out how to make Terminal use the command key as the meta.
+
+-trip across how to make cvs-idiff diff against HEAD rather than BASE
+pcl-cvs.el:
+;;matz
+(cvs-flags-define cvs-idiff-version
+		  (list "HEAD" cvs-vendor-branch cvs-vendor-branch "HEAD" "HEAD")
+		  "version: " cvs-qtypedesc-tag)
+
+;(cvs-flags-define cvs-idiff-version
+;		  (list "BASE" cvs-vendor-branch cvs-vendor-branch "BASE" "BASE")
+;		  "version: " cvs-qtypedesc-tag)
+
+
+Look into diskutil failure attempting to format an existing partition as hfs+
+-newfs_hfs -v vollab /dev/rdisk1s4
+-mount_hfs /dev/disks4 /tmp/mnt
+-there are layers of tools here not cooperating.
+-diskutil fails saying  "could not unmount volume". then worked??
+-logging in as root, rebooting, other superstitious activity did not help.
+-found command line utilities newfs_hfs and mount_hfs that seemed to work fine.
+-but diskutil then did not realize this had been done and still shows the partition as a dos file system.
+-and, next time I boot, the device has moved from /dev/disk1s4 to /dev/disk2s4. 
+-interesting, attempting to erase the filesys again in diskutil doesn't hurt the file system. 
+
+-add symlink ln -s /Users /home
+ -to help scripts that assume the linux layout.
+
+-install Retrospect upgrade. Browse backup still busted.
+-install TclTkAqua. Now Tkinter works in pythonw.
+
+-install MacTheRipper to copy Sanjit Ray disks
+ For our simple backups are better off using Disk Utility
+
+-install Microsoft Remote Access Client
+	http://www.microsoft.com/mac/otherproducts/otherproducts.aspx?pid=remotedesktopclient
+
+************************************************************************
+install tiger 104
+***********************************************************************
+
+-Mail.app busted !!
+-no, it was GPGMail. http://www.sente.ch/pub/software/GPGMail/GPGMail-10.4.dmg
+
+-mystery process mds using up tonnes of cpu.
+ -spotlight indexer in confused state. See http://www.macintouch.com/tiger12.html
+looks like cvs, build using xemacs and jamv build work.
+
+-install Xcode 2.0 from distro (now gdb 6.1, gcc 4.0.0)
+-port jam to gcc 4.0.0 (see blog)
+
+-download xcode 2.2.1 and 
+    - gcc version 4.0.1 (Apple Computer, Inc. build 5250)
+    - GNU gdb 6.1-20040303 (Apple version gdb-437) (Sun Dec 25 08:31:29 GMT 2005)
+
+-upgrade CHUD again
+-blow away old copies of Voodoo 
+-install Fetch
+
+-lyx won't render because various tools are missing. Smells like new lyx with revision history needs updated tetex tools.
+-install new fink 0.8.1
+-move aside old fink (and all the goodies therein) to /Volumes/ufs0/sw.0.7.1
+-binary install tetex. (It says 200M download will unpack to 1/2 G or so)
+
+ohoh, not looking very promising..
+etex:                 unreadable symlink `etex' (No such file or directory)
+lambda:               unreadable symlink `lambda' (No such file or directory)
+lamed:                unreadable symlink `lamed' (No such file or directory)
+latex:                unreadable symlink `latex' (No such file or directory)
+pdflatex:             unreadable symlink `pdflatex' (No such file or directory)
+pdftex:               unreadable symlink `pdftex' (No such file or directory)
+
+whereas the old fink install had:
+m1.local $ file etex lambda lamed latex pdflatex pdftex
+etex:     Mach-O executable ppc
+lambda:   symbolic link to `omega'
+lamed:    cannot open (lamed)
+latex:    symbolic link to `tex'
+pdflatex: symbolic link to `pdftex'
+pdftex:   Mach-O executable ppc
+
+first, i tried to link latex to tex. This failed with assertion informing me that some intermediate file had been created with pdfetex
+
+-cd (the new) /sw/bin && sudo ln -s pdfetex latex
+-this builds cgo2005 paper (dvips to postscript and dvipdf to pdf)
+-fink install gv (ghostscript already there)
+
+feel brave, so link ln -s pdfetex pdflatex  also
+now lyx 1.4.1 renders stuff to ps and pdf
+
+-fink install xemacs, sumo
+-fink install netpbm10 (version 10 of net pbm) (seems to be lots fewer tools than previously)
+-fink install bzip
+-fink install ispell
+-lyx ignores request to use xemacs key bindings

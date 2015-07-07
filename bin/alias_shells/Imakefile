@@ -1,0 +1,12 @@
+SUBDIRS = \
+	layer		\
+	command 	\
+	managers 	\
+	tools		\
+	common		\
+	ui		\
+	init		\
+	kit		\
+	viewer
+
+MakeInSubdirs($(SUBDIRS))

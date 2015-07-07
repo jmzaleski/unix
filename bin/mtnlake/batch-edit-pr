@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#edit a given pr number..
+
+PRE=/usr/local/libexec/gnats/pr-edit
+
+for pr in $*
+do
+	echo change responsible to rosco for $pr
+	$PRE --lock=matz $pr
+	query-pr -F $pr | sed s/matz,drew/rosco/ | $PRE 
+	$PRE --unlock
+	query-pr -F $pr | grep Responsible
+
+done

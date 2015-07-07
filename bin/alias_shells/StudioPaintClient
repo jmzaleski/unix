@@ -1,0 +1,25 @@
+#!/bin/sh
+
+tput clear > /dev/console
+
+echo $* > /dev/console
+
+
+echo $* >> /tmp/log
+printenv >> /tmp/log
+
+repo=/usr/StudioPaint
+CPU=SGI5
+
+echo env \
+	LD_LIBRARY_PATH=$repo/src/dso/$CPU.debug:$repo/install/filefmt \
+	IL_FILE_FORMAT_PATH=/usr/lib/ImageVision/filefmt:$repo/install/filefmt \
+    /usr/StudioPaint/src/install/bin/StudioPaintClient/$CPU.debug/a.out $* \
+> /dev/console
+
+
+env \
+	LD_LIBRARY_PATH=$repo/src/dso/$CPU.debug:$repo/install/filefmt \
+	IL_FILE_FORMAT_PATH=/usr/lib/ImageVision/filefmt:$repo/install/filefmt \
+    /usr/StudioPaint/src/install/bin/StudioPaintClient/$CPU.debug/a.out $*
+

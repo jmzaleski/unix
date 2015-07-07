@@ -1,0 +1,54 @@
+#!/bin/ksh
+
+#file=history | awk '/spget/ {if ($2=="spget") print $3}'
+
+#file2=history | sed 's/^[0-9 ]*       //' | egrep ^spget
+
+#file=`fc -r | sed 's/^[0-9 ]*  //' | grep ^spget`
+
+#history | sort -r -n | sed 's/^[0-9 ]*  //' | egrep ^spget\|^lget | read command_line
+
+fc -l -r
+
+fc  -l lget fc | read fc_output
+
+if test -z "$fc_output"
+then
+	echo it was not lget so try spget..
+	fc  -l spget fc | read fc_output
+fi
+
+if test -z "$fc_output"
+then
+	echo no lget or spget in recent enough history, sorry.
+	exit 42
+fi
+
+set $fc_output
+shift				#throw away the number of the command
+
+get_cmd=$1
+shift
+args=$*
+
+
+case $get_cmd in
+lget)
+	cmd=lput
+	;;
+spget)
+	cmd=spput
+	;;
+esac
+
+
+echo echo execute: $cmd $args ??
+read junk
+
+case $junk in
+	[yY]*)
+		$cmd $args
+		;;
+	*)
+		exit 42
+esac

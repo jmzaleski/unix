@@ -1,0 +1,142 @@
+#!/bin/ksh
+
+#this shell script brings an Imakefile up-to-date
+#it checks whether each .c file in the current working directory
+#is in the Imakefile and if not adds it.
+
+mn=MakeObjectFromSrc
+
+for i in $*
+do
+	case $i in
+	-v*)
+		verbose=true
+		;;
+	-d*)
+		debug=true
+		;;
+	*)
+		;;
+	esac
+done
+
+src=''
+for i in *.c
+do
+	src="$src "$i
+done
+
+I=Imakefile
+
+if test  -z "$src"
+then
+	echo $0: no .c file, quitting..
+	exit 0
+fi
+
+for i in $src
+do
+	file=`basename $i .c`
+	if grep $mn\($file\) $I > /dev/null
+	then
+		if test ! -z "$debug"; then echo file $i okay; fi
+    else
+		if test ! -z "$debug"
+		then
+			echo file $i does not appear in $I as $mn\($file\)
+		fi
+		missing=$missing" "$file
+	fi
+done
+
+if test -z "$missing"
+then
+	#if there are no files missing then just quit.
+	echo $I uptodate with regards to .c files.
+	exit 0
+fi
+
+#stash the missing Imakefile text into a temp file.
+TMP=/tmp/fixImakefile$$
+
+>$TMP
+for i in $missing
+do
+	echo $mn\($i\) >> $TMP
+done
+
+#worry the user with useless drivel on sdout..
+
+if test ! -z "$verbose"
+then
+	echo '-------------------------------'
+	echo $0: will add $missing to $I:
+	cat $TMP
+	echo '-------------------------------'
+	echo you want to do this? [yn]
+	read junk
+	case $junk in
+	[nN]*)
+		echo okay, you do not want to do anthing, quitting
+		rm -rf $TMP
+		exit 0
+		;;
+	*)
+		;;
+	esac
+fi
+
+if test ! -z "$debug"
+then
+	exit 0
+fi
+
+#this here is a "history script" that drives ed to
+#modify the Imakefile..
+#look for the first macro and then read in the stuff from the
+#temp file following.
+
+p=$PWD
+cd /tmp
+
+    the_dir=$p
+    the_library=`basename $the_dir`
+    the_dir=`dirname $the_dir`
+    the_subproj=`basename $the_dir`
+    the_project=`dirname $the_dir`
+    echo $cmd $cmd_opts $the_file
+
+if lget -p$the_project -s$the_subproj -l$the_library $I
+then
+	echo get $I okay
+fi
+
+
+ed $I <<!
+1
+/$mn/
+.r $TMP
+w
+q
+!
+
+echo --- diff ---
+diff -c $I $p/$I
+echo ------------
+echo diffs look okay [yn]\?
+read junk
+case $junk in
+[nN]*)
+	lcncl -p$the_project -s$the_subproj -l$the_library $I
+	;;
+*)
+	echo added $missing | \
+	lput -p$the_project -s$the_subproj -l$the_library $I 
+	;;
+esac
+
+cd $p
+
+#nuke the temp file.
+rm -f $TMP
+

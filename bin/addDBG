@@ -1,0 +1,60 @@
+#!/usr/bin/perl
+
+if ($#ARGV != 2 ) {		# Check arg count
+    print(STDERR "Usage: $0 file variable true|false\n");
+    exit 2 ;
+}
+
+$variable= $ARGV[1];
+$value= $ARGV[2];
+$fileToEdit=$ARGV[0];
+
+print "edit $fileToEdit $variable $value\n";
+
+#futz around the arg list so <> edits the file we want it to.
+@ARGV = ( $fileToEdit );
+
+open(ARGV,"<$ARGV");
+
+#causes files to be edited in place. INPLACE_EDIT
+#this will cause the old version of the file to be saved to .bak
+$^I = ".bak";
+
+print "find line declaring \"private final static boolean $variable\" and set it to \"$value\"\n";
+
+$line="";
+$saved_line=$line;
+$saved_line_after=$line;
+$flag = 0;
+
+#yeech,  would be a lot nicer if keywords worked in any order.
+
+while(<>)
+{
+	$line=$_;
+  	if ( /(private\W+final\W+static\W+boolean)\W+(\w+)\W*=\W*(true|false)/ ){
+		$keywords = $1;
+		$var = $2;
+		$val = $3;
+		if ( $var =~ /$variable/ ){
+			$new_line= "$keywords $var = $value; //addDBG.pl was here\n";
+			print $new_line;
+			$saved_line=$line;
+			$flag++;
+		}else{
+			print $line;
+		}
+		
+	}else {
+		print $_
+	}
+}
+
+if ( $flag > 0 ){
+	print "found $saved_line";
+	print "and changed it to:\n";
+	print "$new_line";
+}else{
+	die "warning, did not find private final static boolean decl\n";
+}
+

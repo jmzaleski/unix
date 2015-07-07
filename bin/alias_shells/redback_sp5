@@ -1,0 +1,64 @@
+#!/bin/sh
+
+#
+# reset the root of the install tree to the src repo 
+# ie. to run the "installed" version we not have appended the "src" dir.
+#
+
+sp_dir=/nfs/redback/usr/StudioPaint/src
+
+#
+# take the binary where it has been built in the repo.
+#
+
+if test  "$CPU" != SGI5.debug
+then
+    CPU=SGI5.debug
+    export CPU
+    xconfirm -t "$0: you should have the CPU environment variable set." \
+        -t "assuming CPU is meant to be $CPU" -b continue 1>&2
+fi
+
+sp_bin=./$CPU/a.out
+
+if test ! -f $sp_bin
+then
+	xconfirm -t "$sp_bin does not exist right now." \
+        -t "Presumably build has failed" -b exit 2>&1
+	exit 2
+fi
+
+
+
+
+sp_dso=$sp_dir/dso/$CPU
+
+if test ! -d $sp_dso
+then
+        xconfirm -t "$0: cannot find directory $sp_dso" \
+        -t "which must contain the DSO (shared objects)" \
+        -t "StudioPaint requires to run on IRIX5" \
+        -b "exit"
+        exit 2
+fi
+
+ARGS="-CursorBitmapDir $sp_dir/install/cursors 	\
+		-BitmapDir $sp_dir/install/bitmaps		\
+		-TiffDir $sp_dir/install/pix			\
+		-Directory $sp_dir/install/text" $args
+
+#
+# run the usual executable but with a bunch of command line args
+# that indicate where to get cursors etc from.
+# The stuff that is most likely to be different between the repo and the
+# installed build are the resource files indicated by the -Directory flag
+# which must correspond to the code in manager classes.
+#
+
+
+env XAPPLRESDIR=$sp_dir/install/app-defaults \
+	ALIAS_SP_ALT_EN=/usr/adm/endir/alias3.3LG/en \
+	LD_LIBRARY_PATH=./$CPU:$sp_dso \
+	IL_FILE_FORMAT_PATH=/usr/lib/ImageVision/filefmt:$sp_dso \
+	$sp_bin $* $ARGS 
+

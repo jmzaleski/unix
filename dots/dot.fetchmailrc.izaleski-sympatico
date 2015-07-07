@@ -1,0 +1,2 @@
+poll pop.gmail.com with proto POP3 and options no dns
+user 'irma.zaleski@zaleski.ca' there with password '416-0725' is 'izaleski' here  options ssl

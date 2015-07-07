@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+CPU=SGI
+
+#development build is the one programmers are linking against 
+#currently.
+
+sp_idir=/nfs/redback/usr/StudioPaint/install
+
+if test ! -d $sp_idir
+then
+        echo '** no development cut installed in ' $sp_idir ' currently **'
+        exit 2
+fi
+
+ARGS="-CursorBitmapDir $sp_idir/cursors 	\
+		-BitmapDir $sp_idir/bitmaps	\
+		-TiffDir $sp_idir/pix		\
+		-Directory $sp_idir/text" $args
+
+#
+# run the usual script but with a bunch of environment flags changed
+# and add arguments that indicate where to get cursors etc from.
+# The stuff that is most likely to be different between the repo and the
+# installed build are the resource files indicated by the -Directory flag
+# which must correspond to the code in manager classes.
+#
+
+set -x
+
+env SP_DIR=$sp_idir \
+	ALIAS_ALT_EN=/usr/adm/endir/alias3.2.2LE/en \
+	XAPPLRESDIR=$HOME	\
+	$CPU.debug/a.out $* $ARGS 
+

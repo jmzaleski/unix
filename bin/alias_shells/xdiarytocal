@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#take a xdiary format calendar and turn into a calendar(1) format one.
+#xdiary puts " around its reminders.
+#Also, reduce noise by filtering out lines like ^9:00$ which come from
+#xdiary-template.
+
+XD=$HOME/.xdiary
+
+cat $XD | nawk '
+    /^"[0-9]*:[0-9]*$/ { next;}	
+    /^[0-9]*:[0-9]*$/ { next;}
+    /^[0-9]*\/[0-9]*\/199[0-9]$/ { printf("\n%s ", $0);   next;}
+	/^".*"$/ { printf("%s", substr($0,2,length($0)-2));	next}
+    /^".*/   { printf(" %s", substr($0,2,length($0)-1));next}
+    /"$/     { printf("%s ", substr($0,1,length($0)-1));next}
+    /^$/	 { next;   }
+    /^.*$/	 { printf("%s ",$0); next }   
+'

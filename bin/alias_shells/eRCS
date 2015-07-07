@@ -1,0 +1,41 @@
+#!/bin/sh
+
+if test -z "$1"
+then 
+	args=Imakefile
+	echo $0: assuming you want to do Imakefile..
+else
+	args=$*
+fi
+
+for f in $args
+do
+	if test ! -f $f
+	then
+		echo $0: cannot find $f
+		exit 42
+	fi
+done
+
+for f in $args
+do
+	set -x
+	case $f in
+	/*)
+		absf=$f
+		;;
+	*)
+		absf=$PWD/$f
+		;;
+	esac
+	p=$PWD
+	mkdir /tmp/$$
+	cd /tmp/$$
+	lget.sh $absf
+	umacs `basename $absf`
+	lput.sh $absf
+	cd $p
+	rmdir /tmp/$$
+	set -
+done
+

@@ -1,0 +1,102 @@
+#!/bin/sh
+
+
+# this is a pretty crippled version hacked from lgot
+# which was the only script I could find that does the -l -s -p bit mz
+
+# Original script by Rudy Wortel.
+# Updated and improved by Paul Tokarchuk. (added -u & -a and changable
+# user - was hardcoded as "rudy" :-)
+#
+
+allusers=0
+project=${PROJECT:-none}
+subproj=${SUBPROJ:-${SUBPROJECT-none}}
+library=${LIBRARY:-none}
+user=$USER
+error=0
+userlibrary=0
+usersubproj=0
+rudysoutput=0
+title=0
+
+set -- `lgetopt ahl:p:rs:u: $*`
+if [ $? -ne 0 ]; then exit; fi
+for i in $*
+do
+	case $i in
+		-a)	allusers=1;
+			shift ;;
+		-p)	project=$2;
+			shift 2;;
+		-r) rudysoutput=1
+			shift ;;
+		-s)	subproj=$2;
+			usersubproj=1;
+			shift 2;;
+		-l)	library=$2;
+			userlibrary=1;
+			shift 2;;
+		-u)	user=$2;
+			shift 2;;
+		-h)	echo "Print out list of locked files"
+			echo "Usage: lgot [-pproject] [-ssubroject] [-llibrary] [-uuser] [-a] [-h] [-r]"
+			echo "       -p project directory, overrides \$PROJECT environment variable"
+			echo "       -s subproject directory"
+			echo "       -l library directory"
+			echo "       -h display this help"
+			exit;;
+	esac
+done
+
+shift
+file=$*
+
+if [ $project = "none" ]; then
+	echo "Your \$PROJECT environment variable is not set."
+	error=1
+fi
+
+if [ $subproj = "none" ]; then
+	echo "Your \$SUBPROJ environment variable is not set."
+	exit
+
+elif [ ! -d $project/$subproj/$library ]; then
+	echo "$project/$subproj/$library does not exist."
+	error=1
+fi
+
+if [ $error -eq 1 ]; then
+	exit
+fi
+
+if test ! -d "$project/$subproj/$library"
+then
+		echo $0: PROJECT, SUBPROJECT, LIBRARY appear buggered because
+		echo  "$project/$subproj/$library" does not exist
+		exit 1
+fi
+
+error=0
+for i in $file
+do
+		if test ! -f $i
+		then
+				echo $0: $i does not exist
+				error=1
+		fi
+done
+if test $error = 1
+then
+		exit 42
+fi
+
+for i in $file
+do
+		xdiff -geometry 900x400+0+0 -w $i "$project/$subproj/$library"/$i
+done
+
+
+
+
+

@@ -1,0 +1,56 @@
+#!/bin/sh
+
+#kludegy tool to record the version number of every RCS file in the repo.
+
+#arg1 is a list of directories to record. If it doesn't exist then
+#we try and make one ourselves.
+
+TMP=''
+
+if test "$#" -eq 0
+then
+		TMP=/tmp/list.dir.$$
+		find /usr/StudioPaint -type d -print | grep -v RCS | grep -v SGI > $TMP
+else
+		if test -f "$1"
+		then
+				TMP=$1
+		else
+				echo $0: cannot open $1 1>&2
+				exit 42
+		fi
+fi
+
+
+if test -z "$TMP"
+then
+		echo $0: something wrong. No dirname 1>&2
+		exit 43
+fi
+
+
+for i in `cat $TMP`
+do
+		if test -d $i/RCS
+		then
+				echo "---rlog on files in $i----" 1>&2
+				p=$PWD
+				cd $i
+				for f in *
+				do
+						if test -f ./RCS/$f,v
+						then
+								#rlog $f | sed 20q
+								rev=`rlog $f | sed -n 's/^revision //p' | sed 1q`
+								echo -r$rev $i/$f
+
+						else
+								echo skip $f because no RCS file 1>&2
+						fi
+				done
+				cd $p
+		else
+				echo skip $i because no RCS directory 1>&2
+		fi
+done
+		

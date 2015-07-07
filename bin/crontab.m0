@@ -1,0 +1,10 @@
+# (Cron version -- $Id: crontab.m0,v 1.1.1.1 2003-09-04 12:53:53 matz Exp $)
+#check in any changed files in quadrature project.
+#
+#MIN HOUR DAY MONTH DAY_OF_WEEK COMMAND
+#
+#
+1	    0    *   *     *      date > ~matz/crontlog.m0; echo hello at `date`.  m0 is awake.
+#42      4    *   *     *    ~matz/bin/overnightbackup.sh
+
+

@@ -1,0 +1,21 @@
+!osx xterm appears to want meta_L modifier to do the command line editing.
+!xemacs seems not to care whether it seems meta_l or alt_l.
+!so we bind them together so that can preserve sanity when working on 
+!a PC keyboards that swaps the alt and meta keys relative to apple keyboards.
+!I bet there is a way of swapping them deeper down in aqua.
+
+
+clear mod1
+clear mod2
+
+!try and trick apps into using both keys.
+!send same keycode from alt and meta
+!works for xemacs -- lyx always seems to use same keycode.
+
+keycode 63 = Meta_L
+keycode 66 = Meta_L
+
+!emacs meta and lyx command keys look for modifier bits.
+add mod1 = Meta_L
+
+

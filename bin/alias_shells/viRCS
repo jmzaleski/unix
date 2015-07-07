@@ -1,0 +1,40 @@
+#!/bin/sh
+
+if test -z "$1"
+then 
+	args=Imakefile
+	echo $0: assuming you want to do Imakefile..
+else
+	args=$*
+fi
+
+for f in $args
+do
+	if test ! -f $f
+	then
+		echo $0: cannot find $f
+		exit 42
+	fi
+done
+
+if test ! -d RCS
+then
+	echo are you in the right place\? No RCS dir
+	exit 42
+fi
+
+for f in $args
+do
+	set -x
+	lreal chgrp paint RCS 
+	lreal chmod g+w RCS
+	co -l $f
+	vi $f
+	ci $f
+	co $f
+	chgrp paint $f
+	chmod g+w   $f
+	chown software $f
+	set -
+done
+

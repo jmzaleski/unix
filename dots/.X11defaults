@@ -1,0 +1,121 @@
+!matz hack of jonathan's hack of ben's hack of..
+
+!make gv scroll like acrobat does, namely you "grab" the text and drag it.
+!as opposed to point to where the text you want to see is..
+
+gv*reverseScrolling: True
+
+! Wheel acts like [shift]spacebar 
+! Ctrl+wheel acts like PgUp/PgDown 
+! Shift+wheel keeps you on the same page 
+! ~Button3 prevents accidental scrolls when pressing mb3. 
+
+!gv*translations: #augment \n\
+
+
+!gv*Ghostview.translations: #augment \n\
+!<Btn4Down>: GV_Page(up)\n
+
+
+!gv*Translations: #override \n\
+!~Button3 ~c s <Btn4Down>: GV_Page(up)\n\
+!~Button3 ~c s <Btn5Down>: GV_Page(down)\n\
+!~Button3 c ~s <Btn4Down>: GV_Page(page-1)\n\
+!~Button3 c ~s <Btn5Down>: GV_Page(page+1)\n\
+!~Button3 <Btn4Down>: GV_Page(up,left-bottom,!page-1,bottom-rightedge)\n\
+!~Button3 <Btn5Down>: GV_Page(down,right-top,!page+1,top-leftedge)\n 
+!
+
+!from koala.ilog.fr hacked by matz
+!####################### gv ####################### 
+! Wheel acts like [shift]spacebar 
+! Ctrl+wheel acts like PgUp/PgDown 
+! Shift+wheel keeps you on the same page 
+! ~Button3 prevents accidental scrolls when pressing mb3. 
+
+gv.Translations: #override \n\
+~Button4 ~c ~s <Btn4Down>: GV_Page(up,left-bottom,!page-1,bottom-rightedge)\n\
+~Button5 ~c ~s <Btn4Down>:GV_Page(down,right-top,!page+1,top-leftedge)\n
+
+
+
+!from koala.ilog.fr
+!####################### gv ####################### 
+! Wheel acts like [shift]spacebar 
+! Ctrl+wheel acts like PgUp/PgDown 
+! Shift+wheel keeps you on the same page 
+! ~Button3 prevents accidental scrolls when pressing mb3. 
+!GV*Ghostview.Translations: #override \n\
+!~Button3 ~c s : GV_Page(up)\n\
+!~Button3 ~c s : GV_Page(down)\n\
+!~Button3 c ~s : GV_Page(page-1)\n\
+!~Button3 c ~s : GV_Page(page+1)\n\
+!~Button3 : GV_Page(up,left-bottom,!page-1,bottom-rightedge)\n\
+!~Button3 : GV_Page(down,right-top,!page+1,top-leftedge)\n
+
+XTerm*VT100.Translations:  #override \
+        <Key>F11: allow-send-events(on) \n\
+        Meta <Key>P: scroll-back(1,line) \n\
+        Meta <Key>N: scroll-forw(1,line) \n\
+        Meta <Key>L: set-vt-font(6) \n\
+        Meta <Key>M: set-vt-font(d) \n\
+        Meta <Key>S: set-vt-font(2) \n\
+        <Key>Prior: scroll-back(1,halfpage) \n\
+        <Key>Next: scroll-forw(1,halfpage)
+
+xterm*font: -misc-fixed-bold-r-normal--15-*-75-75-c-90-iso8859-1
+
+!see ~/Emacs for emacs X resources..
+
+*XTerm*deleteIsDEL: True
+!black background doesn't work well on aqua which relies on shadows a fair bit.
+!XTerm*foreground: green
+!XTerm*background: black
+XTerm*foreground: black
+XTerm*background: white
+
+XTerm*borderWidth:      1
+XTerm*border: red
+XTerm*internalBorder:   2
+XTerm*jumpScroll:       true
+XTerm*reverseWrap:      true
+XTerm*saveLines:        2000
+XTerm*scrollBar:        true
+XTerm*scrollKey:        true
+XTerm*visualBell:       true
+XTerm*pointerShape:     left_ptr
+XTerm*fontMenu.Label:  VT Fonts
+XTerm*fontMenu*fontdefault*Label:       Default
+
+#ifndef XREMOTE
+XTerm*VT100*font:                       -misc-fixed-medium-r-normal--13-120-75-75-c-70-iso8859-1
+XTerm*VT100*boldFont:                   -misc-fixed-bold-r-normal--13-120-75-75-c-70-iso8859-1
+#else
+XTerm*VT100*font:                       fixed
+#endif
+
+XTerm*fontMenu*font1*Label:     Tiny
+XTerm*VT100*font1:              -misc-fixed-medium-r-normal--8-80-75-75-c-50-iso8859-1
+
+XTerm*fontMenu*font4*Label:     Large
+XTerm*VT100*font4:              gallant.r.19
+
+XTerm*fontMenu*font2*Label:     Small
+XTerm*VT100*font2:              -misc-fixed-medium-r-normal--10-100-75-75-c-60-iso8859-1
+
+!XTerm*fontMenu*font1*Label:     Tiny
+!XTerm*VT100*font1:              -schumacher-clean-medium-r-normal--8-80-75-75-c-50-iso8859-1
+!XTerm*fontMenu*font2*Label:     Small
+!XTerm*VT100*font2:              -schumacher-clean-medium-r-normal--10-100-75-75-c-50-iso8859-1
+
+XTerm*fontMenu*font3*Label:     Medium
+XTerm*VT100*font3:              -misc-fixed-medium-r-normal--15-140-75-75-c-90-iso8859-1
+
+!*VT100.Translations:  #override <Key>F29: scroll-back(1,halfpage) \n\
+!                                <Key>F35: scroll-forw(1,halfpage)
+
+!from net somewhere..
+XTerm*translations: #override\
+ Meta <KeyPress> K: clear-saved-lines() \n\
+
+

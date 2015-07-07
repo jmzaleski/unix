@@ -1,0 +1,2 @@
+10  4 * * * (cd Calendar;./xcaltocal) >calendar 2>/dev/null
+20  4 * * * stuff=`calendar`; if [ "$stuff" != "" ]; then echo "$stuff" | Mail -s "Calendar reminders..." matz; fi

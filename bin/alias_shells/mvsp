@@ -1,0 +1,64 @@
+#!/bin/sh
+
+#move a file in the repo from one one tree to another and
+#take its RCS file along for the ride.
+
+dest=xx$$ #isn't one like this!
+
+for i in $*
+do
+	dest=$i
+done
+#so last arg is dest..
+
+if test ! -d $dest
+then
+	echo $0: cannot open destination dir $dest
+	exit 42
+fi
+
+args=""
+for i in $*
+do
+	if test "$i" != "$dest"
+	then
+		args=$args" $i"
+	fi
+done
+
+debug=''
+
+for i in $args
+do
+	if test ! -f $i
+	then
+		echo $0: cannot find $i
+	else
+		if test -f $i-L
+		then
+			echo $0: lock file exists.
+		else
+#			set -x
+			$debug cp $i $dest
+			if test -f $dest/$i
+			then
+				ls -l $dest/$i
+				$debug rm -i $i
+			fi
+			if test -f $dest/RCS/$i,v
+			then
+				echo $0: clobber $dest/RCS/$i,v '???'
+				ls -l  $dest/RCS/$i,v
+				echo hit return to continue...
+				read junk
+			fi
+		 	$debug cp RCS/$i,v $dest/RCS/
+			if test -f $dest/RCS/$i,v
+			then
+				ls -l $dest/RCS/$i,v
+				$debug rm -i RCS/$i,v
+			fi
+#			set -
+		fi
+	fi
+done

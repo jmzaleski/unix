@@ -1,0 +1,1 @@
+xterm -title " dev090303: Cell Environment" -e setupFC4Compiler dev090303

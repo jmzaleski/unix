@@ -1,0 +1,89 @@
+#!/bin/sh
+#
+# corny shell script to run the current build of StudioPaint
+# with hardware brushes turned on. This takes the executable
+# straight out of the repo where it was built and is meant to
+# test the application after the overnight has finished.
+# 
+
+
+#
+# reset the root of the install tree to the src repo 
+# ie. to run the "installed" version we not have appended the "src" dir.
+#
+
+sp_dir=/usr/StudioPaint/src
+
+#
+# take the binary where it has been built in the repo.
+#
+
+if test -z "$CPU"
+then
+	echo $0: you should have the CPU variable set. 1>&2
+	exit 1
+fi
+
+####note that we attach to the debug version (unlike the test_sp script)
+####
+echo '************************************'
+echo '* NB. run the '$CPU'.debug version'
+echo '***********************************'
+sp_bin=$sp_dir/install/bin/main/$CPU.debug/a.out
+
+if test ! -f $sp_bin
+then
+	echo $0: $sp_bin does not exist right now. Presumably it has been installed 2>&1
+	exit 2
+fi
+
+ARGS="-CursorBitmapDir $sp_dir/install/cursors 	\
+		-BitmapDir $sp_dir/install/bitmaps		\
+		-TiffDir $sp_dir/install/pix			\
+		-Directory $sp_dir/install/text" $args
+
+#
+# run the usual script but with a bunch of environment flags changed
+# and add arguments that indicate where to get cursors etc from.
+# The stuff that is most likely to be different between the repo and the
+# installed build are the resource files indicated by the -Directory flag
+# which must correspond to the code in manager classes.
+#
+
+#
+# have to have sp in your path. It's usually in /usr/StudioPaint/install/bin
+#
+
+if which sp > /dev/null
+then
+	echo $0: run sp with arguments $ARGS
+else
+	echo $0: sp must be in your PATH,  try /usr/StudioPaint/install/bin  1>&2
+	exit 3
+fi
+
+SP_BIN=$sp_bin ; export SP_BIN
+SP_DIR=$sp_dir ; export SP_DIR 
+ALIAS_ALT_EN=/usr/adm/endir/alias3.2.2LE/en ; export ALIAS_ALT_EN
+
+#make sure that the beta message dialog comes up because we can wait
+#for cvd to come up before dispatching it
+
+sp +BetaMessage $* $ARGS &
+
+sp_pid=$!
+
+ps > /tmp/pid$$
+
+sleep 1
+
+echo '**********************'
+cat /tmp/pid$$
+aoutpid=`grep a.out /tmp/pid$$`
+set $aoutpid
+pid=$1
+echo cvd -pid $pid
+echo '**********************'
+
+rm /tmp/pid$$
+

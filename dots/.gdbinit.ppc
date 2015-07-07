@@ -1,0 +1,35 @@
+#matz on ppc. see also jamvm.gdb
+
+echo hello from .gdbinit.ppc
+
+set confirm off
+
+define xtrap
+ print/x $pc
+ set var $pc=$pc+4
+ print/x $pc
+end
+
+define xnext
+ xtrap
+ next
+end
+
+define xcont
+ xtrap
+ cont
+end
+
+define xfin
+ xtrap
+ fin
+end
+
+show user xtrap
+show user xnext
+show user xcont
+
+info break
+display/i $pc
+
+source ~/jwrk/jamvm.gdb

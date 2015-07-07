@@ -1,0 +1,9 @@
+#!/bin/ksh
+
+if test -z "$1"
+then
+	echo $0 string '#will search for a string in IMAGEVISION include files'
+	exit 1
+fi
+
+grep $* /interviews/include/*/*.h 

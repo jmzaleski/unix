@@ -1,0 +1,2 @@
+#check in any changed files in duress project
+42  4 * * *      /home/matz/bin/ciall.sh

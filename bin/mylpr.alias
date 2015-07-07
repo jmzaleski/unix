@@ -1,0 +1,22 @@
+#!/bin/sh
+
+#print sources
+
+for i in $*
+do
+	if test ! -f $i
+	then
+		echo $0: cannot open $i
+		exit 2
+	fi
+done
+
+WIDTH=90
+
+for i in $*
+do
+	expand -4 $i | cat -n | fold -w $WIDTH | pr -F -e'	4' -w $WIDTH -h "$i"
+done | enscript -p /tmp/mylpr$$.ps
+
+echo lpr /tmp/mylpr$$.ps
+rm -i /tmp/mylpr$$.ps

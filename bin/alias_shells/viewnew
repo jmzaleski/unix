@@ -1,0 +1,9 @@
+#!/bin/sh
+
+dir=$repo/MakeLog
+
+cd $dir
+
+file=`ls -t|sed 1q`
+
+view  $file

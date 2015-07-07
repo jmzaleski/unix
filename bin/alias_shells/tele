@@ -1,0 +1,28 @@
+#!/bin/sh
+
+AF=/usr/lib/aliases
+
+if test ! -f $AF
+then
+	echo cannot find $AF, giving up 1>&2
+	exit 1
+fi
+
+if test $# -eq 0
+then
+	echo "usage: $0 name  <will look up a name in $AF>"
+	exit 1
+fi
+
+grep $1  $AF
+
+rc=$?
+
+if test ! $rc -eq 0
+then
+	echo $0: cannot find so exec vi..
+	vi $AF
+	exit 0
+fi
+
+

@@ -1,0 +1,43 @@
+#!/bin/sh
+
+#make an RCS directory symbolic link to ~myRCS
+
+MYRCS=$HOME/myRCS
+
+if test ! -d $MYRCS 
+then
+	echo no directory $MYRCS 
+	exit 2
+fi
+
+rdir=`pwd | sed "s;$HOME/;;"`
+
+echo $rdir
+
+rcsdir=$MYRCS/$rdir
+
+if test ! -d $rcsdir
+then
+	 mkdir --parents $rcsdir
+	 ls -ld $rcsdir
+fi
+
+if test ! -d RCS
+then
+	mkdir $rcsdir/RCS
+	ls -ld $rcsdir/RCS
+	ln -s $rcsdir/RCS .
+	ls -ld ./RCS
+else
+	echo never tested, in hurry, sorry
+	ls -ld ./RCS
+	echo RCS directory already exists.
+	echo you probably want to move contents to $rcsdir
+	echo '#### ' 'mv RCS/* ' $rcsdir
+	exit 2
+fi
+
+
+
+
+

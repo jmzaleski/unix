@@ -1,0 +1,19 @@
+#!/bin/sh
+
+
+
+if checkgroupispaint
+then
+	echo Make studiopaint
+else
+	echo fix perms and try again!
+	exit 42
+fi
+
+set -
+
+cd $repo
+for targ in World.debug World
+do
+	nohup make $targ > $HOME/$targ 2>&1 
+done

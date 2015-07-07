@@ -1,0 +1,7 @@
+# Configuration created Fri Sep  1 16:34:59 2000 by fetchmailconf
+set postmaster "matz"
+set bouncemail
+set properties ""
+poll mail.yec1.on.wave.home.com with proto POP3
+       user "zaleski2340" there with password "password" is matz here options fetchall warnings 3600
+

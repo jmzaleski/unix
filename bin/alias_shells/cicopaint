@@ -1,0 +1,71 @@
+#!/bin/sh
+
+TMP=/tmp/cico$$
+DIFF=gdiff
+RCS=/nfs/porter/v/mzaleski/RCS
+
+if test ! -d ./RCS
+then
+	if test -d $RCS
+	then
+		echo $0: cannot open ./RCS. making a link to $RCS
+		if ln -s $RCS ./RCS
+		then
+			echo ln -s $RCS ./RCS
+		else
+			echo $0: cannot ln -s $RCS ./RCS
+			exit 1
+		fi
+ 	else
+		echo $0: cannot open ./RCS and cannot stat $RCS. ln -s your own ./RCS..
+		exit 1
+	fi
+fi
+
+
+for i in $*
+do
+	if test ! -f $i
+	then
+		echo '**************************'
+		echo '* cico: cannot open ' $i
+		echo '**************************'
+		exit 1
+	fi
+done
+
+for i in $*
+do
+	if co -p $i > $TMP
+	then
+		if cmp $i $TMP
+		then
+			echo '***************************'
+			echo '* cico: file is unchanged *'
+			echo '***************************'
+		else
+			$DIFF $i $TMP | more
+			echo '***************************************************'
+			echo '* Still want to make the change? [yY] means yes   *'
+			echo '***************************************************'
+			echo '> \c'
+			read line
+	        case $line in
+    	    [yY]*)
+  				ci $i
+				co -l $i
+            	;;
+	        *)
+			echo cico: skip ci/co of $i
+    	        ;;
+        	esac
+		fi
+	else
+		echo '********************************************************************'
+		echo '* cannot ci -p' $i. Presumably no RCS file exists. creating it
+		echo '********************************************************************'
+		ci $i
+		co -l $i
+	fi
+	rm -f $TMP
+done

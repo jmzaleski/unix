@@ -1,0 +1,44 @@
+day=`date | awk '{print $1}'`
+
+MAIL_LIST="matz rjanzen browe"
+
+logfile_stem=$repo/MakeLog/log.iv.$day
+
+for i in 1 2 3 4 5 6 7 8 9 10 11 12
+do
+		if test ! -f $logfile_stem.$i
+		then
+				log_rev=$i
+				break
+		fi
+done
+
+if test $log_rev = 12
+then
+		log_rev=1
+		echo holy smokes-- lucky build 13\! 
+fi
+
+log_file=$logfile_stem.$log_rev
+
+echo starting build for $log_file | mail $MAIL_LIST
+
+cd /usr/InterViews/iv
+
+for targ in World.debug World
+do
+    echo '---------' make $targ '-------'
+	lreal nice make $targ 
+done > $log_file 2>&1
+
+echo ending build for $log_file | mail $MAIL_LIST
+
+
+
+
+
+
+
+
+
+

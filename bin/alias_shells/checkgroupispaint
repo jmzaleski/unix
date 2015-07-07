@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#check that the group and masks are correct for a build to continue
+
+if test `umask` != "0002"
+then
+	echo "$0: must first umask 0002?" 1>&2
+	exit 41
+fi
+
+
+#case `id | sed -n 's/^uid=.*gid=[0-9]*//p'` in
+
+case $GROUP in
+*paint*)
+	echo $0: thanks for newgrp\'ing to paint
+	;;
+*)
+	echo "$0: must first newgrp to paint.. Who are you? "
+	id 1>&2
+	exit 42
+	;;
+esac

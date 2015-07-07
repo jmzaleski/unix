@@ -1,0 +1,16 @@
+#!/bin/sh
+
+#emacs $1 -f my-nuke-cr -f my-nuke-cr $2 -f my-nuke-cr -f my-nuke-cr
+
+#emacs $1 $2 -f ediff-buffers
+
+#sure would be nice to be able to tell it which files to diff straight from the command line.
+#/Applications/Emacs.app/Contents/MacOS/Emacs $1 $2 -f ediff-buffers
+
+set -x
+#/bin/echo
+#way fiddly. elisp wants to see (ediff-files "$1" $2") as one string.
+#/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -e \('ediff-files "'$1'" "'$2'"'\)
+#/bin/echo
+
+/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -e "(ediff-files \"$1\" \"$2\")"

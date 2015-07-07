@@ -1,0 +1,16 @@
+#!/bin/sh
+
+
+if ivmkmf
+then
+	if make Makefiles.debug
+	then
+		make all.debug
+	else
+		echo $0: make Makefiles failed
+	fi
+else
+	echo $0: ivmkmf failed
+fi
+
+

@@ -1,0 +1,19 @@
+#!/bin/csh -f
+#
+#	This script converts the xcalendar files in this directory into
+#	a sequence of lines suitable for inserting in a calendar file
+#	to be processed by the calendar command.
+#
+cd $HOME/Calendar
+
+foreach file ( xc* )
+	set date=`echo "$file" | sed 's/xc\([0-9][0-9]*\)\(...\)\(.*\)$/\2 \1 \3/'`
+	(cat $file;echo '') | sed '/^$/d;s/^/'"${date}: /"
+end
+
+#10  4 * * * (cd Calendar;./.calendar) >calendar 2>/dev/null
+#20  4 * * * stuff=`calendar`; if [ "$stuff" != "" ]; then echo "$stuff" | Mail -s "Calendar reminders..." matz; fi
+
+
+
+

@@ -1,0 +1,62 @@
+#!/bin/ksh
+
+#this shell script brings an Imakefile up-to-date
+#it checks whether each .c file in the current working directory
+#is in the Imakefile and if not adds it.
+
+mn=MakeObjectFromSrc
+
+for i in $*
+do
+	case $i in
+	-v*)
+		verbose=true
+		shift
+		;;
+	-d*)
+		debug=true
+		shift
+		;;
+	*)
+		;;
+	esac
+done
+
+WRK_DIR=$HOME/work/lget
+
+for file in $*
+do
+		if test ! -f $file
+		then
+				echo $0: cannot find $file
+		else
+				case $file in
+				/*)
+						fulldir=$file
+						;;
+				*)
+						fulldir=$PWD/$file
+						;;
+				esac
+
+				f=`basename $fulldir`
+				p=$PWD
+				cd $WRK_DIR
+				the_dir=`dirname $fulldir`
+				the_library=`basename $the_dir`
+				the_dir=`dirname $the_dir`
+				the_subproj=`basename $the_dir`
+				the_project=`dirname $the_dir`
+				echo $cmd $cmd_opts $the_file
+
+				if lget -p$the_project -s$the_subproj -l$the_library $f
+				then
+					echo get $I okay
+				else
+					echo $0: lget of $f into $WRK_DIR has failed
+					exit 42
+				fi
+				cd $p
+		fi
+done
+

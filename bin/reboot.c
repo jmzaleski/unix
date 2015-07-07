@@ -1,0 +1,5 @@
+
+main()
+{
+	system("/sbin/reboot");
+}

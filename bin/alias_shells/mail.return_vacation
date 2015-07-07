@@ -1,0 +1,20 @@
+#!/bin/sh
+
+FOR_RMAIL=$HOME/.forward.rmail
+FORWARD=$HOME/.forward
+
+if cmp -s $FOR_RMAIL $FORWARD
+then
+	echo $0: Not set up for vacation mail forwarding.. exit.
+	exit 0
+fi
+
+if test ! -f $FOR_RMAIL
+then
+	echo cannot clean up after vacation mail forwarding as no $FOR_RMAIL 
+	exit 2
+fi
+
+set -x 
+rm -f $FORWARD
+cp $FOR_RMAIL $FORWARD

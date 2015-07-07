@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+#    find the right file to rlog
+# mzaleski
+
+P=`basename $0`
+
+if test $# -lt 1
+then
+	cat <<EOF
+$P files: rlog the RCS file corresponding to the given source files.
+EOF
+exit 1
+fi
+
+f=`smwf $1`
+
+###########################################################
+#if there are multiple files of that name in the repo then
+#prompt for the right one.
+###########################################################
+
+nf=`echo $f | wc -w`
+if test $nf -gt 1
+then
+	echo several such files in repo
+	echo ------------------------------------------------------------
+	for i in $f; do echo $i; done
+	echo ------------------------------------------------------------
+
+	ff=$f
+	for i in $ff
+	do
+		echo $i '[y|n] >\c'
+		read junk
+		case $junk in
+		[yY]*)
+			f=$i
+			break
+			;;
+		*)	;;
+		esac
+	done
+fi
+###########################################################
+#construct the RCS file name'
+###########################################################
+dir=`dirname $f`
+fn=`basename $f`
+rcs=$dir/RCS/$fn,v
+
+if test ! -f $rcs
+then
+	echo $0: cannot open RCS file in $rcs
+	exit 1
+fi
+
+###########################################################
+# rlog the file
+###########################################################
+rlog $rcs

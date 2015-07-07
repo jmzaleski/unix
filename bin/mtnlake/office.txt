@@ -1,0 +1,6 @@
+alias "Gina Pappano" gin@mail.cibc.com
+note "Gina Pappano" <name: Gina Pappano>
+alias "Brian Boigon" boigon@mail.cibc.com
+note "Brian Boigon" <name: Brian Boigon>
+alias "S Solomon" sas@mail.cibc.com
+note "S Solomon" <name: S Solomon>

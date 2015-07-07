@@ -1,0 +1,18 @@
+#!/bin/sh
+
+if test -z "$incl"
+then
+		incl=/usr/StudioPaint/src/include
+		echo "assuming that StudioPaint include dirs are in $incl"
+		echo "override this by defining incl environment variable"
+fi
+
+for i in $incl/*
+do
+		if test -d $i
+		then
+				d=`basename $i`
+				echo "ln -s . $d"
+				ln -s . $d
+		fi
+done

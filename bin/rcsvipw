@@ -1,0 +1,44 @@
+#!/bin/sh
+
+#if the passwd and group files are the same as their RCS files then
+#lock them
+
+PW=/etc/passwd
+CMD=vipw
+
+checkin(){
+		if ci -u $PW
+		then
+			echo $PW checked in okay.
+		else
+				echo oh oh ci -u $PW failed. go fix
+			exit 7
+		fi
+}
+
+#okay everything has been locked..
+gocmd(){
+		$CMD
+		checkin
+}
+
+lock(){
+		if co -l $PW
+		then
+			gocmd
+		else
+			echo sorry, co -l $PW has failed, go fix
+			exit 5
+		fi
+}
+
+if rcsdiff $PW 
+then
+	lock
+else
+	echo sorry, rcsdiff for $PW returns failure. Go fix by hand.
+	exit 3
+fi
+
+
+

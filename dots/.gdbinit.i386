@@ -1,0 +1,37 @@
+
+#matz for jamvm on ppc
+
+echo hello from dots/.gdbinit.i386\n
+
+set confirm off
+
+define xx
+set var count = 2
+set var trapOnCount = 1
+cont
+end
+
+
+
+display/i $pc
+
+#break main
+
+#info break
+
+set env CONTEXT_QUIET=1
+
+
+handle SIGUSR1 nostop 
+handle SIGUSR1 noprint 
+handle SIGUSR1 pass
+info signal SIGUSR1
+
+define gomtrt
+run  -cp /Users/matz/ct/javaBench/mtrt/classes spec.benchmarks._227_mtrt.Main
+end
+
+echo well?
+echo \n
+
+#run -verbose:runtrace FloatTightLoop

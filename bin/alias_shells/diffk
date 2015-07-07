@@ -1,0 +1,23 @@
+#!/bin/sh
+
+for  i in $*
+do
+	if test ! -f $i
+	then
+		echo $0: cannot open $i 1>&2
+		exit 1
+	fi
+done
+
+for f in $*
+do
+	buf=`smw $f`
+	if test -z "$buf"
+	then
+		echo $0: smw finds nothing for $f
+	else
+		buf1=`echo $buf|sed 1q`		#first line of buf only.
+		echo ldiff $buf1
+		ldiff $buf1
+	fi
+done

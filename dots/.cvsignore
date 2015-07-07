@@ -1,0 +1,14 @@
+*.dvi
+*.blg
+*.bbl
+*.aux
+*.cmo
+*.cma
+*.cmi
+*.byt
+*.mtr
+*.lst
+*.plist
+*.cmi
+*.cmo
+*.sanity

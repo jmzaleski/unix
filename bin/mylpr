@@ -1,0 +1,44 @@
+#!/bin/bash
+
+#print sources
+
+for i in $*
+do
+	if test ! -f $i
+	then
+		echo $0: cannot open $i
+		exit 2
+	fi
+done
+
+WIDTH=85
+
+#enscript -2 sets double col
+# -r rotates.
+#this can be problematic to print, as you have to specify landscape as well
+
+
+#NL=-n
+
+set -x
+for i in $*
+do
+	expand -4 $i | cat $NL | fold -w $WIDTH | pr -F -e4 -w $WIDTH -h "$i" -l130
+done | enscript --no-header -2 -r -p /tmp/mylpr$$.ps
+
+echo could lpr /tmp/mylpr$$.ps NB. print landscape
+
+#ps2pdf /tmp/mylpr$$.ps /tmp/mylpr$$.pdf
+
+#echo gv the ps? hit return to continue.
+#read junk
+
+#gv /tmp/mylpr$$.ps
+#rm -i /tmp/mylpr$$.ps
+
+#open  /tmp/mylpr$$.pdf
+#rm -i /tmp/mylpr$$.pdf
+
+open  /tmp/mylpr$$.ps
+rm -i /tmp/mylpr$$.ps
+

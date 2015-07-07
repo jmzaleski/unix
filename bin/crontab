@@ -1,0 +1,17 @@
+# (Cron version -- $Id: crontab,v 1.1.1.1 2003-09-04 12:53:53 matz Exp $)
+#check in any changed files in quadrature project.
+#
+#MIN HOUR DAY MONTH DAY_OF_WEEK COMMAND
+#
+#go get mail from zaleski.org and sendmail it to matzmail
+#
+ 42      3    *   *     *    fetchmail -f ~matz/.fetchmailrc
+#
+# go get mail from rogers@home and sendmail it to matz
+ 0-59/5  *    *   *     *    ~matz/bin/fetchmail.sh
+#
+#backup key critical data every day
+#now done as root.
+### 42      4    *   *     *    ~matz/bin/overnightbackup.sh
+
+

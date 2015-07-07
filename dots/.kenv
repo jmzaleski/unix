@@ -1,0 +1,693 @@
+# -*-shell-script-*-
+
+# get this file .'ed in the style of .cshrc by setting the ENV environment
+# variable to point to it (or BASH_ENV in the case of bash)
+
+if diff ~/.kenv ~/dots/.kenv
+then
+	echo > /dev/null
+else
+	echo warning ~/.kenv and ~/dots/.kenv differ
+fi
+
+#alias firefox=~/build/firefox/firefox
+
+############# OC2.2 faves #################
+alias sezvncviewer="vncviewer sez.local.zaleski.ca"
+alias jezvncviewer="vncviewer jez.local.zaleski.ca"
+alias alexvncviewer="vncviewer -shared douala.watson.ibm.com"
+alias kevinvncviewer="vncviewer -shared tirnanog.watson.ibm.com:5901"
+
+########### linux ###########
+#alias open=gnome-open
+alias thunderbird=~/build/thunderbird/thunderbird
+alias eclipse=~/build/Ganymede/eclipse/eclipse
+alias sshg="grep -i ^host ~/.ssh/config"
+
+
+# sets the style of command line editing
+
+#echo hello from .kenv
+export EDITOR=emacs
+
+#export TEXEDIT="emacsclient"
+
+command_oriented_history=1
+#id=`id`
+
+################## matz bash faves ############################
+
+alias kenv=". ~/.kenv"
+alias profile=". ~/.profile"
+alias bashrc=". ~/.bashrc"
+
+alias suterm="gnome-terminal --tclass Root --font fixed --foreground red --execute su"
+alias csterm="gnome-terminal --font fixed --foreground white --execute ssh qew.cs.utoronto.ca"
+
+alias pine="cd; xtitle PINE; pine"
+
+alias l="ls -xFG"
+alias ll="ls -lG"
+alias lld="ls -ldG"
+alias p="more"
+alias less="more"
+alias ldir="for i in *; do if test -d $i; then lld $i; fi; done"
+alias mx="chmod +x"
+alias xmm="xmodmap ~/.xmodmap-linux"
+alias dus="dus.sh"
+alias df="df -k"
+alias echoo='echo ------------- $i -------------'
+alias backupplan="(cd; backtar.sh plan ~/backups/plan/plan)"
+
+lus(){
+   ls -sk $* | sort -n | awk '{print $2}'  | xargs du -h
+ }
+cygnus="/bin"
+
+for i in rm cp mv rm
+do
+	if test ! -x $cygnus/$i
+	then
+		echo alias of $i to $cygnus/$i -i will not work
+	fi
+done
+
+alias rm="$cygnus/rm -i"
+#alias cp="$cygnus/cp -i --backup=numbered"
+alias cp="$cygnus/cp -i"
+alias mv="$cygnus/mv -i"
+alias rmrf="$cygnus/rm -rf"
+
+alias xfix="export XAUTHORITY=/u/mzaleski/.Xauthority"
+alias gfind="find . -print | grep"
+alias sd="export DISPLAY=:0.0"
+
+alias gpgbemo="gpg -d ~/gpg/bemo.gpg|more; sleep 30; clear"
+alias psa="ps -Af"
+#alias psa="ps -efl"
+#alias psa="ps -auxw"
+alias h="history | tail"
+
+
+# x commands go straight to emacs command
+# echo might have to run server-start in an emacs first..
+
+##x(){ emacsclient --no-wait $*; }
+x(){
+	p=/Applications/Emacs.app/Contents/MacOS/bin/ #osx default emacsclient in /usr/bin/ no good.
+	"$p"emacsclient --no-wait $*;
+}
+xmagit(){ emacsclient --eval '(magit-status ".")' --no-wait; } # or $PWD??
+#emacsclient -q -display :0.0 +%d %s $*
+
+################## dos ############################
+
+#dos/cygwin version of OSX open.
+e(){
+	if  test -z "$*"
+	then
+	    dir=$PWD
+	else
+	    dir=$1
+	fi
+	#some option to show folders instead of whatever was there last..
+	explorer `cygpath --windows "$dir"`
+}
+alias smbpcL="smbclient -L matzhm0 -I 192.168.0.5"
+alias smbpc="echo matzhm has own passwd, remember; smbclient //matzhm0/MATZHM0-C -U matz -I 192.168.0.5"
+
+
+################## linux ############################
+
+alias rpmi="rpm -ivh "  #install need to be root
+alias rpml="rpm -ql "   #query files in installed package"
+alias rpmll="rpm -qpl "   #query files in uninstalled  package file"
+alias brighter='echo up > /proc/acpi/ibm/brightness'
+alias dimmer='echo down > /proc/acpi/ibm/brightness'
+
+#tp0/CAS
+alias pgpenstdin="cat | pgp -feast matz"  #encrypt stdin to matz
+alias pgpdestdin="cat | pgp -f matz"  #decrypt stdin and send to stdout
+
+alias sshprep="cd ~/.ssh; gpg --decrypt-file identity.gpg id_dsa.gpg ; chmod 600 identity id_dsa; ll identity id_dsa; echo rm these later.."
+#alias sshclean="cd ~/.ssh; rm identity id_dsa"
+
+
+################## cvs ############################
+
+#elusive set of cvs options to show which files are really different
+#ignoring keyword substitutions. see co(1)
+
+alias cvsdiffko="cvs diff -ko --brief ."
+
+#cribbed from pcl-cvs dir examine. Except -P (prune dirs) omitted.
+alias cvsstatus="cvs -q -f -n update -d" 
+
+alias trn148="env NNTPSERVER=newssrv.cdf.utoronto.ca trn"
+alias msdev="devenv /debugexe" # .NET debugger 
+
+#zaleski.ca repo
+alias cvsz="cvs -d :ext:zaleski@dci.doncaster.on.ca:/var/virtuals/zaleski/zaleski/CVS"
+
+# ibm watson xlof repo
+alias cvsxlof="cvs -d :ext:rios11lnx:/gsa/yktgsa/projects/x/xlof/cvs_repos/repository"
+
+#context threaded repo (see ~/ct/bin/dot.me.bash)
+#CS=eon.cs.toronto.edu
+#CVSROOT=:ext:$CS:/u/matz/ct/CVS
+#alias cvsct="cvs -d :ext:$CS:/u/matz/ct/CVS"
+
+#adaptive is the syslab bastion host
+alias cvsp="cvs -d :ext:adaptive.cs.toronto.edu:/home/matz/cvs"
+
+#DCS repo
+alias cvscs="cvs -d :ext:eon.cs.toronto.edu:/u/matz/CVS"
+
+################## mercurial #####################
+
+alias hgstatus="hg status --rev=qparent"
+alias hgurl='grep http `hg root`/.hg/hgrc'
+
+################## mac at wrk  ###################
+
+WRK_FILES="Makefile"
+XEMACS="/sw/bin/xemacs -T M0 -iconname M0"
+XEMACS_2FRAME="-funcall make-new-frame-on-left"
+
+dowrk(){
+	if test ! -d ~/$1
+	then
+		echo cannot open dir $1
+	else
+		cdd ~/$1
+		if test -z "$2"
+		then
+			geom="90x65-380-3"
+		else
+			geom=$2
+		fi
+		$XEMACS -geometry $geom Makefile #$XEMACS_2FRAME
+	fi
+}
+
+smwrk(){ dowrk wrk "81x50-380-3";}
+wrk(){ dowrk wrk "180x65-0+0";}
+owrk(){ dowrk wrk;}
+swrk(){ dowrk swrk;}
+pwrk(){ dowrk pwrk;}
+
+#when just running on laptop (like at hazzard)
+hzwrk(){ dowrk wrk "81x42-3+3";}
+
+alias rprop="cdd prop; \
+	lyx -geometry 800x840-350+0 prop.lyx"
+
+alias duplexlprtxt="enscript -DDuplex:true "
+
+#alias tailfnew='tail -f `ls -tr $*|tail -1`'
+tailfnew(){
+	if test -z "$1"; then
+		dir=.
+	else
+		dir=$1
+	fi
+	file=$dir/`ls -tr $dir | tail -1`
+	echo $file
+	#could loop through them looking for first file..
+	if test ! -f $file
+	then
+		echo $0: $file not a file 1>&2
+	else
+		tail -f $file
+	fi
+}
+
+newest_file(){
+	if test -z "$1"; then
+		dir=.
+	else
+		dir=$1
+	fi
+	ls -t $dir | \
+		while read file; do
+		if test ! -f $file
+		then
+			echo $0: $file not a file  1>&2
+		else
+			echo $file 
+			return
+		fi
+		done
+}
+
+newest_dir(){
+	if test -z "$1"; then
+		dir=.
+	else
+		dir=$1
+	fi
+	ls -t $dir | \
+		while read file; do
+		if test ! -d $file
+		then
+			echo $0: $file not a dir  1>&2
+		else
+			echo $file 
+			return
+		fi
+		done
+}
+
+cddnewest(){
+	cd `newest_dir .`
+	/bin/pwd
+}
+xnewest(){
+	x `newest_file .`
+}
+
+#appropriate for laptop monitor (on Left)
+alias lgv="gv -scale 2 -geometry 1152x700+0+30"
+#appropriate for big screen monitor (on Right)
+#weird, scale 3 give you 4..
+#alias rgv="gv -scale 3 -geometry 1152x850-0+0"
+#little too big so two columns fit across screen.
+alias rgv="gv -scale 3 -geometry 1400x850-0+0"
+alias lyxcmd="lyx -geometry 800x840-350+0"
+
+spellword()
+{
+	grep $* /usr/share/dict/words
+}
+
+grepinc()
+{
+	grep -r $* /usr/include
+}
+
+duplexlpr(){
+	cat $* | ~/skule/research/dissertation/doc/tools/dvipsconfig/addpsctrl.sh | lpr
+}
+
+intgdb(){
+	pid=`psa | grep gdb | grep -v grep | awk '{print $2}'`
+	echo about to: kill -INT $pid
+	kill -INT $pid
+}
+
+
+xdiff(){
+#	/Developer/Applications/Utilities/FileMerge.app/Contents/MacOS/FileMerge -left "$1" -right "$2"
+/Developer/Applications/Xcode4.5.app/Contents/Applications/FileMerge.app/Contents/MacOS/FileMerge  -left "$1" -right "$2"
+
+}
+
+############# ssh, etc #####################
+
+rrsync(){
+	OPT="-av --progress --update --delete"
+	echo Do you really want to rsync recursively with delete
+	echo rsync $OPT "$*"
+	echo -n hit enter to continue..
+	read junk
+	rsync $OPT $*
+}
+
+
+if test -z "$SSH_AUTH_SOCK"
+then
+	export SSH_AUTH_SOCK=~/.ssh/ssh-agent.socket
+fi
+
+#
+#add the keys for the laptops and other "home" hosts here.
+#
+
+sa-add(){
+		ssh-add -t 36000 ~/.ssh/id_dsa_m1 ~/.ssh/id_dsa_cslab  < /dev/null
+		ssh-add -l
+}
+
+sa-start-agent(){
+	#echo nb depends on  ~/.MacOSX/environment.plist setting SSH_AUTH_SOCK
+	env SSH_ASKPASS=/usr/libexec/x11-ssh-askpass ssh-agent -a $SSH_AUTH_SOCK -t 36000
+}
+
+#
+# meant to be used from interactive scripts or the shell to see if
+# authentications are ready to use
+#
+sa(){
+	ssh-add -l
+	rc=$?
+	case $rc in
+	0)
+		return
+		;;
+	2)
+		echo 'ssh-add -l returns 2 hence no agent running (?)'
+		sa-start-agent
+		sa-add
+		return
+		;;
+	1)
+		echo 'ssh-add -l returns 1 hence no identities, probably expired (?)'
+ 		sa-add
+		return
+		;;
+	esac
+	}
+
+#
+#check to make sure a shell has my ssh authentication available
+#
+
+sa_check(){
+	if test -z "$SSH_AUTH_SOCK"
+	then
+		echo no environment variable SSH_AUTH_SOCK # ~/.MacOSX/environment.plist
+		return 2
+	fi
+	if ssh-add -l
+	then
+		return 0
+	else
+		echo no authetication tokens. run sa? has your authentication expired?
+		return 2
+	fi
+}
+
+#weird xinitrc workaround (doesn't like _ ??)
+
+alias sa-check=sa_check
+
+# https://kc.corp.adobe.com/kc/article.cfm?id=IT00792.xml
+# NB. have to authenticate to the same firewall as using as vpn gateway
+#
+smtp-tunnel-8025(){
+	BASTION=eon 
+	LP=8025
+	SH=smtp.gmail.com
+	CMD="while echo -n connected to $BASTION on' '; do date; sleep 5; done"
+	#open https://waltham-ssh-out.corp.adobe.com/ 
+	open https://sanjose-ssh-out.corp.adobe.com/
+	read -t 10 -p "now ssh tunnel local port $LP to SH port 25 via bastion host $BASTION" junk 
+	ssh -vv -X -A -L $LP:$SH:25 $BASTION $CMD
+}
+
+################## outboard bash ############################
+
+# if test -f ~/dots/j9_dot.me.bash
+# then
+# 	. ~/dots/j9_dot.me.bash	
+# fi
+
+if test -d ~/ct/bin && test -f ~/ct/bin/dot.me.bash
+then
+	. ~/ct/bin/dot.me.bash
+fi
+
+#osx missing ldd, sort of.
+#alias ldd="otool -L"
+
+if test `id -u` == "0"
+then
+    PROMPT=' # '
+    
+else
+    PROMPT=' $ '
+fi
+
+################### intel / android builds ############
+
+alias smbcl="smbclient -UAMR\\\\mathewza"
+alias smbpcg="smbcl //ssgfs006.sc.intel.com/sdrive"
+
+
+#this causes control-v to spit out the fsid, which saves a bit of time logging in.
+alias fsidsel='echo -n 36dab7442fa26bb6|xsel --clipboard; echo copied to clipboard: ; xsel --clipboard --output; echo'
+
+printtopdir(){
+	(
+	last=$PWD
+	while test "$PWD" != /media/src -a "$PWD" != /
+	do
+		last=$PWD
+		cd ..
+	done
+	echo $last;
+	)
+}
+
+# ~/wrk symlink pointing to android repo sync currently working on..
+#
+alias cddout='if test ! -z "$ANDROID_BUILD_TOP"; then cd "$ANDROID_BUILD_TOP"/out; /bin/pwd; fi'
+alias sbe="pushd \$(printtopdir); source \$(printtopdir)/build/envsetup.sh; popd"
+alias dlocate="locate -d /media/src/android.updatedb"
+alias dupdatedb="updatedb -l 0 -o /media/src/android.updatedb -U \`readlink -f ~/wrk\`"
+alias lunchme="pwd && echo source env.. && sbe && echo lunch.. && lunch "
+alias lunchmewrk="pushd \`readlink -f ~/wrk\` && pwd && echo source env.. && sbe && echo lunch.. && lunch && popd"
+
+mmlogfile(){
+	backfilename.sh mm-log
+	}
+
+llunchme(){
+	local DEFAULT_LUNCH
+	local LUNCH
+	case "$PWD" in
+		*dalvik*)
+			DEFAULT_LUNCH=gmin-userdebug
+			;;
+		*kitkat*)
+			DEFAULT_LUNCH=gmin-userdebug
+			;;
+		*art-optimizer-copy*)
+			#for flashing on device to check topic branch
+			DEFAULT_LUNCH=aosp_x86-userdebug
+			;;
+		*art-optimizer*)
+			#this is for host mode PCG work only.
+			DEFAULT_LUNCH=asus_t100-userdebug			;;
+
+		*art*)
+			DEFAULT_LUNCH=aosp_baytrail-eng
+			;;
+		*)
+			DEFAULT_LUNCH=aosp_x86-eng
+			;;
+	esac
+	pushd $PWD
+	if cddtop
+	then
+		if source ./build/envsetup.sh
+		then
+			echo
+			/bin/pwd
+			print_lunch_menu
+			echo from pwd, guessing default lunch to be $DEFAULT_LUNCH
+			echo edit the choice to what you need if $DEFAULT_LUNCH is not right..
+			read -e -p "lunch: " -i $DEFAULT_LUNCH LUNCH
+			lunch $LUNCH
+		else
+			echo source ./build/envsetup.sh fails
+			echo llunchme: cannot source build envsetup.sh. where are you?
+		fi
+	fi
+	popd > /dev/null
+	top=$(gettop)
+	return
+	}
+
+lll(){
+	if test  -n "$ANDROID_BUILD_TOP" -a -n "$TARGET_PRODUCT" -a -n "$TARGET_BUILD_VARIANT"
+	then
+		echo shell lunched: "$ANDROID_BUILD_TOP" "$TARGET_PRODUCT"-"$TARGET_BUILD_VARIANT"
+		return 0
+	else
+		echo shell not lunched. one of ANDROID_BUILD_TOP TARGET_PRODUCT TARGET_BUILD_VARIANT not set
+		return 1
+	fi
+	}
+
+#alias cddtop='if test ! -z "$ANDROID_BUILD_TOP"; then cd "$ANDROID_BUILD_TOP"; /bin/pwd; else echo lunchme\!; cd `printtopdir; fi'
+
+cddtop(){
+	if type -p gettop #gettop is a function defined when envsetup.sh is run
+	then
+		local top
+		top=$(gettop)
+		if test -z "$top"; then
+			echo "gettop returns nothing. where are you?"
+			return 1
+		fi
+		cd "$top"
+# set -x
+# 		test "$PWD" != "$ANDROID_BUILD_TOP"
+# set -
+ 		if test "$PWD" != "$ANDROID_BUILD_TOP"; then
+			echo cddtop: warning differ: $top and ANDROID_BUILD_TOP=$ANDROID_BUILD_TOP
+			echo cddtop: not lunched, or maybe lunched different topic branch?
+			/bin/pwd
+			return 0
+		fi
+	else
+		echo not lunched, cdd will recursively cd .. looking for top of tree
+		local dest=$PWD
+		local save=$PWD
+		while test "$PWD" != /media/src
+		do
+			if test "$PWD" == /; then # if get all the way to top not in repo tree
+				cd $save
+				return 1
+			fi
+			dest=$PWD
+			cd ..
+		done
+		cd $dest
+		/bin/pwd
+		return 0
+	fi
+	#if any args, cd there (assuming relative)
+	if test ! -z "$1"; then
+		cd "$1"
+    fi
+	/bin/pwd
+	return 0
+}
+
+cddprodout(){
+	if test -z "$ANDROID_PRODUCT_OUT"; then
+		echo ANDROID_PRODUCT_OUT not set. lunch\?
+		return
+		fi
+	cd $ANDROID_PRODUCT_OUT
+	/bin/pwd
+}
+
+rrepo(){
+	if test -z "$ANDROID_BUILD_TOP"; then
+		echo ANDROID_BUILD_TOP not set. lunch\?
+		return
+		fi
+	if test ! -x "$ANDROID_BUILD_TOP/repo"; then
+		echo  no script "$ANDROID_BUILD_TOP/repo"
+		return
+		fi
+	"$ANDROID_BUILD_TOP/repo" $*
+}
+
+cddhostout(){
+	if test -z "$ANDROID_HOST_OUT"; then
+		echo ANDROID_HOST_OUT not set. lunch\?
+		return
+		fi
+	cd $ANDROID_HOST_OUT
+	/bin/pwd
+}
+
+cddart()  { cddtop art;}
+cddext()  { cddtop vendor/intel/art-extension;}
+cddintel(){	cddtop vendor/intel/$*;}
+cddopt()  {	cddtop vendor/intel/dalvik-intelopt; }
+cddpcg()  {	cddtop vendor/intel/pcg; }
+cddbay()  {	cddtop device/intel/baytrail; }
+
+#early idea.. probably could do better using buildtop
+lunchme2(){
+	if type -t lunch
+	then
+		echo lunch proc defined, so in build.
+	 else
+		echo no lunch program.. first source build/envsetup.sh 
+		if test ! -f build/envsetup.sh
+		then
+			echo where are you\? cannot file build/envsetup.sh
+			return
+		fi
+		source build/envsetup.sh
+	 fi
+	if test -f LUNCHME
+	then
+		ls -l ./LUNCHME
+		source ./LUNCHME
+	else
+		echo HEY no LUNCHME file, so just interactively lunch
+		lunch
+		return
+	fi
+	printenv | grep TARGET_
+}
+
+
+tracker-grep(){
+	 tracker-search $* | sed -e s,file://,, | xargs -t grep -i $*
+	}
+
+alias proxy="\
+   export http_proxy=http://proxy-us.intel.com:911; \
+   export https_proxy=https://proxy-us.intel.com:911; \
+   export ftp_proxy=http://proxy-us.intel.com:911; \
+   export GIT_PROXY_COMMAND=/usr/local/bin/socks-gateway; \
+   export socks_proxy=http://proxy-us.intel.com:1080; \
+   export UBUNTU_MENUPROXY=libappmenu.so; \
+   export no_proxy=intel.com,*.intel.com,10.0.0.0/8,192.168.0.0/16,127.0.0.0/8,localhost;"
+
+alias noproxy="unset -v http_proxy  https_proxy ftp_proxy GIT_PROXY_COMMAND socks_proxy UBUNTU_MENUPROXY  no_proxy"
+
+
+######### adobe ###############
+
+alias mdfinddot="mdfind -onlyin . "
+alias mdfindnamedot="mdfind -onlyin . -name"
+alias mdfindp4="mdfind -onlyin ~/Perforce/mzaleski_AOTperf_mzaleski_deskside/"
+alias mdfindp4name="mdfind -onlyin ~/Perforce/mzaleski_AOTperf_mzaleski_deskside/ -name"
+alias p4status="p4 sync -n ./..."
+
+export P4CONFIG=.matz_p4config
+
+
+#these go in config file in root of workspace
+#export P4PORT=flashfarm.corp.adobe.com:1666
+#export P4CLIENT=mzaleki_deskside_MAIN
+#export P4USER=mzaleski
+
+alias llvm-nm=~/p-llvm-30-release_64/Release/bin/llvm-nm
+alias llvm-ar=~/p-llvm-30-release_64/Release/bin/llvm-ar
+alias llvm-dis=~/p-llvm-30-release_64/Release/bin/llvm-dis
+alias llvm-ld=~/p-llvm-30-release_64/Release/bin/llvm-ld
+alias llvm-link=~/p-llvm-30-release_64/Release/bin/llvm-link
+alias llc=~/p-llvm-30-release_64/Release/bin/llc
+alias opt=~/p-llvm-30-release_64/Release/bin/opt
+alias bugpoint=~/p-llvm-30-release_64/Release/bin/bugpoint
+
+find-mk(){
+  echo search in . for files ending in .mk containing $*
+  find -type f -name '*.mk' | 
+    while read mk_file; do \
+       echo $mk_file>/dev/null; \
+       if grep $* $mk_file; then \
+          echo $mk_file; \
+       fi; \
+     done
+  }
+
+
+xdotnew(){
+	if test -z "$1"; then
+		dir=.
+	else
+		dir=$1
+	fi
+	file=$dir/`ls -tr $dir | tail -1`
+	echo $file
+	xdot $file
+}
+
+
+#http://blog.taylormcgann.com/2012/07/05/hibernate-from-terminal/
+
+alias hibernatemode='sudo pmset -a hibernatemode 25'
+alias sleepmode='sudo pmset -a hibernatemode 0'
+alias safesleepmode='sudo pmset -a hibernatemode 3'
+alias smartsleepmode='sudo pmset -a hibernatemode 2'

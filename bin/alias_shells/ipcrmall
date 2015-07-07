@@ -1,0 +1,25 @@
+#!/bin/sh
+
+#ipcs -m lists all the shared memory segments in the system.
+#we parse this, the second column is the id which is removed by ipcrm -m
+
+ipcs -m | \
+(
+#title
+read header
+echo $header
+#col headers
+read header
+echo $header
+#shared memory:
+read header
+echo $header
+while read line
+do
+	set $line
+	echo ipcrm -m $2
+	ipcrm -m $2
+done
+)
+
+

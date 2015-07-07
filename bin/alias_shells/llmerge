@@ -1,0 +1,153 @@
+#!/bin/sh
+#
+#    See what exactly has been changed on a checked out file
+# mzaleski
+
+REV=""
+
+###########################################################
+# option -r tells which file in the repo to merge into
+###########################################################
+for i in $*
+do
+	case $i in
+	-r*)
+		REV=$i
+		echo merge into file version $i
+		shift
+		;;
+	*)
+	esac
+done
+
+###########################################################
+# usage
+###########################################################
+if test $# -lt 1
+then
+	cat <<EOF
+llmerge: given a file which is a slight mod of the PREVIOUS version of
+	the repo file, merge your changes into the NEW repo version.
+EOF
+fi
+
+myf=$1
+f=`smwf $1`
+
+###########################################################
+# figure out which file if several with same name
+###########################################################
+nf=`echo $f | wc -w`
+if test $nf -gt 1
+then
+	echo several such files in repo
+	echo ------------------------------------------------------------
+	for i in $f;
+	do
+		echo $i;
+	done
+	echo ------------------------------------------------------------
+
+	ff=$f
+	for i in $ff
+	do
+		echo $i '[y|n] >\c'
+		read junk
+		case $junk in
+		[yY]*)
+			f=$i
+			break
+			;;
+		*)	;;
+		esac
+	done
+fi
+
+dir=`dirname $f`
+fn=`basename $f`
+rcs=$dir/RCS/$fn,v
+
+if test ! -f $rcs
+then
+	echo $0: cannot open RCS file in $rcs
+	exit 1
+fi
+
+###########################################################
+# get the version we started with out of the repo and
+# diff it so that we can make sure that we merge into
+# correct file
+###########################################################
+PREV=/tmp/prev$$
+
+if test -z "$REV"
+then
+	rev=-r`rlog $rcs | grep "^revision"|sed -n "2s/revision //p"`
+else
+	rev=$REV
+fi
+
+co -p $rev $rcs > $PREV
+#more $PREV
+
+
+###########################################################
+#diff the PREV with the current
+###########################################################
+(echo diff of your file with previous file in repo \( $rev \)
+ echo --------------------------------------------------
+ diff $myf $PREV
+)| more
+
+echo --------------------------------------------------
+echo "are all these changes ones you made?"
+echo 'is ' $rev 'the repo version you started with? [y|n]'
+echo '> \c'
+
+read junk
+case $junk in
+[yY]*)
+	;;
+*)
+	echo use the -r option to tell llmerge what version to merge into.
+	exit 1
+	;;
+esac
+
+###########################################################
+#merge changes from PREV to 
+###########################################################
+
+MERGED=/tmp/merge$$
+
+cp $f $MERGED
+merge $MERGED  $PREV $myf	#incorporate changes from prev to current into repo
+
+(echo diff of merged file with current file in repo 
+ echo ----------------------------------------------------------
+ diff $f $MERGED
+)| more
+
+###########################################################
+###########################################################
+echo --------------------------------------------------
+echo --------------------------------------------------
+echo 'do you like this merged version? y writes it to '$myf
+echo '> \c'
+
+read junk
+
+case $junk in
+[yY]*)
+	mv $myf $myf.orig
+	mv $MERGED $myf
+	;;
+*)
+	echo merge abandoned
+	;;
+esac
+	
+rm -f $MERGED
+rm -f $PREV
+
+exit 0

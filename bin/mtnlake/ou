@@ -1,0 +1,28 @@
+#!/bin/sh 
+
+if test $# -eq 0
+then
+	echo usage: ou command  1>&2
+	exit 2
+else
+	command=$1
+fi
+
+opath=$PATH
+
+IFS=:
+set $opath
+IFS=' '
+
+for i in $*
+do
+	#echo dir = $i
+	for j in $i/$command
+    do
+		#echo file=$j
+		if test -f $j
+		then
+			ls -l $j
+		fi	
+	done
+done

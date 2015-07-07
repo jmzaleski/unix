@@ -1,0 +1,25 @@
+!this file read by xemacs. (presumably by X versions of gmacs also)
+!better than putting the resources in .X11defaults as you don't have
+!to do the xrdb resource merge thing..
+
+!on powerbook pxlsz 14 a bit cramped bold. 15 about right.
+! See http://www.dsl.org/cookbook/cookbook_20.html
+!
+
+!nice and easy on eyes, nice when working on laptop screen. A bit big.
+xemacs.default.attributeFont: -*-fixed-bold-r-*-*-15-*-75-75-*-*-*-1
+emacs.default.attributeFont: -*-fixed-bold-r-*-*-15-*-75-75-*-*-*-1
+
+!xemacs.default.attributeFont: -*-fixed-medium-r-*-*-14-*-75-75-*-*-*-1
+!xemacs.default.attributeFont: -*-fixed-bold-r-*-*-13-*-75-75-*-*-*-1
+
+!xemacs.default.attributeFont: -*-geneva-*-*-*-*-12-*-*-*-*-*-*-*
+!
+xemacs.italic.attributeFont: -bitstream-*-*-i-*-*-15-*-*-*-*-*-*-*
+!
+! left overs
+!
+!xemacs.default.attributeFont: -misc-fixed-bold-r-normal--15-*-75-75-c-90-iso8859-1
+!!-*-lucida-medium-r-*-*-13-*-*-*-*-*-iso8859-*
+
+!Emacs.italic.attributeFont: -dt-*-medium-i-*

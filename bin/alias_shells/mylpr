@@ -1,0 +1,48 @@
+#!/bin/sh
+
+# command to print files
+
+#pr options:
+#	-t	eliminate blank header and trailer lines for each page
+#	-l64	64 lines per page
+#	-o0	offset
+#	-e4 tabs 4 col
+#	-w80
+#	-l70
+#	-n	line numbers ???
+#
+#PR_OPT="-f -w80 -e4 -t -l63 -o0"
+#PR_OPT="-w80 -e4 -t -l63 -o0"
+
+PR_OPT="-w80 -e4 -t -l63"
+
+#enscript options:
+#	-h	no banner page
+#	-G	Gaudy title
+#	-2r	2 page rotated output
+#	-btitle
+#	-dprinter
+# 	-fCourier9  (7 is appropriate for -2r)
+#--------
+#EN_OPT="-h  -G  -b$i"
+
+EN_OPT="-h -2r -G"
+
+for i in $*
+do
+	if test ! -f $i
+	then
+		echo $0: cannot open $i 1>&2
+		exit 1
+	fi
+done
+
+#fold is no good because it is dumb about tabs
+NL="cat -n"
+#NL="nl -ba"
+
+
+for i in $*
+do
+	$NL $i | pr $PR_OPT | enscript $EN_OPT -b$i -o mylpr_dbg.ps
+done

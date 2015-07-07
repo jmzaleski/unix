@@ -1,0 +1,7 @@
+LOG=/usr/matz/.elm/filter-stdout
+
+echo -------- >> $LOG
+date >> $LOG
+
+filter -v -o $LOG
+exit 0

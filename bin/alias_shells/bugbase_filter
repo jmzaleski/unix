@@ -1,0 +1,7 @@
+
+sed -e /^\$STATE/,/^report_number:/d | \
+sed -e /^assigned_by:/,/^fixed_by:/d | \
+sed -e /^assigned_by:/,/^fixed_by:/d | \
+sed -e /^priority:/,/^temp_note:/d   | \
+sed -e /^temp_fix_status:/,/^temp_short:/d 
+

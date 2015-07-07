@@ -1,0 +1,30 @@
+#!/bin/sh
+
+FOR_VAC=$HOME/.forward.vacation
+FORWARD=$HOME/.forward
+
+if cmp -s $FOR_VAC $FORWARD
+then
+	echo $0: already set up for vacation mail forwarding.. exit.
+	exit 0
+fi
+
+if test ! -f $FOR_VAC
+then
+	echo cannot set up to leave on vacation because there is no $FOR_VAC file
+	exit 2
+fi
+
+set -x
+rm -f $FORWARD
+cp $FOR_VAC $FORWARD
+
+cp $HOME/.vacation.msg.template $HOME/.vacation.msg
+umacs $HOME/.vacation.msg
+
+echo "your message is:"
+cat ~/.vacation.msg
+
+echo "your .forward file has been set to"
+cat ~/.forward
+

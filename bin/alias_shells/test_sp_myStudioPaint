@@ -1,0 +1,62 @@
+#!/bin/sh
+#
+# corny shell script to run the current build of StudioPaint
+# with hardware brushes turned on. This takes the executable
+# straight out of the repo where it was built and is meant to
+# test the application after the overnight has finished.
+# 
+
+
+#
+# reset the root of the install tree to the src repo 
+# ie. to run the "installed" version we not have appended the "src" dir.
+#
+
+sp_dir=/usr/StudioPaint/src
+
+#
+# take the binary where it has been built in the repo.
+#
+
+if test -z "$CPU"
+then
+	echo $0: you should have the CPU variable set. 1>&2
+	exit 1
+fi
+
+sp_bin=$sp_dir/install/bin/main/$CPU/a.out
+
+if test ! -f $sp_bin
+then
+	echo $0: $sp_bin does not exist right now. Presumably it has been installed 2>&1
+	exit 2
+fi
+
+ARGS="-CursorBitmapDir $sp_dir/install/cursors 	\
+		-BitmapDir $sp_dir/install/bitmaps		\
+		-TiffDir $sp_dir/install/pix			\
+		-Directory $sp_dir/install/text" $args
+
+#
+# run the usual executable but with a bunch of command line args
+# that indicate where to get cursors etc from.
+# The stuff that is most likely to be different between the repo and the
+# installed build are the resource files indicated by the -Directory flag
+# which must correspond to the code in manager classes.
+#
+
+set -x
+
+if test -z "$XAPPLRESDIR"
+then
+        my_xapplresdir=$sp_dir/install/app-defaults 
+else
+        my_xapplresdir=$XAPPLRESDIR
+        echo $0: since you have XAPPLRESDIR set take resource file from $XAPPLRESDIR
+fi        
+
+
+env XAPPLRESDIR=$my_xapplresdir \
+	ALIAS_SP_ALT_EN=/usr/adm/endir/alias3.3LF/en \
+	$sp_bin $* $ARGS 
+

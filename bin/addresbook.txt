@@ -1,0 +1,2 @@
+<nickname>TAB<fullname>TAB<address>TAB<fcc>TAB<comments>
+and spaces at front of line makes it a continuation line

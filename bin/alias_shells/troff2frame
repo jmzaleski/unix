@@ -1,0 +1,14 @@
+#!/bin/sh
+
+TMP=/tmp/t2f$$
+TMP2=/tmp/t2f2$$
+
+cat > $TMP <<!
+echo .hy 0
+!
+
+nroff -mal $1 | col -b > $TMP
+
+
+sed -e 's/^[ 	]*//' $TMP
+

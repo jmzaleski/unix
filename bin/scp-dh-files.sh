@@ -30,6 +30,7 @@ set -
 echo ask collaborators to open browser to: http://www.zaleski.ca/files
 
 open http://www.zaleski.ca/files &
+echo fix this script to echo the URLs..
 
 echo $rf
 read -p "if collaboarator is done, hit enter to remove files from files, o/w interrupt now to leave." junk

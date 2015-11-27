@@ -3,11 +3,13 @@
 # get this file .'ed in the style of .cshrc by setting the ENV environment
 # variable to point to it (or BASH_ENV in the case of bash)
 
-if diff ~/.kenv ~/dots/.kenv
+#echo ~/.kenv
+
+if test ! -f ~/.kenv 
 then
-	echo > /dev/null
+	echo matz too complicated shell env.. warning no ~/.kenv..
 else
-	echo warning ~/.kenv and ~/dots/.kenv differ
+	diff ~/.kenv ~/dots/.kenv || echo warning ~/.kenv and ~/dots/.kenv differ
 fi
 
 #alias firefox=~/build/firefox/firefox
@@ -258,6 +260,10 @@ newest_dir(){
 		done
 }
 
+#because command history stuff doesn't seem to work in aliases !$
+alias cdlast='cd $(history -p !!:$)'
+#alias cdlast='cd $(fc -l mkdir | cut -d" " -f3); /bin/pwd' #last mkdir
+
 cddnewest(){
 	cd `newest_dir .`
 	/bin/pwd
@@ -410,13 +416,14 @@ fi
 #osx missing ldd, sort of.
 #alias ldd="otool -L"
 
-if test `id -u` == "0"
-then
-    PROMPT=' # '
+
+# if test `id -u` == "0"
+# then
+#     PROMPT=' # '
     
-else
-    PROMPT=' $ '
-fi
+# else
+#     PROMPT=' $ '
+# fi
 
 ################### intel / android builds ############
 

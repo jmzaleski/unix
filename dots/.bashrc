@@ -1,6 +1,8 @@
 # -*-shell-script-*-
 
-MATZ_ANDROID_DIR=`readlink ~/src`
+READLINK=~/bin/readlink.py #"/sw/sbin/readlink -f" # no -f on os/x
+
+MATZ_ANDROID_DIR=`$READLINK ~/src`
 
 #android builds need real java
 #
@@ -14,6 +16,14 @@ java7(){
 	export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
 	PATH="$JAVA_HOME/bin":"$PATH"
 }
+
+java8(){
+	export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/
+	PATH="$JAVA_HOME/bin":"$PATH"
+}
+
+#maven requires java8. see what else breaks..
+java8
 
 #kk build requires java6, "l" build java7
 #java7
@@ -51,7 +61,7 @@ case "$HOME" in
 		;;
 esac
 
-test -r /sw/bin/init.sh && . /sw/bin/init.sh
+#test -r /sw/bin/init.sh && . /sw/bin/init.sh
 
 ############ standard UNIX things #####################
 
@@ -128,21 +138,21 @@ cdd()
 	# cdd with no arg canonicalizes pwd
 	if test -z "$*"
 	then
-		builtin cd `/bin/pwd -P` 
+		builtin cd "`/bin/pwd -P`"
 		/bin/pwd
 		return
 	fi
 	#set -x
 	local p="$*"
 	#if the arg does not name a directory, or is not a link to one, then look in ~/links
-	if test ! -d $p
+	if test ! -d "$p"
 	then
 		p=~/links/"$p" #look in links
 	fi
-	local d=`readlink -f "$p"` #arg exists. just go there
+	local d=`$READLINK "$p"` #arg exists. just go there
 	if test -d "$d"
 	then
-		builtin pushd $d > /dev/null 2>&1
+		builtin pushd "$d" > /dev/null 2>&1
 	else
 		echo cdd: cannot find dir $* or $p
 	fi
@@ -189,7 +199,7 @@ _UseGetOpt-ltop ()   #  By convention, the function name
 				  continue
 			  fi
 			  #echo; echo i: \>"$i"\< #debug; echo
-			  canon=`readlink -f "$i"`
+			  canon=`$READLINK "$i"`
 			  if test ! -z "${dirs[$canon]}"; then
 				  continue # if already in hash, ignore
 			  fi
@@ -209,7 +219,7 @@ _UseGetOpt-ltop ()   #  By convention, the function name
 					  #echo; echo skip $i; echo
 					  continue
 				  fi
-				  canon=`readlink -f "$i"`
+				  canon=`$READLINK "$i"`
 				  if test ! -z "${dirs[$canon]}"; then
 					  continue
 				  fi
@@ -249,8 +259,8 @@ _UseGetOpt-cdd ()   #  By convention, the function name
   # echo
   # if test -d $expand
   # then
-  # 	  readlink -f $expand
-  # 	  COMREPLY=(`readlink -f $expand`)
+  # 	  $READLINK  $expand
+  # 	  COMREPLY=(`$READLINK  $expand`)
   # 	  return
   # fi
 
@@ -280,7 +290,7 @@ _UseGetOpt-cdd ()   #  By convention, the function name
 				  continue
 			  fi
 			  #echo; echo i: \>"$i"\< #debug; echo
-			  canon=`readlink -f "$i"`
+			  canon=`$READLINK  "$i"`
 			  if test ! -z "${dirs[$canon]}"; then
 				  continue # if already in hash, ignore
 			  fi
@@ -300,7 +310,7 @@ _UseGetOpt-cdd ()   #  By convention, the function name
 					  #echo; echo skip $i; echo
 					  continue
 				  fi
-				  canon=`readlink -f "$i"`
+				  canon=`$READLINK  "$i"`
 				  if test ! -z "${dirs[$canon]}"; then
 					  continue
 				  fi
@@ -334,16 +344,18 @@ popd()
 
 if test `id -u` == "0"
 then
-    PROMPT=' # '
+    PROMPT_DOLLAR_OR_HASH=' # '
 else
-    PROMPT=' $ '
+    PROMPT_DOLLAR_OR_HASH=' $ '
 fi
 
-export PROMPT
+# note that this env var will not survive sudo or su (have to sudo bash -l or su - or su -l)
+# but TERM does, dammit, so we have a problem..
+export PROMPT_DOLLAR_OR_HASH
 
 case "$TERM" in
 xterm*|vt100*|cygwin*)
-	PS1="$HOSTNAME"'$PROMPT'
+	PS1="$HOSTNAME"'${PROMPT_DOLLAR_OR_HASH-\\$#\\$# }'
 	#xtitle  #busted google android build!
 	;;
 *)
@@ -356,14 +368,21 @@ esac
 # NB CDPATH like this can bust google android make.
 CDPATH=\
 .:\
-$HOME:\
-$HOME/links:
+$HOME:
 
 #lots of completion tidbits. notably completion along CDPATH
 #see also ~/.inputrc
 #complains that is read only variable?
-BASH_COMPLETION=~/dots/bash_completion
-. $BASH_COMPLETION
+if test -z $BASH_COMPLETION
+then
+ BASH_COMPLETION=~/dots/bash_completion
+fi
+source $BASH_COMPLETION
+
+if test -f ~/git/git/contrib/completion/git-completion.bash
+then
+ source ~/git/git/contrib/completion/git-completion.bash
+fi
 
 # mercurial needs PYTHONPATH set
 #
@@ -377,7 +396,10 @@ $HOME/bin:\
 /usr/local/bin:\
 /sbin:\
 /usr/sbin:\
-/usr/X11/bin:
+/usr/X11/bin:\
+$HOME/build/apache-maven-3.3.3/bin/:
+
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/
 
 #MANPATH=$MANPATH:\
 #/usr/local/man:\
@@ -459,7 +481,8 @@ export HISTFILESIZE=5000
 export HISTFILE=~/.bash_history
 export HISTIGNORE=l:ll:ls:pwd:h:history
 #append history (one command) to file, clear, read history
-export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+#oh boy, this may run afoul of new stuff in osx/ /etc/bashrc
+#export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 #make the default perms of files writable by group.
 #umask 0002
@@ -481,3 +504,6 @@ esac
 
 #echo hello from .bashrc
 
+#export GITHUB_ACCESS_TOKEN=“YOUR OTKEN"
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting

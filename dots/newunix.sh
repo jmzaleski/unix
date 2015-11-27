@@ -31,8 +31,11 @@ cd
 #eval $SVNCMD
 #eval $SVNCMD_BIN
 
-echo now git clone https://github.com/jmzaleski/dots.git
-echo replace this with something like git clone ~/Dropbox/git/matz and a few symlinks bin, dots
+
+echo about to execute: git clone https://matz@bitbucket.org/matz/dots.git
+
+read -p "hit enter to execute: git clone https://matz@bitbucket.org/matz/dots.git ???" junk
+git clone https://matz@bitbucket.org/matz/dots.git
 
 echo 
 read -p "continue to link files in ~/dots ?" junk

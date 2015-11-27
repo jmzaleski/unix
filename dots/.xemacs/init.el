@@ -600,6 +600,7 @@
 		'("\\.bat$" . bat-mode)
 ;		'("\\.as$" . actionscript-mode)
 		'("\\.htm$" . html-mode)
+		'("\\.md$" . markdown-mode)
 		'("\\.cmake$" . cmake-mode))
 	   auto-mode-alist
 	   ))
@@ -1195,7 +1196,7 @@
   "describe matz xemacs fn keys"
   (interactive "")
   (message 
-   "f2=ediff f3={ f4=mark{} f5=vc-dir f6=init.el f7= f8=temp f9=gdb f10=jamvm f11=grep f12=task grep/S-rgrep,M-track,C-occur"
+   "f2=ediff f3={ f4=mark{} f5=vc-dir f6=init.el f7= f8=temp f9=gdb f10=jamvm f11=grep grep/S-rgrep,M-track,C-occur"
    )
   )
 
@@ -1903,10 +1904,20 @@
 ;(load-library "p4") ;;perforce
   
   
+(defun maximize-frame-lg () 
+  (interactive)
+  ; pixels from upper left? hence down a bit so under mac menu bar
+  (set-frame-position (selected-frame) 30 -20) 
+  ; 200 chars wide, 62 rows high for LG
+  (set-frame-size (selected-frame) 200 62)) 
+
 (defun maximize-frame () 
   (interactive)
-  (set-frame-position (selected-frame) 1000 0)
-  (set-frame-size (selected-frame) 1000 1000))
+  ; pixels from upper left? hence down a bit so under mac menu bar
+  (set-frame-position (selected-frame) 30 -20) 
+  ; 200 chars wide, 55 rows high for 15" retina
+  (set-frame-size (selected-frame) 200 55)) 
+
 
 ;(cond (window-system (maximize-frame)))
 

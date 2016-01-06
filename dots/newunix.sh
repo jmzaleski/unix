@@ -7,44 +7,28 @@
 
 ### cd home ####
 cd 
+mkdir git
+cd git
 
 #run this script after checking out dots 
 
-#CVSROOT=:ext:l0.zaleski.ca:~/CVS
-#export CVSROOT=:ext:zaleski@dci.doncaster.on.ca:/var/virtuals/zaleski/zaleski/CVS
-#export CVS_RSH=ssh
-#echo cvs -d $CVSROOT checkout dots
+read -p "hit enter to execute: git clone https://matz@bitbucket.org/matz/dots.git" junk
+git clone https://matz@bitbucket.org/matz/dots.git
 
-#SVNCMD="svn co http://zaleski.dreamhosters.com/personal/trunk/dots    --username matz"
-#SVNCMD_BIN="svn co http://zaleski.dreamhosters.com/personal/trunk/bin --username matz"
+mv dots/.ssh ~/.ssh
 
-#echo you first must check out personal files from matz svn on dreamhosters..
-#echo will execute:
-#echo $SVNCMD
-#echo $SVNCMD_BIN
-#echo
+echo fetch private files from bitbucket
+/bin/pwd
 
-# cvs -d $CVSROOT checkout dots
+echo fetch regular files from github
+/bin/pwd
+read -p "hit enter to execute: git clone git@github.com:jmzaleski/unix.git" junk
 
-#read -p "hit return to continue" junk
+git clone git@github.com:jmzaleski/unix.git
 
-#eval $SVNCMD
-#eval $SVNCMD_BIN
-
-
-echo skip execute: git clone https://matz@bitbucket.org/matz/dots.git
-
-#read -p "hit enter to execute: git clone https://matz@bitbucket.org/matz/dots.git ???" junk
-#git clone https://matz@bitbucket.org/matz/dots.git
-
-#read -p "hit enter to execute: git clone https://matz@bitbucket.org/matz/dots.git ???" junk
-#git clone https://matz@bitbucket.org/matz/dots.git
-
-read -p "hit enter to execute: https://github.com/jmzaleski/unix.git ???" junk
-git clone https://github.com/jmzaleski/unix.git
-
-ln -s unix/dots .
-ln -s unix/bin .
+cd
+ln -s git/unix/dots .
+ln -s git/unix/bin .
 
 echo 
 read -p "continue to link files in ~/dots ?" junk

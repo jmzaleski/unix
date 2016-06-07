@@ -1,50 +1,35 @@
-#!/bin/sh
+#!/bin/sh -e
 
 #copy this script to a new machine.
-#move aside .ssh
 #run the script, should create a bunch of new dirs
-#may be circulat deps on stuff on ~/ct/bin
-
-### cd home ####
 cd 
 
 #run this script after checking out dots 
 
-#CVSROOT=:ext:l0.zaleski.ca:~/CVS
-#export CVSROOT=:ext:zaleski@dci.doncaster.on.ca:/var/virtuals/zaleski/zaleski/CVS
-#export CVS_RSH=ssh
-#echo cvs -d $CVSROOT checkout dots
-
-#SVNCMD="svn co http://zaleski.dreamhosters.com/personal/trunk/dots    --username matz"
-#SVNCMD_BIN="svn co http://zaleski.dreamhosters.com/personal/trunk/bin --username matz"
-
-#echo you first must check out personal files from matz svn on dreamhosters..
-#echo will execute:
-#echo $SVNCMD
-#echo $SVNCMD_BIN
-#echo
-
-# cvs -d $CVSROOT checkout dots
-
-#read -p "hit return to continue" junk
-
-#eval $SVNCMD
-#eval $SVNCMD_BIN
-
-
+mkdir git
+cd git
 echo about to execute: git clone https://matz@bitbucket.org/matz/dots.git
 
 read -p "hit enter to execute: git clone https://matz@bitbucket.org/matz/dots.git ???" junk
 git clone https://matz@bitbucket.org/matz/dots.git
+ls -l dots/.ssh 
+echo might want to copy some of the .ssh stuff to ~/.ssh 
 
-echo 
+read -p "hit enter to execute: git clone https://github.com/jmzaleski/unix.git" junk
+git clone https://github.com/jmzaleski/unix.git
+ln -s $PWD/unix/dots $HOME/dots
+
+echo
+
 read -p "continue to link files in ~/dots ?" junk
 
 dotfiles=""
 
+ln -s $PWD/unix/dots $HOME/dots
+
 ### cd dots ######
 
-cd dots
+cd $HOME/dots
 
 for i in .[a-zA-Z]*
 do
@@ -74,7 +59,15 @@ do
 		exist="$exist $i"
 	else
 	        set -x 
-	        ln -s dots/$i $dest
+		if test -f $dest
+		then
+			echo skip $dest
+		elif ln -s dots/$i $dest
+		then
+			ls -l $dest
+		else
+			echo failed to create symlink $dest
+		fi
 	        set -
 	fi
 done

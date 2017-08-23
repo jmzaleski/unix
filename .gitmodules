@@ -1,0 +1,15 @@
+[submodule "my-gmacs/yaml-mode"]
+	path = my-gmacs/yaml-mode
+	url = https://github.com/yoshiki/yaml-mode.git
+[submodule "my-gmacs/dash.el"]
+	path = my-gmacs/dash.el
+	url = https://github.com/magnars/dash.el.git
+[submodule "my-gmacs/prettier-emacs"]
+	path = my-gmacs/prettier-emacs
+	url = https://github.com/prettier/prettier-emacs.git
+[submodule "my-gmacs/with-editor"]
+	path = my-gmacs/with-editor
+	url = https://github.com/magit/with-editor.git
+[submodule "y"]
+	path = my-gmacs/magit
+	url = https://github.com/magit/magit.git

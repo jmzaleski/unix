@@ -1,11 +1,7 @@
-#!/bin/sh
+#!/bin/sh -e
 
 #copy this script to a new machine.
-#move aside .ssh
 #run the script, should create a bunch of new dirs
-#may be circulat deps on stuff on ~/ct/bin
-
-### cd home ####
 cd 
 mkdir git
 cd git
@@ -24,6 +20,8 @@ echo fetch regular files from github
 /bin/pwd
 read -p "hit enter to execute: git clone git@github.com:jmzaleski/unix.git" junk
 
+<<<<<<< variant A
+>>>>>>> variant B
 git clone git@github.com:jmzaleski/unix.git
 
 cd
@@ -31,13 +29,26 @@ ln -s git/unix/dots .
 ln -s git/unix/bin .
 
 echo 
+####### Ancestor
+#read -p "hit return to continue" junk
+
+#eval $SVNCMD
+#eval $SVNCMD_BIN
+
+echo now git clone https://github.com/jmzaleski/dots.git
+echo replace this with something like git clone ~/Dropbox/git/matz and a few symlinks bin, dots
+
+echo 
+======= end
 read -p "continue to link files in ~/dots ?" junk
 
 dotfiles=""
 
+ln -s $PWD/unix/dots $HOME/dots
+
 ### cd dots ######
 
-cd dots
+cd $HOME/dots
 
 for i in .[a-zA-Z]*
 do
@@ -72,7 +83,15 @@ do
                 ls -l $dest
         else
 	        set -x 
-	        ln -s dots/$i $dest
+		if test -f $dest
+		then
+			echo skip $dest
+		elif ln -s dots/$i $dest
+		then
+			ls -l $dest
+		else
+			echo failed to create symlink $dest
+		fi
 	        set -
 	fi
 done

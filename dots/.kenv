@@ -3,11 +3,13 @@
 # get this file .'ed in the style of .cshrc by setting the ENV environment
 # variable to point to it (or BASH_ENV in the case of bash)
 
-if diff ~/.kenv ~/dots/.kenv
+#echo ~/.kenv
+
+if test ! -f ~/.kenv 
 then
-	echo > /dev/null
+	echo matz too complicated shell env.. warning no ~/.kenv..
 else
-	echo warning ~/.kenv and ~/dots/.kenv differ
+	diff ~/.kenv ~/dots/.kenv || echo warning ~/.kenv and ~/dots/.kenv differ
 fi
 
 #alias firefox=~/build/firefox/firefox
@@ -92,11 +94,23 @@ alias h="history | tail"
 # x commands go straight to emacs command
 # echo might have to run server-start in an emacs first..
 
-##x(){ emacsclient --no-wait $*; }
-x(){
-	p=/usr/bin/
-	"$p"emacsclient --no-wait $*;
+#p=/Applications/Emacs.app/Contents/MacOS/bin #osx default emacsclient in /usr/bin/ no good.
+p=/usr/bin
+xx(){
+	"$p"/emacsclient --no-wait $*;
 }
+
+x(){
+	for i in $*
+	do
+		"$p"/emacsclient --no-wait $i
+	done
+}
+
+xgit(){
+	"$p"/emacsclient --no-wait -eval '(matz-magit-status)'
+}
+
 xmagit(){ emacsclient --eval '(magit-status ".")' --no-wait; } # or $PWD??
 #emacsclient -q -display :0.0 +%d %s $*
 
@@ -258,6 +272,10 @@ newest_dir(){
 		done
 }
 
+#because command history stuff doesn't seem to work in aliases !$
+alias cdlast='cd $(history -p !!:$)'
+#alias cdlast='cd $(fc -l mkdir | cut -d" " -f3); /bin/pwd' #last mkdir
+
 cddnewest(){
 	cd `newest_dir .`
 	/bin/pwd
@@ -410,13 +428,14 @@ fi
 #osx missing ldd, sort of.
 #alias ldd="otool -L"
 
-if test `id -u` == "0"
-then
-    PROMPT=' # '
+
+# if test `id -u` == "0"
+# then
+#     PROMPT=' # '
     
-else
-    PROMPT=' $ '
-fi
+# else
+#     PROMPT=' $ '
+# fi
 
 ################### intel / android builds ############
 
@@ -691,3 +710,18 @@ alias hibernatemode='sudo pmset -a hibernatemode 25'
 alias sleepmode='sudo pmset -a hibernatemode 0'
 alias safesleepmode='sudo pmset -a hibernatemode 3'
 alias smartsleepmode='sudo pmset -a hibernatemode 2'
+
+#uoft
+alias s=./student.sh
+alias o=./onestat.sh
+
+s302(){
+	(cdd 302/marks ; ./student.sh $*)
+}
+s300(){
+	(cdd 300/marks ; ./student.sh $*)
+}
+s2702(){
+	(cdd 2702/marks ; ./student.sh $*)
+}
+

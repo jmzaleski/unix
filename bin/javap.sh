@@ -22,7 +22,8 @@ do
 		pack=`echo $dir | tr / .`"."
 	fi
 	cl=$pack$c
-	javap -s $cl
+    # -c disassemble..
+	javap -private -c -cp . -s $cl
 done
 
 #  	echo 'dirname='$dir

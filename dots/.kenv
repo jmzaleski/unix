@@ -94,7 +94,7 @@ alias h="history | tail"
 
 ##x(){ emacsclient --no-wait $*; }
 x(){
-	p=/Applications/Emacs.app/Contents/MacOS/bin/ #osx default emacsclient in /usr/bin/ no good.
+	p=/usr/bin/
 	"$p"emacsclient --no-wait $*;
 }
 xmagit(){ emacsclient --eval '(magit-status ".")' --no-wait; } # or $PWD??

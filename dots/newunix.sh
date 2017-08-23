@@ -3,24 +3,43 @@
 #copy this script to a new machine.
 #run the script, should create a bunch of new dirs
 cd 
+mkdir git
+cd git
 
 #run this script after checking out dots 
 
-mkdir git
-cd git
-echo about to execute: git clone https://matz@bitbucket.org/matz/dots.git
-
-read -p "hit enter to execute: git clone https://matz@bitbucket.org/matz/dots.git ???" junk
+read -p "hit enter to execute: git clone https://matz@bitbucket.org/matz/dots.git" junk
 git clone https://matz@bitbucket.org/matz/dots.git
-ls -l dots/.ssh 
-echo might want to copy some of the .ssh stuff to ~/.ssh 
 
-read -p "hit enter to execute: git clone https://github.com/jmzaleski/unix.git" junk
-git clone https://github.com/jmzaleski/unix.git
-ln -s $PWD/unix/dots $HOME/dots
+mv dots/.ssh ~/.ssh
 
-echo
+echo fetch private files from bitbucket
+/bin/pwd
 
+echo fetch regular files from github
+/bin/pwd
+read -p "hit enter to execute: git clone git@github.com:jmzaleski/unix.git" junk
+
+<<<<<<< variant A
+>>>>>>> variant B
+git clone git@github.com:jmzaleski/unix.git
+
+cd
+ln -s git/unix/dots .
+ln -s git/unix/bin .
+
+echo 
+####### Ancestor
+#read -p "hit return to continue" junk
+
+#eval $SVNCMD
+#eval $SVNCMD_BIN
+
+echo now git clone https://github.com/jmzaleski/dots.git
+echo replace this with something like git clone ~/Dropbox/git/matz and a few symlinks bin, dots
+
+echo 
+======= end
 read -p "continue to link files in ~/dots ?" junk
 
 dotfiles=""
@@ -50,14 +69,19 @@ exist=""
 for i in $dotfiles
 do
         dest=~/$i
-	if test -f $dest
+	if test -f $dest  || test -d $dest
 	then
 		ls -ld $dest
 		echo $dest exists. decide if you want to link by hand and if so:
 		echo mv $dest $dest.orig
 		echo ln -s dots/$i $dest
 		exist="$exist $i"
-	else
+	elif test -L $dest
+        then
+	        echo symlink $dest already exists
+		exist="$exist $i"
+                ls -l $dest
+        else
 	        set -x 
 		if test -f $dest
 		then
@@ -75,7 +99,7 @@ done
 if test ! -z "$exist"
 then
 	echo fix up the following . files -- this script is too chicken to clobber
-	ls -ltr $exist
+	ls -ldtr $exist
 fi
 
 

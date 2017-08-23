@@ -2024,20 +2024,18 @@
 (global-set-key [(shift up)] 'scroll-up-one-line)
 (global-set-key [(shift down)] 'scroll-down-one-line)
 
-(add-to-list 'load-path "~/my-gmacs/magit-1.2.0")
+;(add-to-list 'load-path "~/my-gmacs/magit-1.2.0")
+(add-to-list 'load-path "~/my-gmacs/dash.el")
+(add-to-list 'load-path "~/my-gmacs/with-editor")
+(add-to-list 'load-path "~/my-gmacs/magit/lisp")
 
-;(add-to-list 'load-path "~/my-gmacs/dash.el") ;something busted to do with cl-lib
-;(add-to-list 'load-path "~/my-gmacs/magit-tip") ;something busted to do with cl-lib
-
+(require 'with-editor)
+(require 'dash)
 (require 'magit)
 
 
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
-
-
-;      browse-url-generic-program "google-chrome-stable")
-
 
 
 ;;make name field wider 

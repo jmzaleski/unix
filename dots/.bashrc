@@ -493,13 +493,13 @@ case $SHELL in
 *DOSBASH.EXE)
     . ~/dots/.kenv
 	;;
-/bin/ksh)
+*/ksh)
 	. $HOME/.kenv
 	;;
-*/bin/bash)
+*/bash)
 	. "$HOME"/.kenv
 	;;
-/bin/sh)
+*/sh)
 	. $HOME/.kenv
 	;;
 esac

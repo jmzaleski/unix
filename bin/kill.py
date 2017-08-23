@@ -24,7 +24,7 @@ for line in child.readlines():
     if re.search('kill.py', line) or re.search(grep_cmd, line):
         continue;
     map[int(i)] = line
-    #print "line=", map[i]
+    print "line=", map[i]
     i += 1
 
 err = child.close()
@@ -55,6 +55,7 @@ if m :
      pid = m.group('PID')
      print "kill:", selected_line
      cmd = "kill -9 " + pid
+     print pid, cmd
      junk = raw_input(cmd + ": ")
      os.system(cmd)
      

@@ -8,7 +8,7 @@
 
 ;try using dropbox shared file for notes.
 ;start out with using separate files for separate machines.
-(setq matz-dev-note-file-name "~/Dropbox/notes/Notes-2014-mzaleski-m3.txt")
+(setq matz-dev-note-file-name "~/Dropbox/notes/Notes-2016-mzaleski-m3.txt")
 
 (setq dired-listing-switches "-alt")
 (setq list-directory-verbose-switches "-alt")
@@ -430,7 +430,7 @@
 
 ;;if word under point is a hex number then take off the 0x and search for just the number.
 ;;otherwise search for a whitespace delineated regexp
-;;this pretty well redundant now that I've learned about c-w in isearch mode.
+;;this redundant now that I've learned about c-w in isearch mode.
 
 (defun matz-search-forward-for-current-hex-number()
   "reset matz-search-regexp from current word and then search for it"
@@ -537,6 +537,39 @@
   )
 
 
+(defun matz-comment-grade()
+  "in a grades file make duplicate the current line and make the lower line a comment"
+  (interactive "")
+;  (read-from-minibuffer  "grade:" "00")
+  (beginning-of-line)
+  (kill-line 1)
+  (yank)
+  (previous-line)
+  (end-of-line)
+  ;;really should check if , already there
+;  (insert (read-from-minibuffer  "grade: " ","))
+;  (insert (read-from-minibuffer  "grade: " ""))
+   (next-line)
+  (beginning-of-line)
+  (yank)
+  (previous-line)
+  (beginning-of-line)
+  (forward-word)
+  (insert "*")
+  (end-of-line)
+  (insert " # bump ")
+;  (insert " # ")
+  (insert (format-time-string "%b%d %H:%M: "))
+  (local-set-key (quote [f12]) 'matz-comment-grade)
+  )
+
+(defun cg()
+  "dup of matz-comment-grade"
+  (interactive "")
+  (matz-comment-grade)
+  )
+
+
 ;I don't like this as much because no completion. But useful to add regexp around current word.
 (defun matz-tag-prompt-find-token()
   "tag to current word giving user a chance to edit the tag expression"
@@ -580,9 +613,35 @@
 
 ;(require 'cmake-mode)
 
+;;prettier
+(setq load-path (cons "~/my-gmacs/prettier-emacs" load-path))
+(require 'prettier-js)
+(require 'markdown-mode)
+
+(require 'yaml-mode)
+
+
+;;eg only. double-quotes and stuff probably userful..
+
+
+(setq prettier-js-args '(
+                        "--trailing-comma" "es5"
+                        "--bracket-spacing" "true"
+                        "--tab-width" "4"
+                        "--jsx-bracket-same-line" "true"
+                        "--single-quote" "true"
+                        ))
+
+(add-hook 'js-mode-hook 'prettier-js-mode)
+
+;(require 'tracker-dired) ;linux only
+(require 'mdfind-dired) ;os/x only
+
 (setq auto-mode-alist
 	  (append
 	   (list
+		'("\\.js$" . javascript-mode)
+		'("\\.jsx$" . javascript-mode)
 		'("\\.ss$" . lisp-mode)
 		'("\\.h$" . c++-mode)
 		'("\\.c$" . c++-mode)
@@ -601,7 +660,8 @@
 ;		'("\\.as$" . actionscript-mode)
 		'("\\.htm$" . html-mode)
 		'("\\.md$" . markdown-mode)
-		'("\\.cmake$" . cmake-mode))
+		'("\\.cmake$" . cmake-mode)
+		'("\\.yaml$" . yaml-mode))
 	   auto-mode-alist
 	   ))
 ;;
@@ -1276,8 +1336,16 @@
   (interactive "")
   (mdfind-dired
    (read-from-minibuffer
-    (concat "query for mdfind.. " (current-word) " -onlyin ~/wrk) " )
-    (concat (current-word) " -onlyin ~/wrk"))))
+    (concat "query for mdfind.. " (current-word) ": ")
+    (concat (current-word)  " -onlyin ~/wrk"))))
+
+(defun matz-mdfind-file-name() "mdfind for file named.."
+  (interactive "")
+  (mdfind-dired
+   (read-from-minibuffer
+    (concat "query for mdfind.. -name " (current-word) )
+    (concat " -name " (current-word) " -onlyin ~/wrk" ))))
+
 
 ;(locate-in-alternate-database "dex2oat" "/media/src/android.updatedb")
 (defun matz-locate-current-word() "use linux locate to find file name containing current word"
@@ -1301,9 +1369,11 @@
 (global-set-key (quote [f11]) 'lgrep)
 (global-set-key (quote [(shift f11)]) 'rgrep)
 (global-set-key (quote [(control f11)]) 'matz-occur-current-word)
-;(global-set-key (quote [(meta f11)]) 'matz-mdfind-current-word)
+(global-set-key (quote [(meta f11)]) 'matz-mdfind-current-word)
+(global-set-key (quote [(shift (meta f11))]) 'matz-mdfind-file-name)
+
 ;(global-set-key (quote [(meta f11)]) 'matz-locate-current-word)
-(global-set-key (quote [(meta f11)]) 'matz-tracker-dired-current-word)
+;(global-set-key (quote [(meta f11)]) 'matz-tracker-dired-current-word)
 
 
 ;this is the global blog key, takes me to emacs wiki NOTE page
@@ -1555,8 +1625,6 @@
 
 (setq load-path (cons "~/my-gmacs/emacs-wiki" load-path))
 
-;(require 'tracker-dired) ;linux only
-(require 'mdfind-dired) ;os/x only
 (require 'emacs-wiki)
 ;(require 'actionscript-mode) ;downloaded from somewhere into my-gmacs
 
@@ -1930,7 +1998,9 @@
 
 (setq ediff-split-window-function 'split-window-horizontally)
 
-(setq visible-bell t) ;;interesting idea. makes a black box pop up in middle of window. visual bell!
+;;interesting idea. makes a black box pop up in middle of window. visual bell!
+;;but makes for weirdness in windows on os/x
+;(setq visible-bell t) 
 
  (defun matz-clear-shell ()
    "clear screen in shell-mode"
@@ -1995,3 +2065,12 @@
   "Change the current buffer to Latin 1 with Mac line-ends."
   (interactive)
   (set-buffer-file-coding-system 'iso-latin-1-mac t)) 
+
+(column-number-mode 1)
+(global-set-key "\275" (quote text-scale-adjust))
+
+;hate that damn brief thingy
+(global-set-key "" (quote dired))
+
+(find-file "~/notes/2702.txt")
+(find-file "~/notes/dcs-tapp.txt")

@@ -95,10 +95,23 @@ alias h="history | tail"
 # echo might have to run server-start in an emacs first..
 
 ##x(){ emacsclient --no-wait $*; }
-x(){
+xx(){
 	p=/Applications/Emacs.app/Contents/MacOS/bin/ #osx default emacsclient in /usr/bin/ no good.
 	"$p"emacsclient --no-wait $*;
 }
+
+x(){
+	p=/Applications/Emacs.app/Contents/MacOS/bin/ #osx default emacsclient in /usr/bin/ no go	
+	for i in $*
+	do
+		"$p"emacsclient --no-wait $i
+	done
+}
+
+xgit(){
+	/Applications/Emacs.app/Contents/MacOS/bin/emacsclient --no-wait -eval '(matz-magit-status)'
+}
+
 xmagit(){ emacsclient --eval '(magit-status ".")' --no-wait; } # or $PWD??
 #emacsclient -q -display :0.0 +%d %s $*
 
@@ -698,3 +711,18 @@ alias hibernatemode='sudo pmset -a hibernatemode 25'
 alias sleepmode='sudo pmset -a hibernatemode 0'
 alias safesleepmode='sudo pmset -a hibernatemode 3'
 alias smartsleepmode='sudo pmset -a hibernatemode 2'
+
+#uoft
+alias s=./student.sh
+alias o=./onestat.sh
+
+s302(){
+	(cdd 302/marks ; ./student.sh $*)
+}
+s300(){
+	(cdd 300/marks ; ./student.sh $*)
+}
+s2702(){
+	(cdd 2702/marks ; ./student.sh $*)
+}
+

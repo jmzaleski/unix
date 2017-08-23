@@ -155,6 +155,7 @@ cdd()
 		builtin pushd "$d" > /dev/null 2>&1
 	else
 		echo cdd: cannot find dir $* or $p
+		#could look in each directory here for $d. for $ldir in *; do if test -d $ldir/$d...
 	fi
 	echo $PWD
 	xtitle $PWD
@@ -379,6 +380,7 @@ then
 fi
 source $BASH_COMPLETION
 
+#this assumes matz conventional place to checkout random git archives.. ie ~/git
 if test -f ~/git/git/contrib/completion/git-completion.bash
 then
  source ~/git/git/contrib/completion/git-completion.bash
@@ -397,7 +399,7 @@ $HOME/bin:\
 /sbin:\
 /usr/sbin:\
 /usr/X11/bin:\
-$HOME/build/apache-maven-3.3.3/bin/:
+$HOME/build/apache-maven-3.3.3/bin:
 
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/
 
@@ -443,9 +445,9 @@ fi
 #at home HP2200 is network connected.
 #osx/ cooked up this name (mac laptops)
 #export PRINTER=_192.168.0.7
-#matzhp2200 busted network interface..
+#lw-ba4239 across from karen's office
 
-export PRINTER=hp2200-usb
+export PRINTER=lw-ba4239
 
 
 if test -z "$HOST"

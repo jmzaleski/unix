@@ -1558,52 +1558,11 @@
   (scroll-down 1))
 
 
-;;                       ;;                             (list pgg-gpg-user-id))))
-;;                       ;; nil t)
-;; 	    (add-hook 'after-save-hook 'after-save )
-;; 		    ;;   (lambda ()
-;;             ;;             (let ((pgg-output-buffer (current-buffer)))
-;;             ;;               (pgg-gpg-decrypt-region (point-min) (point-max)))
-;; 			;; (set-buffer-modified-p nil)
-;; 			;; (auto-save-mode nil))
-;; 		      nil t)
-;; 		(let ((pgg-output-buffer (current-buffer)))
-;; 		  (pgg-gpg-decrypt-region (point-min) (point-max)))
-;; 	    (auto-save-mode nil)
-;; 	    (set-buffer-modified-p nil))
-;; "Mode for gpg encrypted files")
-
 ; so emacsclient opens windows in emacs..
 (server-start)
 
-;(defadvice raise-frame (after make-it-work (&optional frame) activate)
-;    "Work around some bug? in raise-frame/Emacs/GTK/Metacity/something.
-;     Katsumi Yamaoka posted this in
-;     http://article.gmane.org/gmane.emacs.devel:39702
-;     matz: ugly flash but works"
-;     (call-process
-;     "wmctrl" nil nil nil "-s" "1")
-;     (call-process
-;     "wmctrl" nil nil nil "-i" "-R"
-;     (frame-parameter (or frame (selected-frame)) 'outer-window-id)))
-;(add-hook 'server-switch-hook 'raise-frame)
-
-
-;; (defun px-raise-frame-and-give-focus ()
-;;   "bug workaround emacs 23. it won't raise window after emacsclient message. matz: doesn't work"
-;;   (when window-system
-;;     (raise-frame)
-;;     (x-focus-frame (selected-frame))
-;;     (set-mouse-pixel-position (selected-frame) 4 4)
-;;     ))
-;; (add-hook 'server-switch-hook 'px-raise-frame-and-give-focus)
 
 (setq html-helper-build-new-buffer t)
-
-;(load-file "~/shared-folders/sequoia/tools/cprof-txt.el")
-;(toggle-debug-on-error 1)
-;(plan 3)
-;(toggle-debug-on-error 0)
 
 ;;on aquamacs make command key meta (it doesn't by default)
 (setq mac-command-modifier 'meta)
@@ -1618,40 +1577,6 @@
 
 ;;don't have to do this, it happens automatically
 ;;(load-file "~/Library/Preferences/Aquamacs Emacs/customizations.el")
-
-;(planner-goto-today)
-;  (find-file-other-window matz-dev-note-file-name)
-;(find-file "~/notes/Notes-Intel-2013-mathewza-dev.txt")
-
-
-;; ~/hmm is the (busted) partially patched version (with some rejects or we wouldn't be undergoing this torture)
-
-;; ~/b-hmm               has my mods, based on the "old" version, in the dir written by backupeclipse
-;; /tmp/halfmoon-old/    is the "old" version, namely the version i modified with the patches qpop'ed
-;; ~/m-c-hmm/            is a current checkout of the vanilla current halfmoon repo
-;;
-;; the arg order really matters.
-;; if it's a total mess and you want to merge from scratch then: ~/b-hmm/ /tmp/halfmoon-old/" "~/m-c-hmm/
-;; if you want to pick up the pieces after patch rejected:       /tmp/halfmoon-old/" ~/b-hmm/ "~/m-c-hmm/
-;;
-(defun matz-merge-hm ()
-  (interactive)
-
-  (let*
-	((bn      (buffer-name)) 
-	 (hmm     (concat "~/hmm/" bn))
-	 (b-hmm   (concat "~/b-hmm/" bn))
-	 (old     (concat "/tmp/halfmoon/old/" bn))
-	 (current (concat "~/m-c-hmm/" bn))
-	 )
-
-	(read-from-minibuffer (concat "hit return to exec: ediff3    " hmm "***" old "***" current))
-	(ediff3 hmm old current)
-	)
-  )
-;;epa mode comes with emacs 23
-;(setq load-path (cons "~/my-gmacs/share/emacs/site-lisp/epg" load-path))
-;(require 'epa-setup)
 
 (setq mac-emulate-three-button-mouse t)
 (setq even-window-heights nil)
@@ -1683,17 +1608,6 @@
 ;means you can navigate in emacs using the symlinks but have the relative paths between files correct.
 (setq find-file-visit-truename t)
 
-;; (defun true-pwd ()
-;;   "Show the current default directory."
-;;   (interactive nil)
-;;   (let* ((false-pwd default-directory))
-;; 	(message "Directory %s" file-truename)
-;; 	))
-
-;not for unix dev machines
-;(find-file "~/Google Drive/notes/Notes.txt")
-;(find-file "~/Google Drive/notes/Notes-2013.txt")
-
 ;;gussy up buffer-menu a lot.
 (load-file "~/my-gmacs/buff-menu+.el")
 
@@ -1715,12 +1629,6 @@
   ; 200 chars wide, 55 rows high for 15" retina
   (set-frame-size (selected-frame) 200 55)) 
 
-
-;(cond (window-system (maximize-frame)))
-
-;when drag a file in open it in new buffer -- not frame
-;(if (fboundp 'ns-find-file)
-;    (global-set-key [ns-drag-file] 'ns-find-file))
 
 ;when "open with" a file from p4 open it in new buffer -- not frame 
 (setq ns-pop-up-frames nil)

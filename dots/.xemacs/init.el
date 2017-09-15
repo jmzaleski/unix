@@ -1,9 +1,5 @@
 ;;-*-Lisp-*-
 
-; Emacs.app seems to ignore PATH coming in from environment. Tell it.
-;(add-to-list ‘exec-path “/sw/bin”) ;fink tools
-(setq exec-path (append exec-path '("/sw/bin"))) ;fink tools
-
 ;;; matz .emacs file. see ~/my-gmacs/dot.emacs.el for scraps and leftovers.
 
 ;try using dropbox shared file for notes.
@@ -27,10 +23,6 @@
 (setq display-time-day-and-date t)
 
 ;; Version control.  These settings cause the first change to be kept 
-;; forever, and two latest saves to be kept.
-;; Note:  the 'dired' command '~' will remove all backups
-;;     (ESC-D RET ~ x yes) to get rid of all backups.
-
 (setq version-control t)
 (setq file-precious-flag t);; write to tmp and mv
 (setq kept-new-versions 4);; Use two new versions
@@ -43,11 +35,6 @@
 (set-variable (quote c-continued-statement-offset) 4)
 (set-variable (quote c-tab-always-indent) nil)
 (set-variable (quote ispell-program-name) "aspell")
-
-
-
-;gnats mode put stuff in here
-;(setq load-path (cons " /usr/local/lib/emacs/lisp" load-path))
 
 ;matz stuff
 (setq load-path (cons "~/my-gmacs" load-path))
@@ -83,22 +70,6 @@
 				 (1+ col))))))
 
 
-
-
-; from craig mc* at alias ;;;;;;;;;;;;;;;;;;;;;
-; Specify the load path - in reverse order.
-; This has been put here to avoid the need to set the environment variable.
-; This makes it easier to use this .emacs from other user's accounts.
-;
-; The environment variable it replaces is: EMACSLOADPATH
-
-
-;; All the modes to take precedence over the emacs defaults
-
- 
-;VARIABLES
-;;;(setq search-delete-char ?\C-h)			;; To stop annoying ^h behaviour
-
 (setq ask-about-buffer-names nil);; number the duplicate buffers
 ;(setq find-file-run-dired nil)			;; Can not visit directories
 (setq backup-by-copying-when-linked t)
@@ -112,9 +83,6 @@
 
 (setq compile-clear-modtime t);; Stop annoying compile behaviour
 
-;;;;; MY FUNCTIONS
-
-
 ;; MINIBUFFER STUFF (<sp> completes everything; <tab> completes word)
 
 (define-key minibuffer-local-completion-map " " 'minibuffer-complete)
@@ -124,170 +92,6 @@
 
 ;; ENVIRONMENT
 
-;(put 'eval-expression 'disabled nil)
-;(put 'narrow-to-region 'disabled nil)
-;(setq enable-recursive-minibuffers nil)
-
-(defun java-insert-file-header() "read in javadoc stuff for file"
-  (interactive "")
-  (insert-file "~/.templates/FileTemplate.java")
-  (search-forward "<P>")
-  )
-(defun java-insert-field-header() "read in javadoc stuff for field"
-  (interactive "")
-  (insert-file "~/.templates/FieldTemplate.java")
-  (search-forward "<P>")
-  )
-
-;;must be in synch with FieldTemplate.java
-;;depends on <XX> in above being fieldName
-;;           <TT>                type
-;;           <YY>                get accessor
-;;           <ZZ>                set accessor
-
-
-
-(defun java-makeaccessors() "make accessor for decl under point"
-  (interactive "")
-  (set-mark-command nil);;original place
-;;  (setq type-word (matz-word-under-point)) ;;type name
-  (setq type-word (current-word));;type name
-  (forward-word 2)
-;  (setq field-word (matz-find-tag-default));;name of field
-;  (setq xx         (matz-find-tag-default))
-  (setq field-word (current-word));;name of field
-  (setq xx         (current-word))
-  (aset xx 0 (upcase (aref field-word 0)))
-  (setq getaccessor-name (concat "get" xx))
-  (setq setaccessor-name (concat "set" xx))
-
-  (beginning-of-line nil)
-
-  (exchange-point-and-mark);;back to original place
-  (beginning-of-line nil)
-  (insert-file "~/.templates/PREAccessorTemplate.java")
-
-  (exchange-point-and-mark);;back to original place
-  (message "not tested since current-word used")
-  (end-of-line)
-
-;;  (insert
-;;   (concat "\n//<" type-word " " field-word " "
-;;		           getaccessor-name " " setaccessor-name  ">" ))
-  (forward-line 1)
-
-  (insert-file "~/.templates/POSTAccessorTemplate.java")
-  (search-backward "<SS>")
-  (set-mark-command nil)
-  (while (search-forward "<TT>" nil t)
-    (replace-match type-word  t t))		;
-  (search-backward "<SS>")
-  (while (search-forward "<YY>" nil t)
-    (replace-match getaccessor-name  t t)) ;
-  (search-backward "<SS>")
-  (while (search-forward "<ZZ>" nil t)
-    (replace-match setaccessor-name  t t)) ;
-  (search-backward "<SS>")
-  (while (search-forward "<XX>" nil t)
-    (replace-match field-word  t t))	;
-  (search-backward "<SS>")
-  )
-
-
-
-
-;   (search-backward "<SS>")
-;   (set-mark-command nil)
-; ;  (query-replace "<TT>" type-word)
-;   (replace-string "<TT>" type-word)
-;   (exchange-point-and-mark)
-; ;  (query-replace "<YY>" getaccessor-name)
-;   (replace-string "<YY>" getaccessor-name)
-;   (exchange-point-and-mark)
-; ;  (query-replace "<ZZ>" setaccessor-name)
-;   (replace-string "<ZZ>" setaccessor-name)
-;   (exchange-point-and-mark)
-; ;  (query-replace "<XX>" field-word)
-;   (replace-string "<XX>" field-word)
-;   (exchange-point-and-mark)
-
-;;this is totally wimpy, but the show must go on. Just add [] manually.
-;;
-(defun java-makeaccessors-array() "make accessor for decl under point"
-  (interactive "")
-  (set-mark-command nil);;original place
-;;  (setq type-word (concat (matz-word-under-point) "[]")) ;;type name
-  (setq type-word (concat (current-word) "[]"));;type name
-  (forward-word 2)
-;  (setq field-word (matz-find-tag-default));;name of field
-;  (setq xx         (matz-find-tag-default))
-  (setq field-word (current-word));;name of field
-  (setq xx         (current-word))
-  (aset xx 0 (upcase (aref field-word 0)))
-  (setq getaccessor-name (concat "get" xx))
-  (setq setaccessor-name (concat "set" xx))
-
-  (beginning-of-line nil)
-
-  (exchange-point-and-mark);;back to original place
-  (beginning-of-line nil)
-  (insert-file "~/.templates/PREAccessorTemplate.java")
-
-  (exchange-point-and-mark);;back to original place
-  (end-of-line)
-  (insert
-   (concat "\n//<" type-word " " field-word " "
-		   getaccessor-name " " setaccessor-name  ">" ))
-  (forward-line 1)
-
-  (insert-file "~/.templates/POSTAccessorTemplate.java")
-  (search-backward "<SS>")
-  (set-mark-command nil)
-  (while (search-forward "<TT>" nil t)
-    (replace-match type-word  t t))		;
-  (search-backward "<SS>")
-  (while (search-forward "<YY>" nil t)
-    (replace-match getaccessor-name  t t)) ;
-  (search-backward "<SS>")
-  (while (search-forward "<ZZ>" nil t)
-    (replace-match setaccessor-name  t t)) ;
-  (search-backward "<SS>")
-  (while (search-forward "<XX>" nil t)
-    (replace-match field-word  t t))	;
-  (search-backward "<SS>")
-  (message "not tested since current-word called")
-  )
-
-;  (exchange-point-and-mark)
-;  (query-replace "<YY>" getaccessor-name)
-;  (replace-string "<YY>" getaccessor-name)
-;  (exchange-point-and-mark)
-;  (query-replace "<ZZ>" setaccessor-name)
-;  (replace-string "<ZZ>" setaccessor-name)
-;  (exchange-point-and-mark)
-;  (query-replace "<XX>" field-word)
-;  (replace-string "<XX>" field-word)
-;  (exchange-point-and-mark)
-
-
-
-(defun java-insert-method-header() "read in javadoc stuff for field"
-  (interactive "")
-  (insert-file "~/.templates/MethodTemplate.java")
-  (search-forward "<P>")
-  )
-
-(defun my-c-insert-method-header() "read in javadoc stuff for field"
-  (interactive "")
-  (insert-file "~/.templates/C/MethodTemplate.c")
-  (search-forward "<P>")
-  )
-
-(defun java-insert-class-header() "read in javadoc stuff for field"
-  (interactive "")
-  (insert-file "~/.templates/ClassTemplate.java")
-  (search-forward "<P>")
-  )
 
 
 ;;
@@ -351,26 +155,6 @@
   (interactive "")
   (new-empty-buffer)
   (html-helper-mode)
-  )
-
-
-
-;stay away from f6-f12 defined in .fvmwrc for stuff. (for X)
-;
-(defun java-define-pf() "define pf keys for java mode"
-  (interactive "")
-  ;;how does one set
-  ;; C-M-. to java-find-class-tag
-  ;;c-c c-v c-i to java-insert-tag
-  (global-set-key "" 'my-compile)
-  (global-set-key "" 'next-error)
-  (global-set-key (quote [f1]) (quote java-insert-file-header))   
-  (global-set-key (quote [f2]) (quote java-insert-class-header))   
-  (global-set-key (quote [f3]) (quote java-insert-field-header))   
-  (global-set-key (quote [f4]) (quote java-insert-method-header))   
-  (global-set-key (quote [f5]) (quote java-makeaccessors))   
-;   (global-set-key (quote [f7]) (quote java-makeaccessors-array))
-  (message "java pc keys set")
   )
 
 (defun my-c-define-pf() "define pf keys for my c mode"
@@ -482,7 +266,7 @@
 ;;searches for the current word in the tag tables and
 ;; then finds the tag with a prepended "class"
 (defun java-find-class-tag()
-  (interactive)
+   (interactive)
 ;;  (message (concat "class " (find-tag-tag (current-word))))
   (find-tag (concat "\\(class\\|interface\\|typedef\\|struct\\) " (find-tag-tag (current-word))))
 ;;  (find-tag (concat "class " (find-tag-tag (current-word))))
@@ -683,7 +467,6 @@
 (defun my-java-mode-hook ()
   (interactive)
   (setq default-tab-width 4);; Maybe 8?  use ^x^t to toggle
-;  (java-define-pf)
   (column-number-mode 1)
   (line-number-mode 1);;display which line number we're on.
   (cond (window-system (turn-on-font-lock)))
@@ -1774,61 +1557,7 @@
   (interactive)
   (scroll-down 1))
 
-;; (define-generic-mode 'gpg-file-mode
-;;   (list ?#) 
-;;   nil nil
-;;   '(".gpg\\'" ".gpg-encrypted\\'")
-;;   (list (lambda ()
-;; 	    (add-hook 'before-save-hook
-;;                       (lambda () 
-;;                         (let ((pgg-output-buffer (current-buffer)))
-;;                           (pgg-gpg-encrypt-region (point-min) (point-max)
-;;                                                   (list pgg-gpg-user-id))))
-;;                       nil t)
-;; 	    (add-hook 'after-save-hook 
-;; 		      (lambda ()
-;;                         (let ((pgg-output-buffer (current-buffer)))
-;;                           (pgg-gpg-decrypt-region (point-min) (point-max)))
-;; 			(set-buffer-modified-p nil)
-;; 			(auto-save-mode nil))
-;; 		      nil t)
-;;             (let ((pgg-output-buffer (current-buffer)))
-;;               (pgg-gpg-decrypt-region (point-min) (point-max)))
-;; 	    (auto-save-mode nil)
-;; 	    (set-buffer-modified-p nil)))
-;;   "Mode for gpg encrypted files")
 
-;;
-;; pasted this in from emacs wiki after 23 upgrade
-;;
-;; (defvar pgg-gpg-user-id "matz")
-;; (autoload 'pgg-make-temp-file "pgg" "PGG")
-;; (autoload 'pgg-gpg-decrypt-region "pgg-gpg" "PGG GnuPG")
-
-;; (defun before-save ()
-;;   " "
-;;   (interactive)
-;;   (let ((pgg-output-buffer (current-buffer)))
-;; 	(pgg-gpg-encrypt-region (point-min) (point-max)
-;; 							(list "matz")))
-;; )
-
-;; (defun after-save ()
-;;   " "
-;;   (interactive)
-;;   (let ((pgg-output-buffer (current-buffer)))
-;;                           (pgg-gpg-decrypt-region (point-min) (point-max)))
-;; )
-
-;; (define-generic-mode 'gpg-file-mode
-;;   (list ?#) 
-;;   nil nil
-;;   '(".gpg\\'" ".gpg-encrypted\\'")
-;;   (list (lambda ()
-;; 	    (add-hook 'before-save-hook 'before-save )
-;;                       ;; (lambda () 
-;;                       ;;   (let ((pgg-output-buffer (current-buffer)))
-;;                       ;;     (pgg-gpg-encrypt-region (point-min) (point-max)
 ;;                       ;;                             (list pgg-gpg-user-id))))
 ;;                       ;; nil t)
 ;; 	    (add-hook 'after-save-hook 'after-save )
@@ -2024,7 +1753,6 @@
 (global-set-key [(shift up)] 'scroll-up-one-line)
 (global-set-key [(shift down)] 'scroll-down-one-line)
 
-;(add-to-list 'load-path "~/my-gmacs/magit-1.2.0")
 (add-to-list 'load-path "~/my-gmacs/dash.el")
 (add-to-list 'load-path "~/my-gmacs/with-editor")
 (add-to-list 'load-path "~/my-gmacs/magit/lisp")

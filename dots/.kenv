@@ -95,7 +95,8 @@ alias h="history | tail"
 # echo might have to run server-start in an emacs first..
 
 #p=/Applications/Emacs.app/Contents/MacOS/bin #osx default emacsclient in /usr/bin/ no good.
-p=/usr/bin
+#p=/usr/bin
+p=/Applications/Aquamacs.app/Contents/MacOS/bin
 xx(){
 	"$p"/emacsclient --no-wait $*;
 }

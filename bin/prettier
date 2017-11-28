@@ -1,0 +1,3 @@
+#!/bin/bash
+
+node ~/git/prettier/bin/prettier.js  $*

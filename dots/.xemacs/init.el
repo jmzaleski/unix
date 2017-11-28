@@ -416,7 +416,8 @@
                         "--single-quote" "true"
                         ))
 
-(add-hook 'js-mode-hook 'prettier-js-mode)
+;;i think this prettifies whole buffer on save (?)
+;(add-hook 'js-mode-hook 'prettier-js-mode)
 
 ;(require 'tracker-dired) ;linux only
 (require 'mdfind-dired) ;os/x only
@@ -1090,7 +1091,8 @@
 
 (defun matz-magit-status() "run magit in current working dir"
   (interactive "")
-  (magit-status default-directory ) ;closest thing to pwd
+;  (magit-status default-directory ) ;closest thing to pwd
+  (magit-status) ;closest thing to pwd  
   )
 
 (global-set-key (quote [f5]) 'matz-magit-status)
@@ -1706,5 +1708,19 @@
 ;hate that damn brief thingy
 (global-set-key "" (quote dired))
 
+(find-file "~/notes/300.txt")
 (find-file "~/notes/2702.txt")
 (find-file "~/notes/dcs-tapp.txt")
+
+;(setq-default cursor-type 'box)
+
+ (setq x-select-enable-clipboard t)
+
+;from aquamacs faq..
+;(set-default-font "-apple-bitstream vera sans mono-medium-r-normal--12-120-72-72-m-120-iso10646-1")
+										;(set-default-font "-apple-dejavu sans mono-medium-r-normal--0-0-0-0-m-0-mac-roman")
+;(set-default-font "-apple-ejavu sans mono-medium-r-normal--0-0-0-0-m-0-mac-roman")
+
+										; fire up set-frame-font interactively and fool around with completion looking for a reasonable font.
+;try nil true
+(set-frame-font "-*-Monaco-normal-normal-normal-*-*-*-*-*-m-0-iso10646-1" nil nil)

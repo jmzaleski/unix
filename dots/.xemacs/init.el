@@ -1566,20 +1566,8 @@
 
 (setq html-helper-build-new-buffer t)
 
-;;on aquamacs make command key meta (it doesn't by default)
-(setq mac-command-modifier 'meta)
-;; (setq default-frame-alist
-;;    '((top . 80) (left . 464)
-;;    (width . 80) (height . 40)
-;;    (cursor-color . "red")
-;;    (cursor-type . box)
-;;    (foreground-color . "lightcyan")
-;;    (background-color . "midnightblue")
-;;    (font . "-apple-bitstream vera sans mono-medium-r-normal--14-140-75-75-m-140-mac-roman")))
-
-;;don't have to do this, it happens automatically
-;;(load-file "~/Library/Preferences/Aquamacs Emacs/customizations.el")
-
+;;on aquamacs
+(setq-default cursor-type 'box)
 (setq mac-emulate-three-button-mouse t)
 (setq even-window-heights nil)
 
@@ -1712,7 +1700,6 @@
 (find-file "~/notes/2702.txt")
 (find-file "~/notes/dcs-tapp.txt")
 
-;(setq-default cursor-type 'box)
 
  (setq x-select-enable-clipboard t)
 

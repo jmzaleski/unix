@@ -102,9 +102,17 @@ xx(){
 }
 
 x(){
-	for i in $*
+	for i in "$@"
 	do
-		"$p"/emacsclient --no-wait $i
+		#echo emacsclient "$i"
+		"$p"/emacsclient --no-wait "$i"
+	done
+}
+
+xxx(){
+	for i in "$@"
+	do
+		echo "$i"
 	done
 }
 
@@ -344,7 +352,7 @@ fi
 
 sa-add(){
 		ssh-add -t 36000 ~/.ssh/id_dsa_m1 ~/.ssh/id_dsa_cslab  < /dev/null
-		ssh-add -l
+		ssh-add -l > /dev/null
 }
 
 sa-start-agent(){
@@ -357,7 +365,7 @@ sa-start-agent(){
 # authentications are ready to use
 #
 sa(){
-	ssh-add -l
+	ssh-add -l > /dev/null
 	rc=$?
 	case $rc in
 	0)
@@ -387,7 +395,7 @@ sa_check(){
 		echo no environment variable SSH_AUTH_SOCK # ~/.MacOSX/environment.plist
 		return 2
 	fi
-	if ssh-add -l
+	if ssh-add -l > /dev/null
 	then
 		return 0
 	else
@@ -726,3 +734,5 @@ s2702(){
 	(cdd 2702/marks ; ./student.sh $*)
 }
 
+# recent.. might be mac only. stores passphrases in keychain.
+ssh-add -K  > /dev/null 2>&1

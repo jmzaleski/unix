@@ -1,10 +1,11 @@
 AdvancedOptions=1
 EnableChat=0
-Encryption=PreferOff
+Encryption=Server
 EulaAccepted=db346d1e0fd4a6d2872111de6217b84d04adc9e0
-FullScreen=1
+FullScreen=0
 LeftCmdKey=Alt_R
 LeftOptKey=Alt_R
+Log=*:file:100
 RightCmdKey=Alt_R
 RightOptKey=Alt_R
 SaveToFile=1

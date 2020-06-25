@@ -1,3 +1,4 @@
 192.168.2.24::5900/extra=0200
 192.168.2.28::5901/extra=0201
 mathewza-home.local.zaleski.ca::5900/extra=0201
+localhost::5901/extra=0100

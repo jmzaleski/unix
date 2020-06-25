@@ -89,7 +89,7 @@ alias psa="ps -Af"
 #alias psa="ps -efl"
 #alias psa="ps -auxw"
 alias h="history | tail"
-
+alias mvd='mv  "/Users/mzaleski/Downloads/$(ls -tr /Users/mzaleski/Downloads | tail -1)" .'
 
 # x commands go straight to emacs command
 # echo might have to run server-start in an emacs first..

@@ -550,7 +550,7 @@
 
 (defun my-python-mode-hook ()
   (interactive)
-  (local-set-key "" 'comment-region)
+  ;(local-set-key "" 'comment-region)
   )
 (add-hook 'python-mode-hook 'my-python-mode-hook)
 
@@ -1696,12 +1696,14 @@
 ;hate that damn brief thingy
 (global-set-key "" (quote dired))
 
+;(find-file "~/notes/2702.txt")
 (find-file "~/notes/300.txt")
-(find-file "~/notes/2702.txt")
-(find-file "~/notes/dcs-tapp.txt")
+(find-file "~/notes/302.txt")
+(find-file "~/notes/Notes-mzaleski-m3.txt")
+(find-file "~/notes/matz-react.txt")
+;(find-file "~/notes/dcs-tapp.txt")
 
-
- (setq x-select-enable-clipboard t)
+(setq x-select-enable-clipboard t)
 
 ;from aquamacs faq..
 ;(set-default-font "-apple-bitstream vera sans mono-medium-r-normal--12-120-72-72-m-120-iso10646-1")
@@ -1711,3 +1713,39 @@
 										; fire up set-frame-font interactively and fool around with completion looking for a reasonable font.
 ;try nil true
 (set-frame-font "-*-Monaco-normal-normal-normal-*-*-*-*-*-m-0-iso10646-1" nil nil)
+
+
+(defun aa ()
+  "smash pasted gradapps clipboard to list of app numbers"
+  (interactive)
+  (beginning-of-buffer)
+  ;;first true inserts the output
+  ;;second true replaces  the buffer
+  (shell-command-on-region 1 (buffer-size) "cut -f1 | paste -s -d ' ' -" t t nil t nil)
+)
+
+(defun aaa ()
+  "smash pasted gradapps clipboard to list of app numbers"
+  (interactive)
+  (beginning-of-buffer)
+  ;;first true inserts the output
+  ;;second true replaces  the buffer
+  (shell-command-on-region 1 (buffer-size) "cut -f1 -d , | paste -s -d ' ' -" t t nil t nil)
+)
+
+(defun bb()
+  "query replace current word"
+  (interactive)
+  (query-replace (current-word) (read-string (concat "query-replace " (current-word) " with "))))
+
+;fix ediff in aquamac (for mojave??)
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+
+;; … .  You can change
+;; your default interpreter and commandline arguments by setting the
+;; `python-shell-interpreter' and `python-shell-interpreter-args'
+;; variables.  This example enables IPython globally:
+;; (setq python-shell-interpreter "ipython"
+;;       python-shell-interpreter-args "-i")
+
+(setq python-shell-interpreter "ipython")

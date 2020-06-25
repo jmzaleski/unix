@@ -1,0 +1,3 @@
+#!/bin/bash 
+#try out aspell for emacs. if this works install brew
+exec /sw/bin/aspell $*

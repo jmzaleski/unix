@@ -88,6 +88,21 @@ if __name__ == '__main__':
         if Dbg: print( map_sheet_id_to_UTM_lower_left[sheet_id] )
     else:
         print("unknown cantopo sheet id", sheet_id)
+        print("visit:")
+        print("https://ftp.maps.canada.ca/pub/nrcan_rncan/vector/index/html/geospatial_product_index_en.html")
+        print("find and download the 50K map and find the UTM lower left easting,northing")
+        print("this you will find at a link like", "https://ftp.maps.canada.ca/pub/nrcan_rncan/raster/topographic/50k/082/n/02/")
+        print("or, more directly, you can concoct the FTP link")
+        print("https://ftp.maps.canada.ca/pub/nrcan_rncan/raster/topographic/50k/082/n/02/082n02_0400_canmatrix_prtpdf.zip")
+        print("or, more directly, you can concoct the FTP link, for example for sheet 82:")
+        print("https://ftp.maps.canada.ca/pub/nrcan_rncan/raster/topographic/50k/082")
+        print("and add it to the map_sheet_id_to_UTM_lower_left table in this script")
+        #url = "http://ftp.maps.canada.ca/pub/nrcan_rncan/vector/index/html/geospatial_product_index_en.html"
+        url = "https://ftp.maps.canada.ca/pub/nrcan_rncan/raster/topographic/50k"
+        import webbrowser
+        resp = input("open browser on ftp site URL " + url + "?  [yYnN]* > ")
+        if resp.lower().startswith( 'y'):
+            webbrowser.open(url)
         exit(2)
     
     utm = detruncify(map_sheet_id_to_UTM_lower_left,trunc_utm,sheet_id)

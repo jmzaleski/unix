@@ -404,6 +404,8 @@
 
 (require 'yaml-mode)
 
+(setq load-path (cons "~/my-gmacs/typescript.el" load-path))
+(require 'typescript-mode)
 
 ;;eg only. double-quotes and stuff probably userful..
 
@@ -425,6 +427,7 @@
 (setq auto-mode-alist
 	  (append
 	   (list
+		'("\\.tsx$" . typescript-mode)
 		'("\\.js$" . javascript-mode)
 		'("\\.jsx$" . javascript-mode)
 		'("\\.ss$" . lisp-mode)
@@ -1697,10 +1700,10 @@
 (global-set-key "" (quote dired))
 
 ;(find-file "~/notes/2702.txt")
-(find-file "~/notes/300.txt")
+;(find-file "~/notes/300.txt")
 (find-file "~/notes/302.txt")
 (find-file "~/notes/Notes-mzaleski-m3.txt")
-(find-file "~/notes/matz-react.txt")
+;(find-file "~/notes/matz-react.txt")
 ;(find-file "~/notes/dcs-tapp.txt")
 
 (setq x-select-enable-clipboard t)

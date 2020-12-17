@@ -1,6 +1,6 @@
 # -*-shell-script-*-
 
-READLINK=~/bin/readlink.py #"/sw/sbin/readlink -f" # no -f on os/x
+READLINK="env PYTHONPATH='' $HOME/bin/readlink.py"
 
 MATZ_ANDROID_DIR=`$READLINK ~/src`
 
@@ -142,14 +142,15 @@ cdd()
 		/bin/pwd
 		return
 	fi
-	#set -x
 	local p="$*"
-	#if the arg does not name a directory, or is not a link to one, then look in ~/links
+	# if the arg does not name a directory, or is not a link to one, then look in ~/links
 	if test ! -d "$p"
 	then
 		p=~/links/"$p" #look in links
 	fi
+	#set -x
 	local d=`$READLINK "$p"` #arg exists. just go there
+	#set -
 	if test -d "$d"
 	then
 		builtin pushd "$d" > /dev/null 2>&1
@@ -389,7 +390,10 @@ fi
 # mercurial needs PYTHONPATH set
 #
 export PYTHONPATH=\
-:$HOME/lib/python:
+:$HOME/lib/python:\
+/usr/local/lib/python3.7/site-packages:\
+$PYTHONPATH
+
 
 
 #nb on os/x also have environment.plist

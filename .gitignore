@@ -1,3 +1,4 @@
 *.~*
 /my-gmacs/.DS_Store
 /my-gmacs/ESS/
+/bin/join.py

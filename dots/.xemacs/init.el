@@ -424,34 +424,34 @@
 ;(require 'tracker-dired) ;linux only
 (require 'mdfind-dired) ;os/x only
 
-(setq auto-mode-alist
-	  (append
-	   (list
-		'("\\.tsx$" . typescript-mode)
-		'("\\.js$" . javascript-mode)
-		'("\\.jsx$" . javascript-mode)
-		'("\\.ss$" . lisp-mode)
-		'("\\.h$" . c++-mode)
-		'("\\.c$" . c++-mode)
-		'("\\.C$" . c++-mode)
-		'("\\.cpp$" . c++-mode)
-		'("\\.Z$" . uncompress-while-visiting)
-		'("\\.y$" . text-mode)
-		'("\\.l$" . text-mode)
-		'("\\.tt$" . TT-mode)
-		'("\\.java$" . java-mode)
-;;;;;;;'("\\.f$" . f90-mode)
-		'("\\.f$" . fortran-mode)
-		'("\\.asm$" . asm-mode)
-		'("\\.html$" . html-mode)
-		'("\\.bat$" . bat-mode)
-;		'("\\.as$" . actionscript-mode)
-		'("\\.htm$" . html-mode)
-		'("\\.md$" . markdown-mode)
-		'("\\.cmake$" . cmake-mode)
-		'("\\.yaml$" . yaml-mode))
-	   auto-mode-alist
-	   ))
+
+ (setq auto-mode-alist
+          (append
+           (list
+               '("\\.tsx$" . typescript-mode)
+               '("\\.js$" . javascript-mode)
+               '("\\.jsx$" . javascript-mode)
+               '("\\.ss$" . lisp-mode)
+               '("\\.h$" . c++-mode)
+               '("\\.c$" . c++-mode)
+               '("\\.C$" . c++-mode)
+               '("\\.cpp$" . c++-mode)
+               '("\\.Z$" . uncompress-while-visiting)
+               '("\\.y$" . text-mode)
+               '("\\.l$" . text-mode)
+               '("\\.tt$" . TT-mode)
+               '("\\.java$" . java-mode)
+               '("\\.f$" . fortran-mode)
+               '("\\.asm$" . asm-mode)
+               '("\\.html$" . html-mode)
+               '("\\.bat$" . bat-mode)
+;              '("\\.as$" . actionscript-mode)
+               '("\\.htm$" . html-mode)
+               '("\\.md$" . markdown-mode)
+               '("\\.cmake$" . cmake-mode)
+               '("\\.yaml$" . yaml-mode))
+          auto-mode-alist
+           ))
 ;;
 ;; trivial hooks to turn on font lock mode and mess a little with
 ;; keys. Could be better factored!!
@@ -566,7 +566,7 @@
   (interactive)
   (text-mode)
   (flyspell-mode)
-  (auto-fill-mode)
+  ;(auto-fill-mode)
   (local-set-key [(control meta \.)] (quote flyspell-auto-correct-word))
   )
 
@@ -1523,7 +1523,7 @@
 
 (defun matz-muse-mode-hook ()
   (interactive)
-;  (auto-fill-mode nil)
+  (auto-fill-mode -1) ;; turn off auto-fill-mode
   (local-set-key [f2] (quote clipboard-yank))
   (local-set-key [f10] (quote my-wiki-mode-example))
 ;  (local-set-key [f4]  (quote matz-wiki-TIME-IN))

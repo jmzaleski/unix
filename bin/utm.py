@@ -3,10 +3,27 @@ from __future__ import print_function  #allows print as function
 
 Dbg = False
 
+
+# given a canada topo sheet number stash the UTM coordinates of the LL (SW) corner.
+# ie the corner with the lowest easting, northing
+# we basically add the trucated utm to it.
+    
+map_sheet_id_to_UTM_lower_left = {
+    "82N7": ["11U",  "501000", "5679000"],
+    "82N3": ["11U",  "466000", "5651000"],
+    "82N2": ["11U",  "501000", "5651000"],
+    "82N6": ["11U",  "466000", "5679000"],
+    }
+
 def parse_positional_args():
     "parse the command line parameters of this program"
     import argparse, collections
-    parser = argparse.ArgumentParser()
+    epilog_string='''\
+    known map sheets are:
+         '''
+    for map in map_sheet_id_to_UTM_lower_left.keys():
+        epilog_string += map + " "
+    parser = argparse.ArgumentParser(epilog=epilog_string)
     for tuple in [
             ("sheet_id",      "can topo sheet id, eg 82N7 ",  1),
             ("trunc_utm",     "truncated UTM Coordinate assuming zone 11U",  1),
@@ -74,32 +91,24 @@ if __name__ == '__main__':
 
     if Dbg: print(trunc_utm, sheet_id)
 
-    # given a canada topo sheet number stash the UTM coordinates of the LL (SW) corner.
-    # ie the corner with the lowest easting, northing
-    # we basically add the trucated utm to it.
-    
-    map_sheet_id_to_UTM_lower_left = {
-        "82N7": ["11U",  "501000", "5679000"],
-        "82N3": ["11U",  "466000", "5651000"],
-        "82N2": ["11U",  "501000", "5651000"],
-        }
-
     if sheet_id in map_sheet_id_to_UTM_lower_left:
         if Dbg: print( map_sheet_id_to_UTM_lower_left[sheet_id] )
     else:
-        print("unknown cantopo sheet id", sheet_id)
+        print("cantopo sheet id", sheet_id, " has not been added to this script yet")
         print("visit:")
         print("https://ftp.maps.canada.ca/pub/nrcan_rncan/vector/index/html/geospatial_product_index_en.html")
         print("find and download the 50K map and find the UTM lower left easting,northing")
-        print("this you will find at a link like", "https://ftp.maps.canada.ca/pub/nrcan_rncan/raster/topographic/50k/082/n/02/")
-        print("or, more directly, you can concoct the FTP link")
-        print("https://ftp.maps.canada.ca/pub/nrcan_rncan/raster/topographic/50k/082/n/02/082n02_0400_canmatrix_prtpdf.zip")
-        print("or, more directly, you can concoct the FTP link, for example for sheet 82:")
-        print("https://ftp.maps.canada.ca/pub/nrcan_rncan/raster/topographic/50k/082")
-        print("and add it to the map_sheet_id_to_UTM_lower_left table in this script")
+        print("\n")
+        print("or, more directly, you can concoct the FTP link from the above URL and ", sheet_id)
+        print("for instance, for topo sheet 82 N/6, concatenate 082/n/06")
+        print("to create URL: https://ftp.maps.canada.ca/pub/nrcan_rncan/raster/topographic/50k/082/n/06/")
+        print("\n")
+        print("https://ftp.maps.canada.ca/pub/nrcan_rncan/raster/topographic/50k/082/n/06/082n06_0400_canmatrix_prtpdf.zip")
+        print("\n")
         #url = "http://ftp.maps.canada.ca/pub/nrcan_rncan/vector/index/html/geospatial_product_index_en.html"
-        url = "https://ftp.maps.canada.ca/pub/nrcan_rncan/raster/topographic/50k"
+        url = "https://ftp.maps.canada.ca/pub/nrcan_rncan/raster/topographic/50k/082/n/06"
         import webbrowser
+        print("study map and add blue easting, northing numbers to the map_sheet_id_to_UTM_lower_left table in this script")
         resp = input("open browser on ftp site URL " + url + "?  [yYnN]* > ")
         if resp.lower().startswith( 'y'):
             webbrowser.open(url)

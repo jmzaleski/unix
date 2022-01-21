@@ -1,6 +1,7 @@
 # -*-shell-script-*-
 
-READLINK="env PYTHONPATH='' $HOME/bin/readlink.py"
+READLINK="readlink"
+#READLINK="env PYTHONPATH='' $HOME/bin/readlink.py"
 
 MATZ_ANDROID_DIR=`$READLINK ~/src`
 
@@ -67,9 +68,10 @@ esac
 
 #sometimes we want core dumps..
 #ulimit -c unlimited
+HOMEBREW_DIR=/opt/homebrew
 
-MANPATH=$MANPATH:/opt/local/man:/usr/local/share/info
-INFOPATH=:.::/usr/local/info:$INFOPATH:/opt/local/share/info:/usr/local/share/info/:/usr/share/info:
+MANPATH=$MANPATH:"$HOMEBREW_DIR/bin"/man:/usr/local/share/info
+INFOPATH=:.::/usr/local/info:$INFOPATH:"$HOMEBREW_DIR"/share/info:/usr/local/share/info/:/usr/share/info:
 
 #from some linux gazette. Should take an argument instead of assuming PWD
 xtitle()
@@ -235,7 +237,8 @@ _UseGetOpt-ltop ()   #  By convention, the function name
   esac
   compopt -o nospace #no trailing space. (thanks to stackoverflow)
 }
-complete -F _UseGetOpt-ltop ltop
+
+#complete -F _UseGetOpt-ltop ltop
 
 
 # http://tldp.org/LDP/abs/html/tabexpansion.html
@@ -328,7 +331,7 @@ _UseGetOpt-cdd ()   #  By convention, the function name
 }
 
 #this is the magic that connects cdd completion function with cdd command
-complete -F _UseGetOpt-cdd cdd
+#complete -F _UseGetOpt-cdd cdd
 
 pushd()
 {
@@ -344,12 +347,14 @@ popd()
 #set a var that puts $ vs # in the prompt to remind me when I'm su'd
 #can set # in root's .bashrc.
 
-if test `id -u` == "0"
-then
+case `id -u` in
+0)
     PROMPT_DOLLAR_OR_HASH=' # '
-else
-    PROMPT_DOLLAR_OR_HASH=' $ '
-fi
+    ;;
+*)
+    PROMPT_DOLLAR_OR_HASH='$ '
+    ;;
+esac
 
 # note that this env var will not survive sudo or su (have to sudo bash -l or su - or su -l)
 # but TERM does, dammit, so we have a problem..
@@ -357,7 +362,7 @@ export PROMPT_DOLLAR_OR_HASH
 
 case "$TERM" in
 xterm*|vt100*|cygwin*)
-	PS1="$HOSTNAME"'${PROMPT_DOLLAR_OR_HASH-\\$#\\$# }'
+	PS1="$HOSTNAME""${PROMPT_DOLLAR_OR_HASH-\\$#\\$# }"
 	#xtitle  #busted google android build!
 	;;
 *)
@@ -379,7 +384,7 @@ if test -z $BASH_COMPLETION
 then
  BASH_COMPLETION=~/dots/bash_completion
 fi
-source $BASH_COMPLETION
+#source $BASH_COMPLETION
 
 #this assumes matz conventional place to checkout random git archives.. ie ~/git
 if test -f ~/git/git/contrib/completion/git-completion.bash
@@ -399,7 +404,7 @@ $PYTHONPATH
 #nb on os/x also have environment.plist
 PATH=$PATH:\
 $HOME/bin:\
-/usr/local/bin:\
+"$HOMEBREW_DIR"/bin:\
 /sbin:\
 /usr/sbin:\
 /usr/X11/bin:\
@@ -481,6 +486,9 @@ export BASH_ENV
 
 #magic bash history controls from http://www.catanmat.net
 #
+
+case $SHELL in
+/bin/bash)
 shopt -s histappend
 export HISTSIZE=500 
 export HISTFILESIZE=5000
@@ -489,6 +497,8 @@ export HISTIGNORE=l:ll:ls:pwd:h:history
 #append history (one command) to file, clear, read history
 #oh boy, this may run afoul of new stuff in osx/ /etc/bashrc
 #export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+;;
+esac
 
 #make the default perms of files writable by group.
 #umask 0002
@@ -496,6 +506,9 @@ export HISTIGNORE=l:ll:ls:pwd:h:history
 case $SHELL in
 *DOSBASH.EXE)
     . ~/dots/.kenv
+	;;
+*/zsh)
+	. $HOME/.kenv
 	;;
 */ksh)
 	. $HOME/.kenv

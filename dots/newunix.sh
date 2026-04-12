@@ -2,37 +2,38 @@
 
 #copy this script to a new machine.
 #run the script, should create a bunch of new dirs
+
 cd 
-test -d git || mkdir git
-cd git
-/bin/pwd
 
-echo fetch private files from bitbucket
-#run this script after checking out dots 
 
-#read -p "hit enter to execute: git clone https://matz@bitbucket.org/matz/dots.git" junk
-#git clone https://matz@bitbucket.org/matz/dots.git
+if test ! -d git;
+then
+    echo no git directory
+    exit
+fi
+
+echo used to fetch private files from bitbucket.. bad idea due to private keys
+echo something like:  git clone https://matz@bitbucket.org/matz/dots.git
 
 #mv dots/.ssh ~/.ssh
 
-echo fetch regular files from github
+#echo fetch regular files from github.. won't work until .ssh keys are installed.
 
-read -p "hit enter to execute: git clone git@github.com:jmzaleski/unix.git" junk
+#read -p "hit enter to execute: git clone git@github.com:jmzaleski/unix.git" junk
+echo something like: git clone git@github.com:jmzaleski/unix.git
 
-git clone https://github.com/jmzaleski/unix.git
-#git clone git@github.com:jmzaleski/unix.git
 
+/bin/pwd
+read -p "continue to link files in ~/git/unix/dots to home ?" junk
 
 ln -s git/unix/dots .
 ln -s git/unix/bin .
 
-echo 
 
-read -p "continue to link files in ~/dots ?" junk
+
+read -p "continue to link . files in ~/dots to home ?" junk
 
 dotfiles=""
-
-ln -s $PWD/unix/dots $HOME/dots
 
 ### cd dots ######
 
@@ -43,17 +44,21 @@ do
 	dotfiles="$dotfiles $i"
 done
 
+
 if test -z "$dotfiles"
 then
     echo no files in dot??
     exit 2
 fi
 
+echo will examine $dotfiles and link to home
+
 ### cd home ####
 cd
 
 exist=""
 
+set -x 
 for i in $dotfiles
 do
         dest=~/$i
@@ -70,7 +75,7 @@ do
 		exist="$exist $i"
                 ls -l $dest
         else
-	        set -x 
+	        #set -x 
 		if test -f $dest
 		then
 			echo skip $dest
@@ -80,7 +85,7 @@ do
 		else
 			echo failed to create symlink $dest
 		fi
-	        set -
+	        #set -
 	fi
 done
 

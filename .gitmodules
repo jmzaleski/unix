@@ -13,3 +13,6 @@
 [submodule "y"]
 	path = my-gmacs/magit
 	url = https://github.com/magit/magit.git
+[submodule "my-gmacs/typescript.el"]
+	path = my-gmacs/typescript.el
+	url = git@github.com:emacs-typescript/typescript.el.git

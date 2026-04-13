@@ -47,3 +47,6 @@
 
 (put 'erase-buffer 'disabled nil)
 (put 'downcase-region 'disabled nil)
+
+(setq mac-command-modifier 'meta)
+(setq mac-option-modifier 'none)

@@ -51,7 +51,6 @@ then
     exit 2
 fi
 
-echo will examine $dotfiles and link to home
 
 ### cd home ####
 cd

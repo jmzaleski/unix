@@ -246,7 +246,7 @@
   (yank)
   (forward-list);;params()
   (forward-list);;body{}
-  (insert-string "//")
+  (insert "//")
   (yank)
   )
 
@@ -258,7 +258,7 @@
   (kill-word 1);;zap classname
   (yank)
   (forward-list);;body{}
-  (insert-string "// class ")
+  (insert "// class ")
   (yank)
   )
 
@@ -984,7 +984,7 @@
 	(insert "\n")
 	(yank)
 	(if (not (= (char-before) ?\n))
-		(insert-string "\n"))
+		(insert "\n"))
 	(insert "#")
 ;	(insert tabs)
 	(insert "endif /*")
@@ -1418,19 +1418,19 @@
 
 (defun my-wiki-mode-new-list-item ()
   (interactive)
-  (insert-string "\n- ")
+  (insert "\n- ")
   (save-buffer)
   )
 
 (defun my-wiki-mode-example ()
   (interactive)
-  (insert-string "<example>\n")
+  (insert "<example>\n")
   (clipboard-yank)
   (let*
 	  ((cb (char-before)))
 	   (if (not (= cb ?\n))
-		   (insert-string "\n"))
-	   (insert-string "</example>"))
+		   (insert "\n"))
+	   (insert "</example>"))
 	   (save-buffer)
   )
 
@@ -1581,7 +1581,7 @@
   ;;probably some better way to stuff text into a register, for i could only
   ;;find how to do it from a region in a buffer, so go with that.
   (let* ((p (point)))
-	 (insert-string "//AOT-MERGE-LLVM-30\n")
+	 (insert "//AOT-MERGE-LLVM-30\n")
 	 (copy-to-register 97 p (point) 1)
 	)
 )

@@ -735,4 +735,4 @@ s2702(){
 }
 
 # recent.. might be mac only. stores passphrases in keychain.
-ssh-add -K  > /dev/null 2>&1
+#ssh-add -K  > /dev/null 2>&1

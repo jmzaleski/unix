@@ -1,9 +1,8 @@
 # -*-shell-script-*-
 
-READLINK="readlink"
+#READLINK="readlink"
+READLINK="realpath"
 #READLINK="env PYTHONPATH='' $HOME/bin/readlink.py"
-
-MATZ_ANDROID_DIR=`$READLINK ~/src`
 
 #android builds need real java
 #
@@ -32,19 +31,6 @@ java8
 export ARCH=i386
 export CLASSPATH=1
 
-#android SDK too
-export ANDROID_SDK=$MATZ_ANDROID_DIR/adt-bundle-linux-x86_64-20131030/sdk
-export ANDROID_SDK_HOME=$ANDROID_SDK
-
-#PATH="$ANDROID_SDK/tools":"$PATH"
-
-#android NDK too
-export ANDROID_NDK=$MATZ_ANDROID_DIR/android-ndk-r9c
-export ANDROID_NDK_HOME=$ANDROID_NDK
-
-#PATH="$ANDROID_NDK":"$PATH"
-
-alias 2path='PATH="$ANDROID_SDK/tools":"$ANDROID_NDK":"$PATH"'
 set ignoreeof=1
 
 #        1         2         3         4         5         6         7         8
@@ -62,7 +48,6 @@ case "$HOME" in
 		;;
 esac
 
-#test -r /sw/bin/init.sh && . /sw/bin/init.sh
 
 ############ standard UNIX things #####################
 
@@ -150,9 +135,7 @@ cdd()
 	then
 		p=~/links/"$p" #look in links
 	fi
-	#set -x
 	local d=`$READLINK "$p"` #arg exists. just go there
-	#set -
 	if test -d "$d"
 	then
 		builtin pushd "$d" > /dev/null 2>&1
@@ -164,82 +147,6 @@ cdd()
 	xtitle $PWD
 }
 
-ltop(){
-	l $*
-	}
-
-_UseGetOpt-ltop ()   #  By convention, the function name
-{                 #+ starts with an underscore.
-  local cur
-  # Pointer to current completion word.
-  # By convention, it's named "cur" but this isn't strictly necessary.
-
-  COMPREPLY=()   # return result..Array variable storing the possible completions.
-  cur=${COMP_WORDS[COMP_CWORD]} 
-
-  case $cur in
-    /*|\.*|\~* ) #absolute or relative or ~/ path names 
-		 COMPREPLY=( $( compgen -d $cur ) )
-		 ;;
-	*)
-		  #could really go to town here and look in a list of
-		  #directories, just like CDPATH. 
-		  #for now, just look in . and ~/links.
-
-		  # most obvious. is $cur* a single file in . ? wanna go there.
-		  
-		  link_file_names=""
-          # dirs hash table keeping track of canonical dir names
-		  # (so we can detect dups between . and ~/links )
-		  #
-		  declare -A dirs 
-
-		  #first look in . and append any files that start with cur
-		  for i in "./$cur"*
-		  do
-			  if test ! -d "$i"
-			  then
-				  #echo; echo skip $i; echo
-				  continue
-			  fi
-			  #echo; echo i: \>"$i"\< #debug; echo
-			  canon=`$READLINK "$i"`
-			  if test ! -z "${dirs[$canon]}"; then
-				  continue # if already in hash, ignore
-			  fi
-			  # have a hit in .
-			  dirs["$canon"]=$i
-			  link_file_names="$link_file_names $i/"
-		  done
-
-		  #if pwd is not in the links directory.. look there.
-		  #append any files that start with cur
-		  if notlinks
-		  then
-			  for i in $(gettop)/"$cur"*
-			  do
-				  if test ! -d "$i"
-				  then
-					  #echo; echo skip $i; echo
-					  continue
-				  fi
-				  canon=`$READLINK "$i"`
-				  if test ! -z "${dirs[$canon]}"; then
-					  continue
-				  fi
-				  # have a hit in ~/links
-				  link_file_names="$link_file_names $i/"
-				  dirs["$canon"]=$i
-			  done
-		  fi
-		  COMPREPLY=( $link_file_names )
-		  ;;
-  esac
-  compopt -o nospace #no trailing space. (thanks to stackoverflow)
-}
-
-#complete -F _UseGetOpt-ltop ltop
-
 
 # http://tldp.org/LDP/abs/html/tabexpansion.html
 # fancy business to do arg completion in bash for cdd command above
@@ -247,27 +154,12 @@ _UseGetOpt-ltop ()   #  By convention, the function name
 #
 _UseGetOpt-cdd ()   #  By convention, the function name
 {                 #+ starts with an underscore.
-  local cur
+   local cur
   # Pointer to current completion word.
   # By convention, it's named "cur" but this isn't strictly necessary.
 
   COMPREPLY=()   # return result..Array variable storing the possible completions.
   cur=${COMP_WORDS[COMP_CWORD]} 
-
-#  echo cur: \>$cur\< #debug
-#  echo eh "$cur"*  #debug
-  
-  # is the relative path enough without any searching?
-  # expand="$cur*"
-  # echo
-  # ls -l $expand
-  # echo
-  # if test -d $expand
-  # then
-  # 	  $READLINK  $expand
-  # 	  COMREPLY=(`$READLINK  $expand`)
-  # 	  return
-  # fi
 
   case $cur in
     /*|\.*|\~* ) #absolute or relative or ~/ path names 
@@ -281,7 +173,7 @@ _UseGetOpt-cdd ()   #  By convention, the function name
 		  # most obvious. is $cur* a single file in . ? wanna go there.
 		  
 		  link_file_names=""
-          # dirs hash table keeping track of canonical dir names
+		  # dirs hash table keeping track of canonical dir names
 		  # (so we can detect dups between . and ~/links )
 		  #
 		  declare -A dirs 
@@ -294,10 +186,10 @@ _UseGetOpt-cdd ()   #  By convention, the function name
 				  #echo; echo skip $i; echo
 				  continue
 			  fi
-			  #echo; echo i: \>"$i"\< #debug; echo
 			  canon=`$READLINK  "$i"`
+			  #echo "canon:" $canon "${dirs[$canon]}"
 			  if test ! -z "${dirs[$canon]}"; then
-				  continue # if already in hash, ignore
+			      continue # if already in hash, ignore
 			  fi
 			  # have a hit in .
 			  dirs["$canon"]=$i
@@ -331,7 +223,7 @@ _UseGetOpt-cdd ()   #  By convention, the function name
 }
 
 #this is the magic that connects cdd completion function with cdd command
-#complete -F _UseGetOpt-cdd cdd
+complete -F _UseGetOpt-cdd cdd
 
 pushd()
 {

@@ -89,23 +89,20 @@ alias psa="ps -Af"
 #alias psa="ps -efl"
 #alias psa="ps -auxw"
 alias h="history | tail"
-alias mvd='mv  "/Users/mzaleski/Downloads/$(ls -tr /Users/mzaleski/Downloads | tail -1)" .'
+alias mvd='mv  "$HOME/Downloads/$(ls -tr $HOME/Downloads | tail -1)" .'
 
 # x commands go straight to emacs command
 # echo might have to run server-start in an emacs first..
 
-#p=/Applications/Emacs.app/Contents/MacOS/bin #osx default emacsclient in /usr/bin/ no good.
-#p=/usr/bin
-p=/Applications/Aquamacs.app/Contents/MacOS/bin
 xx(){
-	"$p"/emacsclient --no-wait $*;
+	emacsclient --no-wait $*;
 }
 
 x(){
 	for i in "$@"
 	do
 		#echo emacsclient "$i"
-		"$p"/emacsclient --no-wait "$i"
+		emacsclient --no-wait "$i"
 	done
 }
 
@@ -117,7 +114,7 @@ xxx(){
 }
 
 xgit(){
-	"$p"/emacsclient --no-wait -eval '(matz-magit-status)'
+	emacsclient --no-wait -eval '(matz-magit-status)'
 }
 
 xmagit(){ emacsclient --eval '(magit-status ".")' --no-wait; } # or $PWD??
@@ -202,7 +199,7 @@ dowrk(){
 	then
 		echo cannot open dir $1
 	else
-		cdd ~/$1
+		cdd  ~/$1
 		if test -z "$2"
 		then
 			geom="90x65-380-3"
@@ -469,184 +466,10 @@ printtopdir(){
 
 # ~/wrk symlink pointing to android repo sync currently working on..
 #
-alias cddout='if test ! -z "$ANDROID_BUILD_TOP"; then cd "$ANDROID_BUILD_TOP"/out; /bin/pwd; fi'
-alias sbe="pushd \$(printtopdir); source \$(printtopdir)/build/envsetup.sh; popd"
-alias dlocate="locate -d /media/src/android.updatedb"
-alias dupdatedb="updatedb -l 0 -o /media/src/android.updatedb -U \`readlink -f ~/wrk\`"
-alias lunchme="pwd && echo source env.. && sbe && echo lunch.. && lunch "
-alias lunchmewrk="pushd \`readlink -f ~/wrk\` && pwd && echo source env.. && sbe && echo lunch.. && lunch && popd"
 
 mmlogfile(){
 	backfilename.sh mm-log
 	}
-
-llunchme(){
-	local DEFAULT_LUNCH
-	local LUNCH
-	case "$PWD" in
-		*dalvik*)
-			DEFAULT_LUNCH=gmin-userdebug
-			;;
-		*kitkat*)
-			DEFAULT_LUNCH=gmin-userdebug
-			;;
-		*art-optimizer-copy*)
-			#for flashing on device to check topic branch
-			DEFAULT_LUNCH=aosp_x86-userdebug
-			;;
-		*art-optimizer*)
-			#this is for host mode PCG work only.
-			DEFAULT_LUNCH=asus_t100-userdebug			;;
-
-		*art*)
-			DEFAULT_LUNCH=aosp_baytrail-eng
-			;;
-		*)
-			DEFAULT_LUNCH=aosp_x86-eng
-			;;
-	esac
-	pushd $PWD
-	if cddtop
-	then
-		if source ./build/envsetup.sh
-		then
-			echo
-			/bin/pwd
-			print_lunch_menu
-			echo from pwd, guessing default lunch to be $DEFAULT_LUNCH
-			echo edit the choice to what you need if $DEFAULT_LUNCH is not right..
-			read -e -p "lunch: " -i $DEFAULT_LUNCH LUNCH
-			lunch $LUNCH
-		else
-			echo source ./build/envsetup.sh fails
-			echo llunchme: cannot source build envsetup.sh. where are you?
-		fi
-	fi
-	popd > /dev/null
-	top=$(gettop)
-	return
-	}
-
-lll(){
-	if test  -n "$ANDROID_BUILD_TOP" -a -n "$TARGET_PRODUCT" -a -n "$TARGET_BUILD_VARIANT"
-	then
-		echo shell lunched: "$ANDROID_BUILD_TOP" "$TARGET_PRODUCT"-"$TARGET_BUILD_VARIANT"
-		return 0
-	else
-		echo shell not lunched. one of ANDROID_BUILD_TOP TARGET_PRODUCT TARGET_BUILD_VARIANT not set
-		return 1
-	fi
-	}
-
-#alias cddtop='if test ! -z "$ANDROID_BUILD_TOP"; then cd "$ANDROID_BUILD_TOP"; /bin/pwd; else echo lunchme\!; cd `printtopdir; fi'
-
-cddtop(){
-	if type -p gettop #gettop is a function defined when envsetup.sh is run
-	then
-		local top
-		top=$(gettop)
-		if test -z "$top"; then
-			echo "gettop returns nothing. where are you?"
-			return 1
-		fi
-		cd "$top"
-# set -x
-# 		test "$PWD" != "$ANDROID_BUILD_TOP"
-# set -
- 		if test "$PWD" != "$ANDROID_BUILD_TOP"; then
-			echo cddtop: warning differ: $top and ANDROID_BUILD_TOP=$ANDROID_BUILD_TOP
-			echo cddtop: not lunched, or maybe lunched different topic branch?
-			/bin/pwd
-			return 0
-		fi
-	else
-		echo not lunched, cdd will recursively cd .. looking for top of tree
-		local dest=$PWD
-		local save=$PWD
-		while test "$PWD" != /media/src
-		do
-			if test "$PWD" == /; then # if get all the way to top not in repo tree
-				cd $save
-				return 1
-			fi
-			dest=$PWD
-			cd ..
-		done
-		cd $dest
-		/bin/pwd
-		return 0
-	fi
-	#if any args, cd there (assuming relative)
-	if test ! -z "$1"; then
-		cd "$1"
-    fi
-	/bin/pwd
-	return 0
-}
-
-cddprodout(){
-	if test -z "$ANDROID_PRODUCT_OUT"; then
-		echo ANDROID_PRODUCT_OUT not set. lunch\?
-		return
-		fi
-	cd $ANDROID_PRODUCT_OUT
-	/bin/pwd
-}
-
-rrepo(){
-	if test -z "$ANDROID_BUILD_TOP"; then
-		echo ANDROID_BUILD_TOP not set. lunch\?
-		return
-		fi
-	if test ! -x "$ANDROID_BUILD_TOP/repo"; then
-		echo  no script "$ANDROID_BUILD_TOP/repo"
-		return
-		fi
-	"$ANDROID_BUILD_TOP/repo" $*
-}
-
-cddhostout(){
-	if test -z "$ANDROID_HOST_OUT"; then
-		echo ANDROID_HOST_OUT not set. lunch\?
-		return
-		fi
-	cd $ANDROID_HOST_OUT
-	/bin/pwd
-}
-
-cddart()  { cddtop art;}
-cddext()  { cddtop vendor/intel/art-extension;}
-cddintel(){	cddtop vendor/intel/$*;}
-cddopt()  {	cddtop vendor/intel/dalvik-intelopt; }
-cddpcg()  {	cddtop vendor/intel/pcg; }
-cddbay()  {	cddtop device/intel/baytrail; }
-
-#early idea.. probably could do better using buildtop
-lunchme2(){
-	if type -t lunch
-	then
-		echo lunch proc defined, so in build.
-	 else
-		echo no lunch program.. first source build/envsetup.sh 
-		if test ! -f build/envsetup.sh
-		then
-			echo where are you\? cannot file build/envsetup.sh
-			return
-		fi
-		source build/envsetup.sh
-	 fi
-	if test -f LUNCHME
-	then
-		ls -l ./LUNCHME
-		source ./LUNCHME
-	else
-		echo HEY no LUNCHME file, so just interactively lunch
-		lunch
-		return
-	fi
-	printenv | grep TARGET_
-}
-
 
 tracker-grep(){
 	 tracker-search $* | sed -e s,file://,, | xargs -t grep -i $*

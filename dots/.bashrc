@@ -1,8 +1,10 @@
 # -*-shell-script-*-
 
-#READLINK="readlink"
+#realpath works around readlink difference across unixen
 READLINK="realpath"
+
 #READLINK="env PYTHONPATH='' $HOME/bin/readlink.py"
+#READLINK="readlink"
 
 #android builds need real java
 #
@@ -99,7 +101,7 @@ cd()
 	else
 		builtin cd "$args"
 	fi
-	#xtitle #busted google android build!
+	xtitle #busted google android build!
 }
 
 notlinks()
@@ -112,10 +114,13 @@ notlinks()
 cddlink(){
 	if notlinks
 	then
-		d=$PWD
-		cd ~/links
-		ln -si $d .
-		ls -l `basename $d`
+	    d=$PWD
+	    bn=`basename $d`
+	    read -p "create symlink ~/links/$bn ? > " junk
+	    pushd ~/links >/dev/null
+	    ln -si $d .
+	    ls -l `basename $d`
+	    popd > /dev/null
 	fi
 }
 
